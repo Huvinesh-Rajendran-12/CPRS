@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'CPRS_admin.apps.CprsAdminConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
