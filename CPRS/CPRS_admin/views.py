@@ -1,7 +1,62 @@
 from django.shortcuts import render
 from .forms import ProjectForm
 from .forms import StudentForm
+from django.views.generic import CreateView
+from django.shortcuts import redirect 
+from django.contrib.auth import login
+from .models import User
 
+from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm 
+
+class StudentSignUpView(CreateView):
+    model = User
+    form_class = StudentSignUpForm
+    template_name = 'registration/signup.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'student'
+
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('')
+
+
+
+class ClientSignUpView(CreateView):
+    model = User
+    form_class = ClientSignUpForm
+    template_name = 'registration/signup.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'client'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+
+        login(self.request, user)
+        return redirect('')
+
+
+class SupervisorSignUpView(CreateView):
+    model = User
+    form_class = SupervisorSignUpForm
+
+    template_name = 'registration/signup.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'supervisor'
+        return super().get_context_data(**kwargs)
+
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('')
+    
 def home_view(request):
     form = ProjectForm(request.POST or None)
     if form.is_valid():
