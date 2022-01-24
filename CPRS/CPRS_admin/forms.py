@@ -5,6 +5,7 @@ from django.db import transaction
 from .models import Student, StudentGroup,User, Client, Supervisor, Project
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
+ 
 
 
 class StudentSignUpForm(UserCreationForm):
@@ -22,6 +23,51 @@ class StudentSignUpForm(UserCreationForm):
         student = Student.objects.create(user=user)
 
         return user 
+
+
+class ClientSignUpForm(UserCreationForm):
+
+    CLIENT_TYPE_CHOICES = (
+      (1, 'University'),
+      (2, 'MLE'),
+      (3, 'Industry'),
+     
+  )
+
+    client_type = forms.CharField(
+        label = "Select Client Type",
+        widget = forms.Select(choices=CLIENT_TYPE_CHOICES),
+ 
+        required=True
+    )
+    
+
+    class Meta(UserCreationForm.Meta):
+        model = User 
+
+    @transaction.atomic
+    def save(self):
+        user = super().save(commit=False)
+        user.is_client = True 
+
+        user.save()
+
+        client = Client.objects.create(user=user)
+        client.client_type.add(*self.cleaned_data.get('client_type'))
+
+        return user 
+
+
+class SupervisorSignUpForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_supervisor = True
+        if commit:
+            user.save()
+        return user
 
 class ProjectForm(ModelForm):
 
