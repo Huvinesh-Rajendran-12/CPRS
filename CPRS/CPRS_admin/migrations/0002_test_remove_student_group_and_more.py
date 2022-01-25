@@ -7,33 +7,48 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0001_initial'),
+        ("CPRS_admin", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Test',
+            name="Test",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
         ),
         migrations.RemoveField(
-            model_name='student',
-            name='group',
+            model_name="student",
+            name="group",
         ),
         migrations.AlterField(
-            model_name='studentgroup',
-            name='students',
-            field=models.ManyToManyField(through='CPRS_admin.Test', to='CPRS_admin.Student'),
+            model_name="studentgroup",
+            name="students",
+            field=models.ManyToManyField(
+                through="CPRS_admin.Test", to="CPRS_admin.Student"
+            ),
         ),
         migrations.AddField(
-            model_name='test',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CPRS_admin.student'),
+            model_name="test",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="CPRS_admin.student"
+            ),
         ),
         migrations.AddField(
-            model_name='test',
-            name='student_group',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='CPRS_admin.studentgroup'),
+            model_name="test",
+            name="student_group",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="CPRS_admin.studentgroup",
+            ),
         ),
     ]

@@ -2,77 +2,79 @@ from django.shortcuts import render
 from .forms import ProjectForm
 from .forms import StudentForm
 from django.views.generic import CreateView
-from django.shortcuts import redirect 
+from django.shortcuts import redirect
 from django.contrib.auth import login
 from .models import User
 
-from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm 
+from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm
+
 
 class StudentSignUpView(CreateView):
     model = User
     form_class = StudentSignUpForm
-    template_name = 'registration/signup.html'
+    template_name = "registration/signup.html"
 
     def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'student'
+        kwargs["user_type"] = "student"
 
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('')
-
+        return redirect("")
 
 
 class ClientSignUpView(CreateView):
     model = User
     form_class = ClientSignUpForm
-    template_name = 'registration/signup.html'
+    template_name = "registration/signup.html"
 
     def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'client'
+        kwargs["user_type"] = "client"
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
         user = form.save()
 
         login(self.request, user)
-        return redirect('')
+        return redirect("")
 
 
 class SupervisorSignUpView(CreateView):
     model = User
     form_class = SupervisorSignUpForm
 
-    template_name = 'registration/signup.html'
+    template_name = "registration/signup.html"
 
     def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'supervisor'
+        kwargs["user_type"] = "supervisor"
         return super().get_context_data(**kwargs)
-
 
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('')
-    
+        return redirect("")
+
+
 def home_view(request):
     form = ProjectForm(request.POST or None)
     if form.is_valid():
         # save the form data to model
         form.save()
-    return render(request, "home.html", {'form':form})
+    return render(request, "home.html", {"form": form})
+
 
 def student_view(request):
     form = StudentForm(request.POST or None)
     if form.is_valid():
         # save the form data to model
         form.save()
-    return render(request, "student.html", {'form':form})
+    return render(request, "student.html", {"form": form})
+
 
 def group_view(request):
     group = request.user.groups.all()
     print(group)
     print(request.user)
-    return render(request,"group.html",{'group':group})
+    return render(request, "group.html", {"group": group})
