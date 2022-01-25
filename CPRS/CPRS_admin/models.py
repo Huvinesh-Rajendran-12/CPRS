@@ -60,8 +60,6 @@ class Test(models.Model):
 
 
 
-
-
 class Supervisor(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE)
     id = models.IntegerField(max_length=20,primary_key=True)
@@ -134,6 +132,12 @@ class Student_Task (models.Model):
     taskid = models.ForeignKey(Task,on_delete=models.CASCADE)
 
 
+class Recommended_Project(models.Model):
+    group = models.ManyToManyField(StudentGroup)
+    client = models.ManyToManyField(Client)
+    project_id = models.ForeignKey(Project,on_delete=models.CASCADE)
+    project_title = models.CharField(max_length=255)
+    similarity_score = models.FloatField()
 
 
 
