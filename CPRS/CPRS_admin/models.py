@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser 
+from django.core.validators import MaxValueValidator  
 
 # Create your models here.
 
@@ -26,23 +27,21 @@ class Client(models.Model):
 class Project (models.Model):
     id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Client,on_delete=models.CASCADE)
-    projecttitle = models.CharField(max_length=100,null=True)
-    projectoverview = models.CharField(max_length=255,null=True)
+    title = models.CharField(max_length=100,null=True)
+    overview = models.CharField(max_length=255,null=True)
+    requirements = models.TextField(null=True)
     is_assigned = models.BooleanField(default=False) 
 
     def __str__(self):
-        return self.projecttitle + ',' + self.projectoverview
+        return self.title + ',' + self.overview + ',' + self.requirements 
 
 class Student(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE)
-    course_taken = models.CharField(max_length=50,null=True)
-    specialization = models.CharField(max_length=50,null=True)
-    area_of_interest = models.CharField(max_length=50,null=True)
-    has_group = models.BooleanField(default=False)
+    has_group = models.BooleanField(default=False) 
     def __str__(self):
         if self.user.first_name and self.user.last_name:
             full_name = self.user.first_name + " " + self.user.last_name
-        return full_name
+        return full_name + ',' + self.user.email + ',' + self.Student_Profile.course_taken  
 
 class StudentGroup(models.Model):
     student = models.ManyToManyField(Student,through='Test')
@@ -67,6 +66,7 @@ class Supervisor(models.Model):
     last_name = models.CharField(max_length=255,null=True)
     email = models.CharField(max_length=50,null=True)
     password = models.CharField(max_length=255,null=True)
+    assigned_group = models.ForeignKey(StudentGroup,null=True,on_delete=models.CASCADE)
 
     def __str__(self):
         if self.user.first_name and self.user.last_name:
@@ -75,12 +75,12 @@ class Supervisor(models.Model):
 
 
 class Student_Profile(models.Model):
-    student = models.OneToOneField(Student,null=True,on_delete=models.CASCADE)
+    student = models.OneToOneField(Student,on_delete=models.CASCADE,primary_key=True,default=None) 
     course_taken = models.CharField(max_length=50,null=True)
     specialization = models.CharField(max_length=255,null=True)
     area_of_interest = models.CharField(max_length=255,null=True)
     skills = models.CharField(max_length=255,null=True)
-    cgpa = models.FloatField()
+    cgpa = models.FloatField(validators=[MaxValueValidator(4.0)])
 
     def __str__(self):
         return self.student.user.email + self.course_taken + self.specialization + self.area_of_interest + self.cgpa 

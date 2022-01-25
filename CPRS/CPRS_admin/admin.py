@@ -7,8 +7,7 @@ from .forms import GroupAdminForm, StudentGroupAdminForm
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ["id", "course_taken", "specialization"]
-    search_fields = ["id", "course_taken"]
+    search_fields = ["id"]
 
 
 class SupervisorAdmin(admin.ModelAdmin):
@@ -27,8 +26,8 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ["projecttitle", "projectoverview"]
-    search_fields = ["projecttitle", "projectoverview"]
+    list_display = ["title", "overview"]
+    search_fields = ["title", "overview"]
 
 
 class GroupAdmin(admin.ModelAdmin):

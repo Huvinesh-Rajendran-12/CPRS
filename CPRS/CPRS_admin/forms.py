@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
-from .models import Student, StudentGroup, User, Client, Supervisor, Project
+from .models import Student, Student_Profile, StudentGroup, User, Client, Supervisor, Project
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
@@ -68,13 +68,15 @@ class SupervisorSignUpForm(UserCreationForm):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = ["projecttitle", "projectoverview"]
+        fields = '__all__'
+        exclude = [] 
+
 
 
 class StudentForm(ModelForm):
     class Meta:
-        model = Student
-        fields = ["course_taken", "specialization", "area_of_interest"]
+        model = Student_Profile
+        fields = ["course_taken", "specialization", "area_of_interest","skills","cgpa"]
 
 
 class GroupAdminForm(forms.ModelForm):

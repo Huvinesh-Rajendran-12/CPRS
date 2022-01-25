@@ -60,7 +60,7 @@ class SupervisorSignUpView(CreateView):
 def home_view(request):
     form = ProjectForm(request.POST or None)
     if form.is_valid():
-        # save the form data to model
+        # save the form data to model 
         form.save()
     return render(request, "home.html", {"form": form})
 
@@ -69,6 +69,7 @@ def student_view(request):
     form = StudentForm(request.POST or None)
     if form.is_valid():
         # save the form data to model
+        form.student = request.user.student 
         form.save()
     return render(request, "student.html", {"form": form})
 
