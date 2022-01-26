@@ -78,3 +78,21 @@ def group_view(request):
     print(group)
     print(request.user)
     return render(request, "group.html", {"group": group})
+
+def admin_dashboard(request):
+    return render(request, "main/dashboard.html")
+
+def search(request):
+    return render(request, "main/search.html")
+
+def project(request):
+    return render(request, "main/projects.html")
+
+def student_dashboard(request):
+    return render(request, "student/s_dashboard.html")
+
+def supervisor_dashboard(request):
+    return render(request, "supervisor/supervisor_dashboard.html")
+
+def client_dashboard(request):
+    return render(request, "client/client_dashboard.html")
