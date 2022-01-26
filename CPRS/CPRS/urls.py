@@ -33,4 +33,5 @@ urlpatterns = [
         SupervisorSignUpView.as_view(),
         name="supervisor_signup",
     ),
+    path("coordinator/dashboard", admin_dashboard, name="admin_dashboard"),
 ]

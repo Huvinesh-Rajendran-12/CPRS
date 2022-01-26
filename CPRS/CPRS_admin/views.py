@@ -78,3 +78,6 @@ def group_view(request):
     print(group)
     print(request.user)
     return render(request, "group.html", {"group": group})
+
+def admin_dashboard(request):
+    return render(request, "main/dashboard.html")
