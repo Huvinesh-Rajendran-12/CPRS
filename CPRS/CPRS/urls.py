@@ -34,4 +34,9 @@ urlpatterns = [
         name="supervisor_signup",
     ),
     path("coordinator/dashboard", admin_dashboard, name="admin_dashboard"),
+    path("coordinator/search", search, name="search_page"),
+    path("coordinator/projects", project, name="projects"),
+    path("student/dashboard", student_dashboard, name="student_dashboard"),
+    path("supervisor/dashboard", supervisor_dashboard, name="supervisor_dashboard"),
+    path("client/dashboard", client_dashboard, name="client_dashboard"),
 ]
