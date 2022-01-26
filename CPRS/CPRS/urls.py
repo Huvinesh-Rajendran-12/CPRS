@@ -14,19 +14,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include 
+from django.urls import path, include
 from CPRS_admin.views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('home/',home_view,name="home"),
-    path('student/',student_view,name="student"),
-    path('group/',group_view,name="group"),
-    path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/signup/student/', StudentSignUpView.as_view(), name='student_signup'),
-    path('accounts/signup/client/',  ClientSignUpView.as_view(), name='client_signup'),
-    path('accounts/signup/supervisor/', SupervisorSignUpView.as_view(), name='supervisor_signup'),
-
+    path("admin/", admin.site.urls),
+    path("home/", home_view, name="home"),
+    path("student/", student_view, name="student"),
+    path("group/", group_view, name="group"),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path(
+        "accounts/signup/student/", StudentSignUpView.as_view(), name="student_signup"
+    ),
+    path("accounts/signup/client/", ClientSignUpView.as_view(), name="client_signup"),
+    path(
+        "accounts/signup/supervisor/",
+        SupervisorSignUpView.as_view(),
+        name="supervisor_signup",
+    ),
+    path("coordinator/dashboard", admin_dashboard, name="admin_dashboard"),
+    path("coordinator/search", search, name="search_page"),
+    path("coordinator/projects", project, name="projects"),
+    path("student/dashboard", student_dashboard, name="student_dashboard"),
+    path("supervisor/dashboard", supervisor_dashboard, name="supervisor_dashboard"),
+    path("client/dashboard", client_dashboard, name="client_dashboard"),
 ]
-
