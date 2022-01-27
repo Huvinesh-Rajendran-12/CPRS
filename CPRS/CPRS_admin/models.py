@@ -132,6 +132,7 @@ class Recommended_Project(models.Model):
     project_id = models.ForeignKey(Project,on_delete=models.CASCADE)
     project_title = models.CharField(max_length=255)
     similarity_score = models.FloatField()
+    is_approved = models.IntegerField(default=0)
 
 
 

@@ -57,7 +57,7 @@ class SupervisorSignUpView(CreateView):
         return redirect("/login")
 
 
-@client_required
+
 class AddProjectView(CreateView):
     model = Project
     form_class = ProjectForm
