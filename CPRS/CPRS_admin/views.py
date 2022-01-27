@@ -22,7 +22,7 @@ class StudentSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect("")
+        return redirect("/login")
 
 
 class ClientSignUpView(CreateView):
@@ -38,7 +38,7 @@ class ClientSignUpView(CreateView):
         user = form.save()
 
         login(self.request, user)
-        return redirect("")
+        return redirect("/login")
 
 
 class SupervisorSignUpView(CreateView):
@@ -54,7 +54,7 @@ class SupervisorSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect("")
+        return redirect("/login")
 
 
 def home_view(request):
@@ -96,3 +96,6 @@ def supervisor_dashboard(request):
 
 def client_dashboard(request):
     return render(request, "client/client_dashboard.html")
+
+def main_view(request):
+    return render(request,"main/main.html")
