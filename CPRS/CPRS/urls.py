@@ -39,4 +39,5 @@ urlpatterns = [
     path("student/dashboard", student_dashboard, name="student_dashboard"),
     path("supervisor/dashboard", supervisor_dashboard, name="supervisor_dashboard"),
     path("client/dashboard", client_dashboard, name="client_dashboard"),
+    path("main/",main_view,name="main")
 ]
