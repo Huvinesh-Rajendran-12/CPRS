@@ -4,9 +4,9 @@ from .forms import StudentForm
 from django.views.generic import CreateView
 from django.shortcuts import redirect
 from django.contrib.auth import login
-from .models import User
+from .models import User, Project
 
-from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm
+from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm
 
 
 class StudentSignUpView(CreateView):
@@ -56,6 +56,14 @@ class SupervisorSignUpView(CreateView):
         login(self.request, user)
         return redirect("/login")
 
+class AddProjectView(CreateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = "client/add_project.html"
+
+    def form_valid(self,form):
+        project = form.save()
+        return project 
 
 def home_view(request):
     form = ProjectForm(request.POST or None)
