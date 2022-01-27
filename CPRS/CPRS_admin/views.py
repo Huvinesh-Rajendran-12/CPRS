@@ -4,9 +4,9 @@ from .forms import StudentForm
 from django.views.generic import CreateView
 from django.shortcuts import redirect
 from django.contrib.auth import login
-from .models import User
-
-from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm
+from .models import User, Project
+from .decorators import * 
+from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm
 
 
 class StudentSignUpView(CreateView):
@@ -22,7 +22,7 @@ class StudentSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect("")
+        return redirect("/login")
 
 
 class ClientSignUpView(CreateView):
@@ -38,7 +38,7 @@ class ClientSignUpView(CreateView):
         user = form.save()
 
         login(self.request, user)
-        return redirect("")
+        return redirect("/login")
 
 
 class SupervisorSignUpView(CreateView):
@@ -54,8 +54,18 @@ class SupervisorSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect("")
+        return redirect("/login")
 
+
+@client_required
+class AddProjectView(CreateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = "client/add_project.html"
+
+    def form_valid(self,form):
+        project = form.save()
+        return project 
 
 def home_view(request):
     form = ProjectForm(request.POST or None)
@@ -65,6 +75,7 @@ def home_view(request):
     return render(request, "home.html", {"form": form})
 
 
+@student_required
 def student_view(request):
     form = StudentForm(request.POST or None)
     if form.is_valid():
@@ -88,11 +99,16 @@ def search(request):
 def project(request):
     return render(request, "main/projects.html")
 
+@student_required
 def student_dashboard(request):
     return render(request, "student/s_dashboard.html")
 
+@supervisor_required
 def supervisor_dashboard(request):
     return render(request, "supervisor/supervisor_dashboard.html")
 
 def client_dashboard(request):
     return render(request, "client/client_dashboard.html")
+
+def main_view(request):
+    return render(request,"main/main.html")
