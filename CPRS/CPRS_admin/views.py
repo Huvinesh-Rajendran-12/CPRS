@@ -5,7 +5,7 @@ from django.views.generic import CreateView
 from django.shortcuts import redirect
 from django.contrib.auth import login
 from .models import User, Project
-
+from .decorators import * 
 from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm
 
 
@@ -56,6 +56,8 @@ class SupervisorSignUpView(CreateView):
         login(self.request, user)
         return redirect("/login")
 
+
+@client_required
 class AddProjectView(CreateView):
     model = Project
     form_class = ProjectForm
@@ -73,6 +75,7 @@ def home_view(request):
     return render(request, "home.html", {"form": form})
 
 
+@student_required
 def student_view(request):
     form = StudentForm(request.POST or None)
     if form.is_valid():
@@ -96,9 +99,11 @@ def search(request):
 def project(request):
     return render(request, "main/projects.html")
 
+@student_required
 def student_dashboard(request):
     return render(request, "student/s_dashboard.html")
 
+@supervisor_required
 def supervisor_dashboard(request):
     return render(request, "supervisor/supervisor_dashboard.html")
 
