@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Recommended_Project , Project
+from .models import Recommended_Project , Project , Student 
 def admin_dashboard(request):
     requests = Request.objects.filter(is_approved=0)
     context = {'requests':request}
@@ -40,5 +40,11 @@ def recommendations_disapprove_view(request,recommendation_id):
 
     recommendations.save()
     return HttpResponseRedirect(reverse("recommendations_view"))
+
+def student_view_list(request):
+    students = Student.objects.all()
+    context = {'studens':students}
+    return render(request,"HOD/students.html",context)
+
 
 
