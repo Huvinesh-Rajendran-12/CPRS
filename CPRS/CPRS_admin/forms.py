@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm , formset_factory
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db import transaction
-from .models import Student, StudentGroup, User, Client, Supervisor, Project
+from .models import Student, StudentGroup, User, Client, Supervisor, Project, Student_Profile
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
@@ -131,5 +131,5 @@ class GroupForm(ModelForm):
 class StudentProfileForm(ModelForm):
     class Meta:
         model = Student_Profile
-        exclude = []
+        exclude = ['student']
 

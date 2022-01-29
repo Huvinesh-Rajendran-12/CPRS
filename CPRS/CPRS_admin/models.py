@@ -70,7 +70,7 @@ class Supervisor(models.Model):
 
 
 class Student_Profile(models.Model):
-    student = models.OneToOneField(Student,null=True,related_name="profile",on_delete=models.CASCADE)
+    student = models.OneToOneField(Student,related_name="profile",primary_key=True,on_delete=models.CASCADE,default=None)
     course_taken = models.CharField(max_length=50,null=True)
     specialization = models.CharField(max_length=255,null=True)
     area_of_interest = models.CharField(max_length=255,null=True)

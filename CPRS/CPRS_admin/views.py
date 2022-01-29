@@ -5,7 +5,7 @@ from django.views.generic import CreateView
 from django.shortcuts import redirect
 from django.contrib.auth import login, logout , authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .models import User, Project
+from .models import User, Project, Student_Profile, Student
 from .decorators import * 
 from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm, StudentProfileForm
 from django.contrib.auth.decorators import login_required
@@ -160,12 +160,6 @@ def signin(request):
             elif user.is_authenticated and user.is_supervisor:
                 return redirect('supervisor_dashboard')
 
-           # if user.is_student == "True":
-            #    return redirect('/student/dashboard')
-            #if user.is_client == "True":
-             #   return redirect('/client/dashboard')
-            #if user.is_supervisor == "True":
-             #   return redirect('/supervisor/dashboard')
         else:
             form = AuthenticationForm()
             return render(request,'registration/login.html',{'form':form})
@@ -178,9 +172,22 @@ def signin(request):
 def main_view(request):
     return render(request,"main/main.html")
 
-def tudent_view(request):
-    form = StudentForm(request.POST or None)
+def student_profile_edit(request):
+    form = StudentProfileForm(request.POST or None)
     if form.is_valid():
-        # save the form data to model
+        # save the form data to model 
         form.save()
-    return render(request, "student.html", {"form": form})
+    return render(request, "student/student_profile.html", {"form": form})
+
+
+class StudentProfileView(CreateView):
+    model = Student_Profile
+    form_class = StudentProfileForm
+    template_name = "student/student_profile.html"
+
+    def form_valid(self,form):
+        profile = form.save(commit=False)
+        profile.student = Student.objects.get(user=self.request.user)
+        profile.save()
+        return redirect('student_dashboard')
+
