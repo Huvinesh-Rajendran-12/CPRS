@@ -1,4 +1,4 @@
-
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,18 +19,17 @@
         <div class="logo">
           <img src="https://tulifeskillsdevelopment.files.wordpress.com/2018/01/taylors-logo-latest.png" class="img-fluid" alt="Logo">
         </div>
-        <form class="rounded bg-white shadow py-5 px-4">
+        <form class="rounded bg-white shadow py-5 px-4" method="post">
+          {% csrf_token %}
           <h3 class="text-dark fw-bolder fs-4 mb-2">Sign in to Capstone Project Recommender System </h3>
           <div class="fw-normal text-muted mb-4"> New Here?
-            <a href="#" class="text-primary fw-bold text-decoration-none">Create an Account</a>
+              <a href="{% url 'main' %}" class="text-primary fw-bold text-decoration-none">Create an Account</a>
           </div>
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+            {{form.username | as_crispy_field}}  
           </div>
           <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
+            {{form.password | as_crispy_field}}
           </div>
           <div class="mt-2 text-end">
             <a href="#" class="text-primary fw-bold text-decoration-none">Forget Password?</a>

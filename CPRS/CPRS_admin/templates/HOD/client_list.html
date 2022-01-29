@@ -1,0 +1,52 @@
+{%extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h3>Clients</h3>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Company</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td>{{client.id}}</td>
+                    <td>{{client.user.first_name}}</td>
+                    <td>{{client.user.last_name}}</td>
+                    <td>{{client.user.email}}</td>
+                    <td>{{client.company}}</td> 
+                  <td>
+                       {% if client.is_active == 1 %}
+                                            <a href="{% url 'student_deactivate' student_id=student.id %}" class="btn btn-success" >Deactivate</a>
+                       {% elif client.is_active == 0  %}
+                                             <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Deactivated</button> 
+                        {% endif %}                            
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div>
+</div> 
+
+{% endblock %}
+ 
