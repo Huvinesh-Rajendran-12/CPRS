@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from CPRS_admin.views import *
+from CPRS_admin.HOD_views import * 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -24,6 +25,7 @@ urlpatterns = [
     path("group/", group_view, name="group"),
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/login/",signin,name="login"),
     path(
         "accounts/signup/student/", StudentSignUpView.as_view(), name="student_signup"
     ),
@@ -36,9 +38,17 @@ urlpatterns = [
     path("coordinator/dashboard", admin_dashboard, name="admin_dashboard"),
     path("coordinator/search", search, name="search_page"),
     path("coordinator/projects", project, name="projects"),
-    path("student/dashboard", student_dashboard, name="student_dashboard"),
-    path("supervisor/dashboard", supervisor_dashboard, name="supervisor_dashboard"),
-    path("client/dashboard", client_dashboard, name="client_dashboard"),
+    path("accounts/profile/student", student_dashboard, name="student_dashboard"),
+    path("accounts/profile/supervisor", supervisor_dashboard, name="supervisor_dashboard"),
+    path("accounts/profile/client", client_dashboard, name="client_dashboard"),
     path("main/",main_view,name="main"),
     path("client/addproject",AddProjectView.as_view(),name="add_project"),
+    
+    path("coordinator/student_list",student_view_list,name="student_list"),
+
+    path("coordinator/project_list",project,name="project_list"), 
+
+    path("coordinator/add_student_group",add_student_group,name="add_student_group"),
+    path("coordinator/client_list",clientview_list,name="client_list"),
+    
 ]

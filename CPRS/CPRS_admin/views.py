@@ -7,7 +7,7 @@ from django.contrib.auth import login, logout , authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .models import User, Project
 from .decorators import * 
-from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm
+from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm, StudentProfileForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -177,3 +177,10 @@ def signin(request):
 
 def main_view(request):
     return render(request,"main/main.html")
+
+def tudent_view(request):
+    form = StudentForm(request.POST or None)
+    if form.is_valid():
+        # save the form data to model
+        form.save()
+    return render(request, "student.html", {"form": form})
