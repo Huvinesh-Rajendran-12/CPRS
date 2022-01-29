@@ -50,5 +50,6 @@ urlpatterns = [
 
     path("coordinator/add_student_group",add_student_group,name="add_student_group"),
     path("coordinator/client_list",clientview_list,name="client_list"),
+    path("student/profile/edit",StudentProfileView.as_view(),name="student_profile_edit"),
     
 ]
