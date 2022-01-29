@@ -1,10 +1,11 @@
 from django import forms
-from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm , formset_factory
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db import transaction
 from .models import Student, StudentGroup, User, Client, Supervisor, Project
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
+
 
 
 class StudentSignUpForm(UserCreationForm):
@@ -18,9 +19,9 @@ class StudentSignUpForm(UserCreationForm):
     def save(self):
         user = super().save(commit=False)
         user.is_student = True
-        user.first_name.add(*self.cleaned_data.get("first_name"))
-        user.last_name.add(*self.cleaned_data.get("last_name"))
-        user.email.add(*self.cleaned_data.get("email"))
+        user.first_name = self.cleaned_data.get("first_name")
+        user.last_name =  self.cleaned_data.get("last_name")
+        user.email = self.cleaned_data.get("email")
         user.save()
         student = Student.objects.create(user=user)
 
@@ -81,10 +82,9 @@ class ProjectForm(ModelForm):
 class StudentForm(ModelForm):
     class Meta:
         model = Student
-        fields = ["course_taken", "specialization", "area_of_interest"]
+        exclude = []
 
-
-class GroupAdminForm(forms.ModelForm):
+class GroupAdminForm(ModelForm):
     class Meta:
         model = Group
         exclude = []
@@ -109,7 +109,7 @@ class GroupAdminForm(forms.ModelForm):
         return instance
 
 
-class StudentGroupAdminForm(forms.ModelForm):
+class StudentGroupAdminForm(ModelForm):
     students = forms.ModelMultipleChoiceField(
         queryset=Student.objects.all(),
         required=True,
@@ -119,3 +119,17 @@ class StudentGroupAdminForm(forms.ModelForm):
     class Meta:
         model = StudentGroup
         exclude = []
+
+StudentFormset = formset_factory(StudentForm)
+
+class GroupForm(ModelForm):
+    student = StudentFormset()
+    class Meta:
+        model = Group 
+        exclude = []
+
+class StudentProfileForm(ModelForm):
+    class Meta:
+        model = Student_Profile
+        exclude = []
+

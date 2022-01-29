@@ -17,6 +17,7 @@ class Client(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE)
     id = models.AutoField(primary_key=True)
     company = models.CharField(max_length=50,null=True)
+    is_active = models.IntegerField(default=1)
 
     def __str__(self):
         if self.user.first_name and self.user.last_name:
@@ -35,28 +36,22 @@ class Project (models.Model):
 
 class Student(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE)
-    course_taken = models.CharField(max_length=50,null=True)
-    specialization = models.CharField(max_length=50,null=True)
-    area_of_interest = models.CharField(max_length=50,null=True)
     has_group = models.BooleanField(default=False)
+    is_active = models.IntegerField(default=1)
     def __str__(self):
         if self.user.first_name and self.user.last_name:
             full_name = self.user.first_name + " " + self.user.last_name
         return full_name
 
 class StudentGroup(models.Model):
-    student = models.ManyToManyField(Student,through='Test')
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50,null=True)
+    student = models.ForeignKey(Student,null=True,on_delete=models.CASCADE)
 
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) + ',' + self.name
 
-class Test(models.Model):
-    student = models.ForeignKey(Student,on_delete=models.CASCADE)
-    student_group = models.ForeignKey(StudentGroup,on_delete=models.CASCADE)
-
-    class Meta():
-        unique_together = [['student','student_group']]
 
 
 
@@ -75,7 +70,7 @@ class Supervisor(models.Model):
 
 
 class Student_Profile(models.Model):
-    student = models.OneToOneField(Student,null=True,on_delete=models.CASCADE)
+    student = models.OneToOneField(Student,null=True,related_name="profile",on_delete=models.CASCADE)
     course_taken = models.CharField(max_length=50,null=True)
     specialization = models.CharField(max_length=255,null=True)
     area_of_interest = models.CharField(max_length=255,null=True)

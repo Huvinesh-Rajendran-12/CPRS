@@ -3,10 +3,12 @@ from .forms import ProjectForm
 from .forms import StudentForm
 from django.views.generic import CreateView
 from django.shortcuts import redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout , authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from .models import User, Project
 from .decorators import * 
 from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm
+from django.contrib.auth.decorators import login_required
 
 
 class StudentSignUpView(CreateView):
@@ -22,7 +24,7 @@ class StudentSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect("/login")
+        return redirect('signin')
 
 
 class ClientSignUpView(CreateView):
@@ -38,7 +40,7 @@ class ClientSignUpView(CreateView):
         user = form.save()
 
         login(self.request, user)
-        return redirect("/login")
+        return redirect('signin')
 
 
 class SupervisorSignUpView(CreateView):
@@ -54,7 +56,7 @@ class SupervisorSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect("/login")
+        return redirect('signin')
 
 
 
@@ -99,16 +101,79 @@ def search(request):
 def project(request):
     return render(request, "main/projects.html")
 
+
 @student_required
 def student_dashboard(request):
-    return render(request, "student/s_dashboard.html")
+    if request.user.is_authenticated and request.user.is_student:
+        return render(request,'student/s_dashboard.html')
+    elif request.user.is_authenticated and request.user.is_client:
+        return redirect('client_dashboard')
+    elif request.user.is_authenticated and request.user.is_supervisor:
+        return redirect('supervisor_dashboard')
+    else:
+        return redirect('signin')
 
 @supervisor_required
 def supervisor_dashboard(request):
-    return render(request, "supervisor/supervisor_dashboard.html")
+    if request.user.is_authenticated and request.user.is_student:
+            return render(request,'student/s_dashboard.html')
+    elif request.user.is_authenticated and request.user.is_client:
+            return redirect('client_dashboard')
+    elif request.user.is_authenticated and request.user.is_supervisor:
+            return redirect('supervisor_dashboard')
+    else:
+        return redirect('signin')
 
+
+@client_required
 def client_dashboard(request):
-    return render(request, "client/client_dashboard.html")
+    if request.user.is_authenticated and request.user.is_student:
+            return render(request,'student/s_dashboard.html')
+    elif request.user.is_authenticated and request.user.is_client:
+            return redirect('client_dashboard')
+    elif request.user.is_authenticated and request.user.is_supervisor:
+            return redirect('supervisor_dashboard')
+    else:
+        return redirect('signin')
+
+
+def signin(request):
+    if request.user.is_authenticated:
+        if request.user.is_student:
+            return redirect('student_dashboard')
+        if request.user.is_cleint:
+            return redirect('client_dashboard')
+        if request.user.is_supervisor:
+            return redirect('supervisor_dashboard')
+     
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username =username, password = password)
+        print(user)
+        if user is not None:
+            login(request,user)
+            if user.is_authenticated and user.is_student:               
+                return redirect('student_dashboard') #Go to student home
+            elif user.is_authenticated and user.is_client:                                                                                    
+                return redirect('client_dashboard') #Go to teacher home      
+            elif user.is_authenticated and user.is_supervisor:
+                return redirect('supervisor_dashboard')
+
+           # if user.is_student == "True":
+            #    return redirect('/student/dashboard')
+            #if user.is_client == "True":
+             #   return redirect('/client/dashboard')
+            #if user.is_supervisor == "True":
+             #   return redirect('/supervisor/dashboard')
+        else:
+            form = AuthenticationForm()
+            return render(request,'registration/login.html',{'form':form})
+     
+    else:
+        form = AuthenticationForm()
+        return render(request, 'registration/login.html', {'form':form})
+
 
 def main_view(request):
     return render(request,"main/main.html")
