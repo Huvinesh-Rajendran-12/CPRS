@@ -1,38 +1,36 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block content %}
 
-<br>
 
 <div class="row">
     <div class="col-md">
         <div class="card card-body">
-            <h5>Projects</h5>
+            <h3>Supervisors</h3>
         </div>
         <div class="card card-body">
             <table class="table">
               <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Company</th>
-                  <th scope="col">Overview</th>
-                  <th scope="col">Requirements</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email</th>
                   <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
-                {% for project in projects %}
+                {% for supervisor in supervisors %}
                 <tr>
-                    <td>{{project.id}}</td>
-                    <td>{{project.title}}</td>
-                    <td>{{project.client}}</td>
-                    <td>{{project.overview}}</td>
-                    <td>{{project.requirements}}</td>
+                    <td>{{supervisor.id}}</td>
+                    <td>{{supervisor.user.first_name}}</td>
+                    <td>{{supervisor.user.last_name}}</td>
+                    <td>{{supervisor.user.email}}</td>
                   <td>
-                       {% if project.is_active == 1 %}
-                                            <a href="{% url 'student_deactivate' student_id=student.id %}" class="btn btn-success" >Deactivate</a>
-                       {% elif student.is_active == 0  %}
+                       {% if supervisor.is_active == 1 %}
+                                            <a href="{% url 'supervisor_deactivate' supervisor_id=student.id %}" class="btn btn-success" >Deactivate</a>
+                       {% elif supervisor.is_active == 0  %}
                                              <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Deactivated</button> 
                         {% endif %}                            
                   </td>
@@ -40,8 +38,13 @@
                 {% endfor %}
               </tbody>
             </table>
->
+        </div>
     </div>
 </div>
 
+
+<div>
+</div> 
+
 {% endblock %}
+ 

@@ -1,10 +1,12 @@
 from django import forms
-from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm , modelformset_factory
+from django.views.generic.edit import FormView
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db import transaction
-from .models import Student, StudentGroup, User, Client, Supervisor, Project
+from .models import Student, StudentGroup, User, Client, Supervisor, Project, Student_Profile, Client_Request
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
+
 
 
 class StudentSignUpForm(UserCreationForm):
@@ -18,11 +20,11 @@ class StudentSignUpForm(UserCreationForm):
     def save(self):
         user = super().save(commit=False)
         user.is_student = True
-        user.first_name.add(*self.cleaned_data.get("first_name"))
-        user.last_name.add(*self.cleaned_data.get("last_name"))
-        user.email.add(*self.cleaned_data.get("email"))
+        user.first_name = self.cleaned_data.get("first_name")
+        user.last_name =  self.cleaned_data.get("last_name")
+        user.email = self.cleaned_data.get("email")
         user.save()
-        student = Student.objects.create(user=user)
+        student = Student.objects.create(user=user,name=user.first_name+" "+user.last_name)
 
         return user
 
@@ -75,16 +77,15 @@ class SupervisorSignUpForm(UserCreationForm):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = ["projecttitle", "projectoverview"]
+        fields = ["title", "overview"]
 
 
 class StudentForm(ModelForm):
     class Meta:
         model = Student
-        fields = ["course_taken", "specialization", "area_of_interest"]
+        exclude = []
 
-
-class GroupAdminForm(forms.ModelForm):
+class GroupAdminForm(ModelForm):
     class Meta:
         model = Group
         exclude = []
@@ -109,13 +110,51 @@ class GroupAdminForm(forms.ModelForm):
         return instance
 
 
-class StudentGroupAdminForm(forms.ModelForm):
-    students = forms.ModelMultipleChoiceField(
-        queryset=Student.objects.all(),
-        required=True,
-        widget=FilteredSelectMultiple("students", False),
-    )
 
+
+class StudentProfileForm(ModelForm):
+    class Meta:
+        model = Student_Profile
+        exclude = ['student']
+class EditStudetProfileForm(ModelForm):
+    class Meta:
+        model = Student_Profile
+        exclude = ['student']
+
+class LoginForm(forms.Form):
+    """user login form"""
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput())
+
+class ClientRequestForm(ModelForm):
+    class Meta:
+        model = Client_Request
+        exclude = ['client','group']
+
+class StudentGroupModelForm(ModelForm):
     class Meta:
         model = StudentGroup
-        exclude = []
+        fields = ('name', )
+        labels = {
+            'name': 'Group Name'
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter Group Name here'
+                }
+            )
+        }
+StudentFormset = modelformset_factory(
+    Student,
+    fields=('name', ),
+    extra=1,
+    widgets={
+        'name': forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter Student Name here'
+            }
+        )
+    }
+)

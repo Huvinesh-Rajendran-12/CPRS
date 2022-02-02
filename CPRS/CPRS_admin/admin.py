@@ -1,24 +1,23 @@
 from django.contrib import admin
 from .models import Student, StudentGroup, Client, Supervisor, User, Project
 from django.contrib.auth.models import Group
-from .forms import GroupAdminForm, StudentGroupAdminForm
 
 # Register your models here.
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ["id", "course_taken", "specialization"]
-    search_fields = ["id", "course_taken"]
+    list_display = ["id"]
+    search_fields = ["id"]
 
 
 class SupervisorAdmin(admin.ModelAdmin):
-    list_display = ["id", "email", "first_name", "last_name"]
-    search_fields = ["id", "email"]
+    list_display = ["id"]
+    search_fields = ["id"]
 
 
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ["id", "company"]
-    search_fields = ["id", "company"]
+    list_display = ["id"]
+    search_fields = ["id"]
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -27,19 +26,12 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ["projecttitle", "projectoverview"]
-    search_fields = ["projecttitle", "projectoverview"]
+    list_display = ["title", "overview"]
+    search_fields = ["title", "overview"]
 
 
-class GroupAdmin(admin.ModelAdmin):
-    # Use our custom form.
-    form = GroupAdminForm
-    # Filter permissions horizontal as well.
-    filter_horizontal = ["permissions"]
 
 
-class StudentGroupAdmin(admin.ModelAdmin):
-    form = StudentGroupAdminForm
 
 
 admin.site.unregister(Group)
@@ -48,5 +40,5 @@ admin.site.register(Student, StudentAdmin)
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Supervisor, SupervisorAdmin)
 admin.site.register(Project, ProjectAdmin)
-admin.site.register(Group, GroupAdmin)
-admin.site.register(StudentGroup, StudentGroupAdmin)
+admin.site.register(Group)
+admin.site.register(StudentGroup)
