@@ -77,7 +77,7 @@ class SupervisorSignUpForm(UserCreationForm):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = ["title", "overview"]
+        exclude = ['id','client','is_assigned']
 
 
 class StudentForm(ModelForm):

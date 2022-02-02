@@ -65,14 +65,6 @@ class SupervisorSignUpView(CreateView):
 
 
 
-class AddProjectView(CreateView):
-    model = Project
-    form_class = ProjectForm
-    template_name = "client/add_project.html"
-
-    def form_valid(self,form):
-        project = form.save()
-        return project 
 
 def home_view(request):
     form = ProjectForm(request.POST or None)
