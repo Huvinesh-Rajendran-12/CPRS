@@ -65,5 +65,8 @@ urlpatterns = [
     path("client/request_group_details/<str:group_id",client_request_group,name="client_request_group_details"),
     path("client/view_group_requests",client_view_requests,name="client_view_requests"),
     path("client/view_group_details/<str:group_id",client_view_group_details,name="client_view_requests"),
+    path("coordinator/view_pending_client_requests",admin_view_pending_client_requests,name="view_pending_client_requests"),
+    path("coordinator/approve_client_requests/<str:request_id",approve_request,name="approve_request"),
+    path("coordinator/disapprove_client_request/<str:request_id",disapprove_request,name="disapprove_request"),
     
 ]

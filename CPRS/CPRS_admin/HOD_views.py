@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import StudentFormset, StudentGroupModelForm 
-from .models import Recommended_Project , Project , Student , StudentGroup, Client, Supervisor
+from .models import Recommended_Project , Project , Student , StudentGroup, Client, Supervisor, Client_Request
 
 
 #the dashboard of the admin 
@@ -129,7 +129,30 @@ def supervisor_activate(request,supervisor_id):
     supervisor.save()
     return redirect(reverse("supervisorview_list"))
 
-  
+#view requests 
+def admin_view_pending_client_requests(request):
+    requests = Client_Request.objects.get(approval_status=0)
+    context = {'requests':requests}
+    return render(request,"HOD/view_pending_client_requests.html",context)
+
+def admin_view_all_client_requests(request):
+    requests = Client_Request.objects.all()
+    context = {'requests':requests}
+    return render(request,"HOD/view_all_client_requests.html",context)
+
+
+#approve or disapprove client requests 
+def disapprove_request(request,request_id):
+    request=Client_Request.objects.get(id=request_id)
+    request.approval_status=2
+    request.save()
+    return redirect(reverse("supervisorview_list"))
+
+def approve_request(request,request_id):
+    request=Client_Request.objects.get(id=request_id)
+    request.approval_status=1
+    request.save()
+    return redirect(reverse("supervisorview_list"))
 
 def create_group_with_students(request):
     template_name = 'HOD/create_group_with_student.html'
