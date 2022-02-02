@@ -1,14 +1,19 @@
 from django.shortcuts import render
 from .forms import ProjectForm
-from .forms import StudentForm
+from .forms import StudentForm, StudentGroupModelForm 
 from django.views.generic import CreateView
 from django.shortcuts import redirect
 from django.contrib.auth import login, logout , authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .models import User, Project, Student_Profile, Student
 from .decorators import * 
-from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm, StudentProfileForm
+from .forms import StudentSignUpForm, ClientSignUpForm, SupervisorSignUpForm , ProjectForm, StudentProfileForm, LoginForm
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import FormView
+from django.contrib import messages
+from django.urls import reverse 
+
+
 
 
 class StudentSignUpView(CreateView):
@@ -24,7 +29,7 @@ class StudentSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('signin')
+        return redirect('login')
 
 
 class ClientSignUpView(CreateView):
@@ -40,7 +45,7 @@ class ClientSignUpView(CreateView):
         user = form.save()
 
         login(self.request, user)
-        return redirect('signin')
+        return redirect('login')
 
 
 class SupervisorSignUpView(CreateView):
@@ -56,7 +61,7 @@ class SupervisorSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('signin')
+        return redirect('login')
 
 
 
@@ -111,7 +116,7 @@ def student_dashboard(request):
     elif request.user.is_authenticated and request.user.is_supervisor:
         return redirect('supervisor_dashboard')
     else:
-        return redirect('signin')
+        return redirect('login')
 
 @supervisor_required
 def supervisor_dashboard(request):
@@ -122,7 +127,7 @@ def supervisor_dashboard(request):
     elif request.user.is_authenticated and request.user.is_supervisor:
             return redirect('supervisor_dashboard')
     else:
-        return redirect('signin')
+        return redirect('login')
 
 
 @client_required
@@ -134,51 +139,19 @@ def client_dashboard(request):
     elif request.user.is_authenticated and request.user.is_supervisor:
             return redirect('supervisor_dashboard')
     else:
-        return redirect('signin')
+        return redirect('login')
 
 
-def signin(request):
-    if request.user.is_authenticated:
-        if request.user.is_student:
-            return redirect('student_dashboard')
-        if request.user.is_cleint:
-            return redirect('client_dashboard')
-        if request.user.is_supervisor:
-            return redirect('supervisor_dashboard')
-     
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username =username, password = password)
-        print(user)
-        if user is not None:
-            login(request,user)
-            if user.is_authenticated and user.is_student:               
-                return redirect('student_dashboard') #Go to student home
-            elif user.is_authenticated and user.is_client:                                                                                    
-                return redirect('client_dashboard') #Go to teacher home      
-            elif user.is_authenticated and user.is_supervisor:
-                return redirect('supervisor_dashboard')
-
-        else:
-            form = AuthenticationForm()
-            return render(request,'registration/login.html',{'form':form})
-     
-    else:
-        form = AuthenticationForm()
-        return render(request, 'registration/login.html', {'form':form})
 
 
 def main_view(request):
     return render(request,"main/main.html")
 
-def student_profile_edit(request):
-    form = StudentProfileForm(request.POST or None)
-    if form.is_valid():
-        # save the form data to model 
-        form.save()
-    return render(request, "student/student_profile.html", {"form": form})
 
+def StudentProfile(request):
+    user = request.user
+    student_profile = Student.objects.get(user=user)
+    return render(request,"student/student_profile_view.html",{'student_profile':student_profile})
 
 class StudentProfileView(CreateView):
     model = Student_Profile
@@ -189,5 +162,48 @@ class StudentProfileView(CreateView):
         profile = form.save(commit=False)
         profile.student = Student.objects.get(user=self.request.user)
         profile.save()
-        return redirect('student_dashboard')
+        return redirect('student_profile_view')
+
+
+
+
+class LoginView(FormView):
+    """login view"""
+
+    form_class = LoginForm
+    #success_url = reverse_lazy('custom_auth:dashboard')
+    template_name = 'registration/login.html'
+
+    def form_valid(self, form):
+        """ process user login"""
+        credentials = form.cleaned_data
+
+        user = authenticate(username=credentials['username'],
+                            password=credentials['password'])
+
+        if user is not None:
+            login(self.request, user)
+            if user.is_authenticated and user.is_student:
+                return redirect('student_dashboard')
+            elif user.is_authenticated and user.is_client:
+                return redirect('client_dashboard')
+            elif user.is_authenticated and user.is_supervisor:
+                return redirect('supervisor_dashboard')
+            elif user.is_authenticated and user.is_superuser:
+                return redirect('admin_dashboard')
+
+        else:
+            messages.add_message(self.request, messages.INFO, 'Wrong credentials\
+                                please try again')
+            return redirect('login')
+
+
+def Logout(request):
+    """logout logged in user"""
+    logout(request)
+    return redirect(reverse('main'))
+
+def signup2(request):
+    form = StudentSignUpForm
+    return render(request,"registration/signup2.html",{'form':form})
 
