@@ -1,0 +1,70 @@
+{% extends'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h3>Students</h3>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Client</th>
+                  <th scope="col">Group</th>
+                  <th scope="col">Message</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for request in requests %}
+                <tr>
+                    <td>{{request.id}}</td>
+                    <td>{{request.client}}</td>
+                    <td>{{request.group}}</td>
+                    <td>{{request.message}}</td>
+                  <td>
+                      <a href="{% url 'approve_requests' request_id=request.id %}" class="btn btn-success" >Approve</a>
+                      <a class="btn btn-danger" href="{% url 'disapprove_requests' request_id=request.id %}" >Disapprove</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div>
+</div> 
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

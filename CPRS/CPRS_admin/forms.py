@@ -10,9 +10,10 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 
 
 class StudentSignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True, label='First Name', help_text='Optional.')
-    last_name = forms.CharField(max_length=30, required=True, label='Last Name', help_text='Optional.')
+    first_name = forms.CharField(max_length=30, required=True, label='First Name')
+    last_name = forms.CharField(max_length=30, required=True, label='Last Name')
     email = forms.EmailField(max_length=254, label='Email', help_text='Required. Inform a valid email address.')
+    student_no = forms.IntegerField(required=True,label='Student ID')
     class Meta(UserCreationForm.Meta):
         model = User
 
@@ -25,7 +26,8 @@ class StudentSignUpForm(UserCreationForm):
         user.email = self.cleaned_data.get("email")
         user.save()
         student = Student.objects.create(user=user,name=user.first_name+" "+user.last_name)
-
+        student.student_no = self.cleaned_data.get("student_no")
+        student.save()
         return user
 
 
@@ -50,12 +52,10 @@ class ClientSignUpForm(UserCreationForm):
     def save(self):
         user = super().save(commit=False)
         user.is_client = True
-
         user.save()
-
         client = Client.objects.create(user=user)
         client.client_type.add(*self.cleaned_data.get("client_type"))
-
+        client.save()
         return user
 
 

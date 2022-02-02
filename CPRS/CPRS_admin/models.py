@@ -60,6 +60,7 @@ class StudentGroup(models.Model):
 class Student(models.Model):
     user = models.OneToOneField(User,null=True,on_delete=models.CASCADE)
     name = models.CharField(max_length=255,null=True)
+    student_no = models.IntegerField(null=True,unique=True)
     has_group = models.BooleanField(default=False)
     group = models.ForeignKey(StudentGroup,null=True,on_delete=models.CASCADE)
     is_active = models.IntegerField(default=1)
