@@ -7,8 +7,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Client,Client_Request, StudentGroup
-from .forms import ClientRequestForm
+from .models import Client,Client_Request, StudentGroup, Project 
+from .forms import ClientRequestForm, ProjectForm
+from django.views.generic import CreateView
 
 def client_request_group(request,group_id):
     template_name = "client/client_request_group.html"
@@ -35,4 +36,12 @@ def client_view_group_details(request,group_id):
     context = {'group':group,'form':form} 
     return render(request,"client/client_view_group_details.html",context)
 
+class AddProjectView(CreateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = "client/add_project.html"
+
+    def form_valid(self,form):
+        project = form.save()
+        return project 
 
