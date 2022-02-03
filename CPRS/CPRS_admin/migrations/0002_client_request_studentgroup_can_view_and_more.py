@@ -7,35 +7,53 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0001_initial'),
+        ("CPRS_admin", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Client_Request',
+            name="Client_Request",
             fields=[
-                ('id', models.CharField(max_length=150, primary_key=True, serialize=False)),
-                ('message', models.CharField(max_length=255, null=True)),
-                ('approval_status', models.IntegerField(default=0)),
-                ('client', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='CPRS_admin.client')),
+                (
+                    "id",
+                    models.CharField(max_length=150, primary_key=True, serialize=False),
+                ),
+                ("message", models.CharField(max_length=255, null=True)),
+                ("approval_status", models.IntegerField(default=0)),
+                (
+                    "client",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="CPRS_admin.client",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='studentgroup',
-            name='can_view',
+            model_name="studentgroup",
+            name="can_view",
             field=models.IntegerField(default=0),
         ),
         migrations.AddField(
-            model_name='studentgroup',
-            name='client',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='CPRS_admin.client'),
+            model_name="studentgroup",
+            name="client",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="CPRS_admin.client",
+            ),
         ),
         migrations.DeleteModel(
-            name='Request',
+            name="Request",
         ),
         migrations.AddField(
-            model_name='client_request',
-            name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='CPRS_admin.studentgroup'),
+            model_name="client_request",
+            name="group",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="CPRS_admin.studentgroup",
+            ),
         ),
     ]

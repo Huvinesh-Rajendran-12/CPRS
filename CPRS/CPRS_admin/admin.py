@@ -30,10 +30,6 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ["title", "overview"]
 
 
-
-
-
-
 admin.site.unregister(Group)
 admin.site.register(User, UserAdmin)
 admin.site.register(Student, StudentAdmin)

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0004_remove_studentgroup_student_student_group'),
+        ("CPRS_admin", "0004_remove_studentgroup_student_student_group"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='student',
-            name='student_no',
+            model_name="student",
+            name="student_no",
             field=models.IntegerField(default=0),
         ),
     ]
