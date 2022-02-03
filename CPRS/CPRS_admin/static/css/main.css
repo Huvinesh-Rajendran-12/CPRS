@@ -1,6 +1,8 @@
-
+html{
+  overflow-y : scroll;
+}
 .center {
-posiion: absolute;
+
 
 left: 50%;
 top: 50%;
@@ -176,8 +178,3 @@ padding: 10px;
   }
 }
 
-.footer {
-   position:absolute;
-   bottom:0;
-   width:100%;   /* Height of the footer */
-}

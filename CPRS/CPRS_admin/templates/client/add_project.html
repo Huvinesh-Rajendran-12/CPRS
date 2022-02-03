@@ -1,9 +1,16 @@
+{% extends "main/base.html" %}
+
 {% load crispy_forms_tags %}
 
-<form method="post" novalidate>
-{% csrf_token %}
-<input type="hidden" name="next" value="{{ next }}">
-{{ form|crispy }}
-<button type="submit" class="btn btn-success">Sign up</button>
-</form>
+{% block content %}
+<div class="container">
+    <h2>Add Project</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <br></br> 
+        <button type="submit" class="btn btn-primary">Add Project</button>
+    </form>
+</div>
+{% endblock content %}
 

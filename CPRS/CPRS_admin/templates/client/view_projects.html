@@ -1,0 +1,42 @@
+{%extends 'main/base.html' %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Projects</h5>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Overview</th>
+                  <th scope="col">Requirements</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{project.id}}</td>
+                    <td>{{project.title}}</td>
+                    <td>{{project.overview}}</td>
+                    <td>{{project.requirements}}</td>
+                  <td>
+                                            <a href="{% url 'student_deactivate' student_id=student.id %}" class="btn btn-success" >Edit</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+>
+    </div>
+</div>
+
+{% endblock %}
+ 

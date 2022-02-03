@@ -20,11 +20,11 @@
 {% for form in formset %}
 <div class="row form-row spacer">
     <div class="col-2">
-        <label>{{form.name.label}}</label>
+        <label>{{form.student_no.label}}</label>
     </div>
     <div class="col-4">
         <div class="input-group">
-            {{form.name}}
+            {{form.student_no}}
             <div class="input-group-append">
                 <button class="btn btn-success add-form-row">+</button>
             </div>
@@ -47,17 +47,17 @@ function updateElementIndex(el, prefix, ndx) {
     var replacement = prefix + '-' + ndx;
     if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
     if (el.id) el.id = el.id.replace(id_regex, replacement);
-    if (el.name) el.name = el.name.replace(id_regex, replacement);
+    if (el.student_no) el.student_no = el.student_no.replace(id_regex, replacement);
 }
 function cloneMore(selector, prefix) {
     var newElement = $(selector).clone(true);
     var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
     newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
-        var name = $(this).attr('name')
-        if(name) {
-            name = name.replace('-' + (total-1) + '-', '-' + total + '-');
-            var id = 'id_' + name;
-            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        var student_no = $(this).attr('student_no')
+        if(student_no) {
+            student_no = student_no.replace('-' + (total-1) + '-', '-' + total + '-');
+            var id = 'id_' + student_no;
+            $(this).attr({'student_no': student_no, 'id': id}).val('').removeAttr('checked');
         }
     });
     newElement.find('label').each(function() {
