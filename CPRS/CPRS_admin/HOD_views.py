@@ -65,8 +65,6 @@ def student_view_list(request):
     return render(request, "HOD/students.html", context)
 
 
-
-
 # view the list of the clients
 def clientview_list(request):
     clients = Client.objects.all()

@@ -99,9 +99,10 @@ class SupervisorSignUpForm(UserCreationForm):
 
 
 class ProjectForm(ModelForm):
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.fields['file'].required = False 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["file"].required = False
+
     class Meta:
         model = Project
         exclude = ["id", "client", "is_assigned"]
