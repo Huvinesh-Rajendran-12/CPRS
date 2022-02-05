@@ -15,9 +15,10 @@
                 <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Title</th>
+                  <th scope="col">Company</th>
                   <th scope="col">Overview</th>
                   <th scope="col">Requirements</th>
-                  <th scope="col"></th>
+                  <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -25,10 +26,15 @@
                 <tr>
                     <td>{{project.id}}</td>
                     <td>{{project.title}}</td>
+                    <td>{{project.client}}</td>
                     <td>{{project.overview}}</td>
                     <td>{{project.requirements}}</td>
                   <td>
-                                            <a href="{% url 'student_deactivate' student_id=student.id %}" class="btn btn-success" >Edit</a>
+                       {% if project.is_active == 1 %}
+                                            <a href="{% url 'student_deactivate' student_id=student.id %}" class="btn btn-success" >Deactivate</a>
+                       {% elif student.is_active == 0  %}
+                                             <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Deactivated</button> 
+                        {% endif %}                            
                   </td>
                 </tr>
                 {% endfor %}
@@ -38,5 +44,4 @@
     </div>
 </div>
 
-{% endblock %}
- 
+{% endblock %} 

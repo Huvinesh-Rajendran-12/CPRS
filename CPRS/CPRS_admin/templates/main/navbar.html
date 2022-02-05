@@ -5,7 +5,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Capstone Project</a>
+    <a class="navbar-brand" href="#">Taylor's Capstone Project</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -14,17 +14,15 @@
         <a class="nav-item nav-link active" href="#">Dashboard</a>
         <a class="nav-item nav-link" href="#">About</a>
         <a class="nav-item nav-link" href="#">Projects</a>
-        <a class="nav-item nav-link" href="#">Search</a>
-        <img src="{% static 'images/search.png' %}" style="width: 1vw; min-width: 3px;"/>
       </div>
     </div>
     <form class="form-inline">
         {% if user.is_authenticated %}
-        <a class="nav-link" href="{% url 'logout' %}">
+        <a class="btn" href="{% url 'logout' %}">
           Logout
         </a>
         {% else %}
-        <a class="nav-link" href="{% url 'login' %}">
+        <a class="btn btn-primary" href="{% url 'login' %}">
           Login
         </a>
         {% endif %}

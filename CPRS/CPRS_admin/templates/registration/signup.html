@@ -1,4 +1,4 @@
-{% extends 'main/bootstrap.html' %}
+{% extends 'main/base.html' %}
 
 {% load crispy_forms_tags %}
 
@@ -7,13 +7,11 @@
 {% block content %}
   <div class="row justify-content-center">
     <div class="col-md-8 col-lg-8 col-xl-6 col-sm-10 col-12">
-          <h2>Sign up as a {{ user_type }}</h2>
-            
-
+          <h2>Sign up as a {{ user_type }}</h2>            
+    
   <section>
-    <div class="col text-center">
-      
-          </div>
+    <div class="col center">
+          </div class="center">
             <form method="post" novalidate>
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}">
