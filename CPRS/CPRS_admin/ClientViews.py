@@ -47,7 +47,7 @@ def client_view_projects(request):
     template_name = "client/view_projects.html"
     projects = Project.objects.filter(client=request.user.client)
     context = {"projects": projects}
-    return render(request,template_name, context)
+    return render(request, template_name, context)
 
 
 # client adds the project
@@ -63,9 +63,9 @@ def add_project_view(request):
             project.client = request.user.client
             project.save()
 
-            for f in files:
-                file_instance = Project(id=project.id, file=f)
-                file_instance.save()
+            # for f in files:
+            # file_instance = Project(id=project.id, file=f)
+            # file_instance.save()
         return redirect("client_view_projects")
     context = {"form": form}
     return render(request, template_name, context)

@@ -1,0 +1,17 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+<div> 
+    <h2>{{project.title}}</h2> 
+    <div>
+        <label>Project Overview</label>
+        {{project.overview}}
+        <label>Project Requirements</label>
+        {{project.requirements}}
+        <label>File Attachment</label>
+        <a href="{{project.file.url}}" download="{{project.file.url}}">Download Attached Files</a> 
+    </div> 
+</div> 
+{% endblock content %}
+
