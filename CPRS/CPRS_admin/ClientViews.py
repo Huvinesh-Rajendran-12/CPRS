@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Client, Client_Request, StudentGroup, Project
@@ -44,7 +44,7 @@ def client_view_group_details(request, group_id):
 
 # clients views the list of projects
 def client_view_projects(request):
-    projects = Project.objects.get(client=request.user.client)
+    projects = Project.objects.filter(client=request.user.client)
     context = {"projects": projects}
     return render(request, "client/view_projects", context)
 

@@ -69,7 +69,7 @@ class ClientSignUpForm(UserCreationForm):
         user.is_client = True
         user.save()
         client = Client.objects.create(user=user)
-        client.client_type.add(*self.cleaned_data.get("client_type"))
+        client.client_type = self.cleaned_data.get("client_type")
         client.save()
         return user
 
