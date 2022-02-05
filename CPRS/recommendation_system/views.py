@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 import json
@@ -6,6 +6,7 @@ import psycopg2
 import pandas as pd
 from .contentbased import *
 import spacy
+from CPRS_admin.models import StudentGroup, Project
 
 
 def make_recommendations_view(request, group_id):
@@ -51,3 +52,14 @@ def make_recommendations_view(request, group_id):
     context = {"rec": rec_data}
     template_name = "HOD/recommendations_view.html"
     return render(request, template_name, context)
+
+
+def assign_recommended_project(request, group_id, client_id, project_id):
+    group = StudentGroup.objects.get(id=group_id)
+    group.client = client_id
+    group.project = project_id
+    group.save()
+    project = Project.objects.get(id=project_id)
+    project.is_assigned = True
+    project.save()
+    return redirect("")
