@@ -4,6 +4,7 @@
 {% if heading %}
 <h3>{{heading}}</h3>
 {% endif %}
+<div class="center">
 <form class="form-horizontal" method="POST" action="">
     {% csrf_token %}
 <div class="row spacer">
@@ -14,7 +15,9 @@
     <div class="input-group">
         {{groupform.name}}
     </div>
+    <br></br>
 </div>
+<br></br>
 </div>
 {{ formset.management_form }}
 {% for form in formset %}
@@ -32,12 +35,14 @@
     </div>
 </div>
 {% endfor %}
+<br></br> 
 <div class="row spacer">
     <div class="col-4 offset-2">
         <button type="submit" class="btn btn-block btn-primary">Create</button>
     </div>
 </div>
 </form>
+</div> 
 {% endblock content %}
 {% block custom_js %}
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

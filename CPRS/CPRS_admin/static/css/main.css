@@ -1,19 +1,29 @@
-html{
-  overflow-y : scroll;
+.page-container {
+  position: relative;
+  min-height: 100vh;
 }
-.center {
 
+.content-wrap {
+  padding-bottom: 3.5rem;    /* Footer height */
+}
 
-left: 50%;
-top: 50%;
-text-align: center;
-padding: 10px;
+.footer {
+  bottom: 0;
+  width: 100%;
+  height: 3.5rem;            /* Footer height */
+  background-color:#26272b;
+}
+.center  
+{
+    left: 50%;
+    top: 50%;
+    text-align: center;
+    padding: 10px;
 }
 
 .site-footer
 
 {
-  background-color:#26272b;
   padding:45px 0 20px;
   font-size:15px;
   line-height:24px;
@@ -176,5 +186,4 @@ padding: 10px;
     margin-right:0;
     font-weight:600
   }
-}
-
+}{

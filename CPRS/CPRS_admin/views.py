@@ -69,30 +69,6 @@ class SupervisorSignUpView(CreateView):
         return redirect("login")
 
 
-def home_view(request):
-    form = ProjectForm(request.POST or None)
-    if form.is_valid():
-        # save the form data to model
-        form.save()
-    return render(request, "home.html", {"form": form})
-
-
-@student_required
-def student_view(request):
-    form = StudentForm(request.POST or None)
-    if form.is_valid():
-        # save the form data to model
-        form.save()
-    return render(request, "student.html", {"form": form})
-
-
-def group_view(request):
-    group = request.user.groups.all()
-    print(group)
-    print(request.user)
-    return render(request, "group.html", {"group": group})
-
-
 def admin_dashboard(request):
     return render(request, "main/dashboard.html")
 
@@ -107,44 +83,27 @@ def project(request):
 
 @student_required
 def student_dashboard(request):
-    if request.user.is_authenticated and request.user.is_student:
-        return render(request, "student/s_dashboard.html")
-    elif request.user.is_authenticated and request.user.is_client:
-        return redirect("client_dashboard")
-    elif request.user.is_authenticated and request.user.is_supervisor:
-        return redirect("supervisor_dashboard")
-    else:
-        return redirect("login")
+    template_name = "student/student_dashboard.html"
+    return render(request, template_name)
 
 
 @supervisor_required
 def supervisor_dashboard(request):
-    if request.user.is_authenticated and request.user.is_student:
-        return render(request, "student/s_dashboard.html")
-    elif request.user.is_authenticated and request.user.is_client:
-        return redirect("client_dashboard")
-    elif request.user.is_authenticated and request.user.is_supervisor:
-        return redirect("supervisor_dashboard")
-    else:
-        return redirect("login")
+    template_name = "supervisor/supervisor_dashboard.html"
+    return render(request, template_name)
 
 
 @client_required
 def client_dashboard(request):
-    if request.user.is_authenticated and request.user.is_student:
-        return render(request, "student/s_dashboard.html")
-    elif request.user.is_authenticated and request.user.is_client:
-        return redirect("client_dashboard")
-    elif request.user.is_authenticated and request.user.is_supervisor:
-        return redirect("supervisor_dashboard")
-    else:
-        return redirect("login")
+    template_name = "client/client_dashboard.html"
+    return render(request, template_name)
 
 
 def main_view(request):
     return render(request, "main/main.html")
 
 
+@student_required
 def StudentProfile(request):
     user = request.user
     student_profile = Student.objects.get(user=user)
@@ -167,40 +126,34 @@ class StudentProfileView(CreateView):
         return redirect("student_profile_view")
 
 
-class LoginView(FormView):
-    """login view"""
-
-    form_class = LoginForm
-    # success_url = reverse_lazy('custom_auth:dashboard')
+def LoginFormView(request):
+    """log in the registered user"""
     template_name = "registration/login.html"
+    if request.method == "GET":
+        loginform = LoginForm(request.GET or None)
+    elif request.method == "POST":
+        loginform = LoginForm(request.POST)
+        if loginform.is_valid():
+            username = loginform.cleaned_data.get("username")
+            password = loginform.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                if user.is_student:
+                    return redirect("student_dashboard")
+                if user.is_client:
+                    return redirect("client_dashboard")
+                if user.is_supervisor:
+                    return redirect("supervisor_dashboard")
+                if user.is_superuser:
+                    return redirect("admin_dashboard")
+            else:
+                messages.add_message(
+                    request, messages.INFO, "Wrong credential,please try again"
+                )
 
-    def form_valid(self, form):
-        """process user login"""
-        credentials = form.cleaned_data
-
-        user = authenticate(
-            username=credentials["username"], password=credentials["password"]
-        )
-
-        if user is not None:
-            login(self.request, user)
-            if user.is_authenticated and user.is_student:
-                return redirect("student_dashboard")
-            elif user.is_authenticated and user.is_client:
-                return redirect("client_dashboard")
-            elif user.is_authenticated and user.is_supervisor:
-                return redirect("supervisor_dashboard")
-            elif user.is_authenticated and user.is_superuser:
-                return redirect("admin_dashboard")
-
-        else:
-            messages.add_message(
-                self.request,
-                messages.INFO,
-                "Wrong credentials\
-                                please try again",
-            )
-            return redirect("login")
+    context = {"form": loginform}
+    return render(request, template_name, context)
 
 
 def Logout(request):

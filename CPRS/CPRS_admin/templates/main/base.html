@@ -14,48 +14,21 @@
 
 <body>
     {% include 'main/navbar.html' %}
-
-    {% block content %}
-
-    {% endblock content %}
-
-    <hr>
+    <div class="page-container">
+        <div class="content-wrap">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
     <!-- Optional Javascript -->  
     {% block custom_js %}
     {% endblock custom_js %}
 
 </body>
  <!-- Site footer -->
-    <footer class="site-footer">
-      <div class="container">
-
-        <div class="row">
-
-          <div class="col-sm-12 col-md-6">
-            <h6>About</h6>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <h6>Categories</h6>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <h6>Quick Links</h6>
-          </div>
-        </div>
-        <hr>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-sm-6 col-xs-12">
-            <p class="copyright-text">Copyright &copy; 2017 All Rights Reserved by 
-         <a href="#">Scanfcode</a>.
-            </p>
-          </div>
-
-          <div class="col-md-4 col-sm-6 col-xs-12">
-          </div>
-        </div>
-      </div>
-</footer>
+    <footer class="footer">
+        <div class="container text-center">
+            <small>Copyright &copy; Your Website</small>
+        </div> 
+    </footer>
 </html>

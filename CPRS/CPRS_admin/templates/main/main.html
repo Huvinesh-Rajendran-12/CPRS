@@ -4,16 +4,18 @@
 
 {% block content %}
 <div class="center">
+    <img src="{% static 'images/taylors-logo-latest.png' %}" alt="Taylor's logo" width="700" height="500"> 
     <h1>Welcome to the Capstone Project Recommender System</h1>
-    <h2>Choose your user</h2>
-    <img src="{% static 'images/logo.png' %}" alt="Taylor's logo" width="500" height="300"> 
+    <h2>Choose type of user</h2>
+    <br></br>
+    <br></br>
     <div>
         <button type="button" class="btn btn-primary" onclick="location.href='{% url 'student_signup' %}'">Student</button>
         <button type="button" class="btn btn-primary" onclick="location.href='{% url 'client_signup' %}'">Client</button>     
         <button type="button" class="btn btn-primary" onclick="location.href='{% url 'supervisor_signup' %}'">Supervisor</button>
     </div> 
 </div>
-{% endblock %}
+{% endblock content %}
 
 
 
