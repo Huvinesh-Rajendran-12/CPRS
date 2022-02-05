@@ -67,4 +67,4 @@ def add_project_view(request):
                 file_instance.save()
         return redirect("client_view_projects")
     context = {"form": form}
-    return render(request,template_name, context)
+    return render(request, template_name, context)
