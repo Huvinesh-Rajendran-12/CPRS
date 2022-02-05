@@ -44,9 +44,10 @@ def client_view_group_details(request, group_id):
 
 # clients views the list of projects
 def client_view_projects(request):
+    template_name = "client/view_projects.html"
     projects = Project.objects.filter(client=request.user.client)
     context = {"projects": projects}
-    return render(request, "client/view_projects", context)
+    return render(request,template_name, context)
 
 
 # client adds the project
