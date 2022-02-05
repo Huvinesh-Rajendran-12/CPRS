@@ -18,11 +18,15 @@ from django.urls import path, include
 from CPRS_admin.views import *
 from CPRS_admin.HOD_views import *
 from CPRS_admin.ClientViews import *
+from django.conf import settings
+from django.conf.urls import url
+from django.views.static import serve
 
 urlpatterns = [
     # general urls
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
+    url(r"^download/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     path("login/", LoginFormView, name="login"),
     path("logout/", Logout, name="logout"),
     path(
@@ -38,7 +42,6 @@ urlpatterns = [
     path("coordinator/dashboard", admin_dashboard, name="admin_dashboard"),
     path("coordinator/search", search, name="search_page"),
     path("coordinator/projects", project, name="coordinator_projects"),
-    path("accounts/profile/student", student_dashboard, name="student_dashboard"),
     path(
         "accounts/profile/supervisor", supervisor_dashboard, name="supervisor_dashboard"
     ),
@@ -57,16 +60,10 @@ urlpatterns = [
     path("coordinator/project_list", project, name="coordinator_project_list"),
     path("coordinator/client_list", clientview_list, name="coordinator_client_list"),
     path(
-        "student/profile/edit",
-        StudentProfileView.as_view(),
-        name="student_profile_edit",
-    ),
-    path(
         "coordinator/student_deactivate/<str:student_id>",
         student_deactivate,
         name="student_deactivate",
     ),
-    # student urls
     path(
         "coordinator/student_activate/<str:student_id>",
         student_activate,
@@ -92,9 +89,16 @@ urlpatterns = [
         supervisor_activate,
         name="supervisor_activate",
     ),
+    # student urls
+    path("accounts/profile/student", student_dashboard, name="student_dashboard"),
+    path("student/profile/view", StudentProfile, name="student_profile_view"),
+    path(
+        "student/profile/edit",
+        StudentProfileView.as_view(),
+        name="student_profile_edit",
+    ),
     # client urls
     path("signup2/", signup2, name="signup2"),
-    path("student/profile/view", StudentProfile, name="student_profile_view"),
     path(
         "coordinator/create_group_with_students",
         create_group_with_students,
@@ -130,3 +134,7 @@ urlpatterns = [
         name="disapprove_request",
     ),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
