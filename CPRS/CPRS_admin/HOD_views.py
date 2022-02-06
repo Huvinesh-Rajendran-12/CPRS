@@ -47,12 +47,14 @@ def recommendations_view(request):
     recommendations = Recommended_Project.objects.filter(is_approved=0)
     return render(request, "HOD/student_leave_view.html", {"leaves": leaves})
 
+
 @admin_required
 def recommendations_approve_view(request, recommendation_id):
     recommendations = Recommended_Project.objects.get(id=recommendation_id)
     recommendations.is_approved = 1
     recommendations.save()
     return HttpResponseRedirect(reverse("recommendations_view"))
+
 
 @admin_required
 def recommendations_disapprove_view(request, recommendation_id):
@@ -95,6 +97,7 @@ def student_deactivate(request, student_id):
     student.save()
     return redirect(reverse("student_view_list"))
 
+
 @admin_required
 def student_activate(request, student_id):
     student = Student.objects.get(id=student_id)
@@ -110,6 +113,7 @@ def client_deactivate(request, client_id):
     client.is_active = 0
     client.save()
     return redirect(reverse("clientview_list"))
+
 
 @admin_required
 def client_activate(request, client_id):
@@ -127,6 +131,7 @@ def supervisor_deactivate(request, supervisor_id):
     supervisor.save()
     return redirect(reverse("supervisorview_list"))
 
+
 @admin_required
 def supervisor_activate(request, supervisor_id):
     supervisor = Supervisor.objects.get(id=supervisor_id)
@@ -141,6 +146,7 @@ def admin_view_pending_client_requests(request):
     requests = Client_Request.objects.get(approval_status=0)
     context = {"requests": requests}
     return render(request, "HOD/view_pending_client_requests.html", context)
+
 
 @admin_required
 def admin_view_all_client_requests(request):
@@ -157,12 +163,14 @@ def disapprove_request(request, request_id):
     request.save()
     return redirect(reverse("supervisorview_list"))
 
+
 @admin_required
 def approve_request(request, request_id):
     request = Client_Request.objects.get(id=request_id)
     request.approval_status = 1
     request.save()
     return redirect(reverse("supervisorview_list"))
+
 
 @admin_required
 def create_group_with_students(request):
@@ -199,6 +207,10 @@ def create_group_with_students(request):
         },
     )
 
+
 @admin_required
-def admin_dashboard(request):
-    return render(request, "main/dashboard.html")
+def view_group_list(request):
+    template_name = "HOD/view_group.html"
+    groups = StudentGroup.objects.all()
+    context = {"groups": groups}
+    return render(request, template_name, context)

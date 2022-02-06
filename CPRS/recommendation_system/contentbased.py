@@ -15,13 +15,16 @@ def clean_txt(text):
 
 
 def get_recommendation(user, top, df_project, scores):
-    recommendation = pd.DataFrame(columns=["Group", "Title", "Client", "Score"])
+    recommendation = pd.DataFrame(
+        columns=["group", "project_id", "title", "client", "score"]
+    )
     count = 0
     for i in top:
-        recommendation.at[count, "Group"] = user
-        recommendation.at[count, "Title"] = df_project["title"][i]
-        recommendation.at[count, "Client"] = df_project["client"][i]
-        recommendation.at[count, "Score"] = scores[count]
+        recommendation.at[count, "group"] = user
+        recommendation.at[count, "project_id"] = df_project["id"][i]
+        recommendation.at[count, "title"] = df_project["title"][i]
+        recommendation.at[count, "client"] = df_project["client"][i]
+        recommendation.at[count, "score"] = scores[count]
         count += 1
     return recommendation
 

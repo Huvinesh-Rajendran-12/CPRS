@@ -73,11 +73,23 @@ class Project(models.Model):
         return self.projecttitle + "," + self.projectoverview
 
 
+class Supervisor(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True)
+    is_active = models.IntegerField(default=1)
+
+    def __str__(self):
+        if self.user.first_name and self.user.last_name:
+            full_name = self.user.first_name + " " + self.user.last_name
+        return full_name
+
+
 class StudentGroup(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, null=True)
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
     project = models.OneToOneField(Project, null=True, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(Supervisor, null=True, on_delete=models.CASCADE)
     can_view = models.IntegerField(default=0)
 
     def __str__(self):
@@ -90,17 +102,6 @@ class Student(models.Model):
     student_no = models.IntegerField(null=True, unique=True)
     has_group = models.BooleanField(default=False)
     group = models.ForeignKey(StudentGroup, null=True, on_delete=models.CASCADE)
-    is_active = models.IntegerField(default=1)
-
-    def __str__(self):
-        if self.user.first_name and self.user.last_name:
-            full_name = self.user.first_name + " " + self.user.last_name
-        return full_name
-
-
-class Supervisor(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    id = models.AutoField(primary_key=True)
     is_active = models.IntegerField(default=1)
 
     def __str__(self):

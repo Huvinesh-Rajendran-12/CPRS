@@ -15,7 +15,7 @@ def make_recommendations_view(request, group_id):
         password="dev1234",
         host="127.0.0.1",
         port="5432",
-        database="test3",
+        database="test2",
     )
     postgreSQL_student_Query = (
         "select * from " + '"CPRS_admin_student"' + f" where group_id ={group_id}"
@@ -62,4 +62,4 @@ def assign_recommended_project(request, group_id, client_id, project_id):
     project = Project.objects.get(id=project_id)
     project.is_assigned = True
     project.save()
-    return redirect("")
+    return redirect("view_group_list")

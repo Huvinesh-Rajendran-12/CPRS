@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Client, Client_Request, StudentGroup, Project
 from .forms import ClientRequestForm, ProjectForm
 from django.views.generic import CreateView
+from .decorators import client_required
 
 # client requests to view group details
 @client_required

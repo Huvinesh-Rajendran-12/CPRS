@@ -10,9 +10,9 @@
           <h2>Sign up as a {{ user_type }}</h2>            
     
   <section>
-    <div class="col center">
+    <div class="spacer col center">
           </div class="center">
-            <form method="post" novalidate>
+            <form class="spacer" method="post" novalidate>
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}">
             {{ form|crispy }}

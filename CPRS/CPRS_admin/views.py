@@ -19,7 +19,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView
 from django.contrib import messages
 from django.urls import reverse
-from dal import autocomplete 
+from dal import autocomplete
+
 
 class StudentSignUpView(CreateView):
     model = User
@@ -81,22 +82,14 @@ def project(request):
     return render(request, "main/projects.html")
 
 
-
-
 @supervisor_required
 def supervisor_dashboard(request):
     template_name = "supervisor/supervisor_dashboard.html"
     return render(request, template_name)
 
 
-
-
 def main_view(request):
     return render(request, "main/main.html")
-
-
-
-
 
 
 def LoginFormView(request):
@@ -139,6 +132,7 @@ def signup2(request):
     form = StudentSignUpForm
     return render(request, "registration/signup2.html", {"form": form})
 
+
 class StudentNameAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
@@ -148,6 +142,6 @@ class StudentNameAutocomplete(autocomplete.Select2QuerySetView):
         qs = Student.objects.all()
 
         if self.q:
-            qs = qs.filter(name__istartswith=self.q,has_group=False)
+            qs = qs.filter(name__istartswith=self.q, has_group=False)
 
         return qs

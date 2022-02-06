@@ -17,9 +17,10 @@
 <table class="table table-dark table-striped">
 	<thead>
 	<tr>
-		<th>Group</th>
 		<th>Client</th>
+		<th>Project ID</th>
 		<th>Title</th>
+		<th>Overview</th>
 		<th>Similarity score</th>
 		<th></th>
 	</tr>
@@ -29,12 +30,13 @@
 	{% if rec %}
 	{% for i in rec %}
 	<tr>
-		<td>{{i.Group}}</td>
-		<td>{{i.Client}}</td>
-		<td>{{i.Title}}</td>
+		<td>{{i.client}}</td>
+		<td>{{i.project_id}}</td>
+		<td>{{i.title}}</td>
+		<td>{{i.overview}}</td>
 		<td>{{i.score}}</td>
 		<td>
-            <a href="#" class="btn btn-primary">Assign</a>
+            <a href="{% url 'assign_recommended_project' group_id=i.group project_id=i.project_id client_id=i.client }" class="btn btn-primary">Assign</a>
         </td>
 	</tr>
 	{% endfor %}
