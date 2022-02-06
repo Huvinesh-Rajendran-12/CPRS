@@ -81,10 +81,6 @@ def project(request):
     return render(request, "main/projects.html")
 
 
-@student_required
-def student_dashboard(request):
-    template_name = "student/student_dashboard.html"
-    return render(request, template_name)
 
 
 @supervisor_required
@@ -93,37 +89,14 @@ def supervisor_dashboard(request):
     return render(request, template_name)
 
 
-@client_required
-def client_dashboard(request):
-    template_name = "client/client_dashboard.html"
-    return render(request, template_name)
 
 
 def main_view(request):
     return render(request, "main/main.html")
 
 
-@student_required
-def StudentProfile(request):
-    user = request.user
-    student_profile = Student.objects.get(user=user)
-    return render(
-        request,
-        "student/student_profile_view.html",
-        {"student_profile": student_profile},
-    )
 
 
-class StudentProfileView(CreateView):
-    model = Student_Profile
-    form_class = StudentProfileForm
-    template_name = "student/student_profile.html"
-
-    def form_valid(self, form):
-        profile = form.save(commit=False)
-        profile.student = Student.objects.get(user=self.request.user)
-        profile.save()
-        return redirect("student_profile_view")
 
 
 def LoginFormView(request):

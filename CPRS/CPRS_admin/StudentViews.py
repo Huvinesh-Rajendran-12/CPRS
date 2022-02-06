@@ -4,6 +4,23 @@ from .models import Project
 from .decorators import student_required
 import os
 
+@student_required
+def student_dashboard(request):
+    template_name = "student/student_dashboard.html"
+    return render(request, template_name)
+
+
+
+@student_required
+def StuentProfile(request):
+    user = request.user
+    student_profile = Student.objects.get(user=user)
+    return render(
+        request,
+        "student/student_profile_view.html",
+        {"student_profile": student_profile},
+    )d
+
 
 @student_required
 def download(request, path):
