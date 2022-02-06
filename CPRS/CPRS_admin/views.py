@@ -19,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView
 from django.contrib import messages
 from django.urls import reverse
-
+from dal import autocomplete 
 
 class StudentSignUpView(CreateView):
     model = User
@@ -165,3 +165,16 @@ def Logout(request):
 def signup2(request):
     form = StudentSignUpForm
     return render(request, "registration/signup2.html", {"form": form})
+
+class StudentNameAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated:
+            return Student.objects.none()
+
+        qs = Student.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q,has_group=False)
+
+        return qs
