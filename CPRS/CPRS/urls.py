@@ -18,8 +18,11 @@ from django.urls import path, include, re_path
 from CPRS_admin.views import *
 from CPRS_admin.HOD_views import *
 from CPRS_admin.ClientViews import *
+from CPRS_admin.SupervisorViews import *
+from CPRS_admin.StudentViews import *
+from recommendation_system.views import *
 from django.conf import settings
-from django.conf.urls.static import static 
+from django.conf.urls.static import static
 from django.views.static import serve
 
 urlpatterns = [
@@ -27,7 +30,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     re_path(r"^download/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
-    re_path(r"^student-autocomplete/$", StudentNameAutocomplete.as_view(),name="student_autocomplete"),
+    re_path(
+        r"^student-autocomplete/$",
+        StudentNameAutocomplete.as_view(),
+        name="student_autocomplete",
+    ),
     path("login/", LoginFormView, name="login"),
     path("logout/", Logout, name="logout"),
     path(
@@ -87,6 +94,41 @@ urlpatterns = [
         supervisor_activate,
         name="supervisor_activate",
     ),
+    path(
+        "coordinator/view_group_recommendations/<str:group_id>",
+        make_recommendations_view,
+        name="make_recommedations",
+    ),
+    path(
+        "coordinator/create_group_with_students",
+        create_group_with_students,
+        name="create_group_with_students",
+    ),
+    path(
+        "coordinator/view_pending_client_requests",
+        admin_view_pending_client_requests,
+        name="view_pending_client_requests",
+    ),
+    path(
+        "coordinator/approve_client_requests/<str:request_id",
+        approve_request,
+        name="approve_request",
+    ),
+    path(
+        "coordinator/disapprove_client_request/<str:request_id",
+        disapprove_request,
+        name="disapprove_request",
+    ),
+    path(
+        "coordinator/view_group_list/",
+        view_group_list,
+        name="view_group_list",
+    ),
+    path(
+        "coordinator/assign_recommended_project/<str:group_id/str:client_id/str:project_id",
+        view_group_list,
+        name="view_group_list",
+    ),
     # student urls
     path("accounts/profile/student", student_dashboard, name="student_dashboard"),
     path("student/profile/view", StudentProfile, name="student_profile_view"),
@@ -101,11 +143,6 @@ urlpatterns = [
     path("client/view_projects", client_view_projects, name="client_view_projects"),
     path("client/addproject", add_project_view, name="client_add_project"),
     path(
-        "coordinator/create_group_with_students",
-        create_group_with_students,
-        name="create_group_with_students",
-    ),
-    path(
         "client/request_group_details/<str:group_id",
         client_request_group,
         name="client_request_group_details",
@@ -118,22 +155,7 @@ urlpatterns = [
         client_view_group_details,
         name="client_view_requests",
     ),
-    path(
-        "coordinator/view_pending_client_requests",
-        admin_view_pending_client_requests,
-        name="view_pending_client_requests",
-    ),
-    path(
-        "coordinator/approve_client_requests/<str:request_id",
-        approve_request,
-        name="approve_request",
-    ),
     # supervisor urls
-    path(
-        "coordinator/disapprove_client_request/<str:request_id",
-        disapprove_request,
-        name="disapprove_request",
-    ),
 ]
 
 if settings.DEBUG:
