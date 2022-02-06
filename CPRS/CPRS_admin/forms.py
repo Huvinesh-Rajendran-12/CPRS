@@ -15,7 +15,7 @@ from .models import (
 )
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
-
+from dal import autocomplete
 
 class StudentSignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, label="First Name")
@@ -179,10 +179,10 @@ class StudentGroupModelForm(ModelForm):
 
 StudentFormset = modelformset_factory(
     Student,
-    fields=("student_no",),
+    fields=("name",),
     extra=1,
     widgets={
-        "student_no": forms.TextInput(
+        "name": forms.TextInput(
             attrs={"class": "form-control", "placeholder": "Enter Student Number here"}
         )
     },

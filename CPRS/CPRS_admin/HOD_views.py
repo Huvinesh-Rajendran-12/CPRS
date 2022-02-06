@@ -163,14 +163,20 @@ def create_group_with_students(request):
         if groupform.is_valid() and formset.is_valid():
             # first save this book, as its reference will be used in `Author`
             group = groupform.save()
+            print(group)
             for form in formset:
                 # so that `book` instance can be attached.
-                student_no = form.cleaned_data.get("student_no")
-                student = Student.objects.get(student_no=student_no)
+                print(form.cleaned_data)
+                name = form.cleaned_data.get("name")
+                print(name)
+                student = Student.objects.get(name=name)
+                print(student)
                 student.group = group
                 student.has_group = True
                 student.save()
             return redirect("admin_dashboard")
+        else:
+            print("Error...")
     return render(
         request,
         template_name,

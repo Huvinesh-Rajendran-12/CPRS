@@ -14,19 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from CPRS_admin.views import *
 from CPRS_admin.HOD_views import *
 from CPRS_admin.ClientViews import *
 from django.conf import settings
-from django.conf.urls import url
+from django.conf.urls.static import static 
 from django.views.static import serve
 
 urlpatterns = [
     # general urls
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
-    url(r"^download/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
+    re_path(r"^download/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
+    re_path(r"^student-autocomplete/$", StudentNameAutocomplete.as_view(),name="student_autocomplete"),
     path("login/", LoginFormView, name="login"),
     path("logout/", Logout, name="logout"),
     path(
@@ -45,10 +46,7 @@ urlpatterns = [
     path(
         "accounts/profile/supervisor", supervisor_dashboard, name="supervisor_dashboard"
     ),
-    path("accounts/profile/client", client_dashboard, name="client_dashboard"),
     path("", main_view, name="main"),
-    path("client/view_projects", client_view_projects, name="client_view_projects"),
-    path("client/addproject", add_project_view, name="client_add_project"),
     path(
         "coordinator/student_list", student_view_list, name="coordinator_student_list"
     ),
@@ -99,6 +97,9 @@ urlpatterns = [
     ),
     # client urls
     path("signup2/", signup2, name="signup2"),
+    path("accounts/profile/client", client_dashboard, name="client_dashboard"),
+    path("client/view_projects", client_view_projects, name="client_view_projects"),
+    path("client/addproject", add_project_view, name="client_add_project"),
     path(
         "coordinator/create_group_with_students",
         create_group_with_students,
