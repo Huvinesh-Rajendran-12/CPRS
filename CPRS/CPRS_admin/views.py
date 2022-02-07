@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import ProjectForm
 from .forms import StudentForm
+from .forms import TaskForm
 from django.views.generic import CreateView
 from django.shortcuts import redirect
 from django.contrib.auth import login
@@ -79,6 +80,15 @@ def group_view(request):
     print(request.user)
     return render(request, "group.html", {"group": group})
 
+
+def task_view(request):
+    form = TaskForm(request.POST or None)
+    if form.is_valid():
+        # save the form data to model
+        form.save()
+    return render(request, "student/add_task.html", {"form": form})
+
+
 def admin_dashboard(request):
     return render(request, "main/dashboard.html")
 
@@ -96,3 +106,9 @@ def supervisor_dashboard(request):
 
 def client_dashboard(request):
     return render(request, "client/client_dashboard.html")
+
+def update_task(request):
+    return render(request, "student/update_task.html")
+
+def admin_login(request):
+    return render(request, "registration/admin_login.html")

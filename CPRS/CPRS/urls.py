@@ -39,4 +39,7 @@ urlpatterns = [
     path("student/dashboard", student_dashboard, name="student_dashboard"),
     path("supervisor/dashboard", supervisor_dashboard, name="supervisor_dashboard"),
     path("client/dashboard", client_dashboard, name="client_dashboard"),
+    path("student/add_task", task_view, name="add_task"),
+    path("student/update_task", update_task, name="update_task"),
+    path("registration/admin_login", admin_login, name="admin_Login"),
 ]

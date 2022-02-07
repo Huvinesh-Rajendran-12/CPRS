@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="update_task.css">
+<form>
+  <div class="mb-3">
+    <label for="exampleInputText" class="form-label">Task Name</label>
+    <input type="text" class="form-control" id="exampleInputText" aria-describedby="textHelp">
+    <div id="textHelp" class="form-text">Please state the Task Name.</div>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputText" class="form-label">Due Date</label>
+    <input type="Date" class="form-control" id="exampleInputText" aria-describedby="textHelp">
+    <div id="textHelp" class="form-text">Please state the due date of the Task</div>
+  </div>
+  <div class="mb-3 form-check">
+    <div class="file-field">
+    <div align="left" width="100%">
+      <input type="file" id="exampleInputText">
+    </div>
+    <div align="right" width="100%" margin = "100px">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+{% endblock %}
+

@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
-from .models import Student, StudentGroup, User, Client, Supervisor, Project
+from .models import Student, StudentGroup, User, Client, Supervisor, Project, Task
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
@@ -112,3 +112,9 @@ class StudentGroupAdminForm(forms.ModelForm):
     class Meta:
         model = StudentGroup
         exclude = []
+
+class TaskForm(ModelForm):
+    class Meta:
+        model = Task
+        fields = ["name", "description", "date"]
+

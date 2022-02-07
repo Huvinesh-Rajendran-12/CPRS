@@ -94,6 +94,7 @@ class Task (models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255,null=True)
     description = models.CharField(max_length=255,null=True)
+    date = models.CharField(max_length=255,null=True)
     progress = models.IntegerField(max_length=3,null=True)
     project = models.ForeignKey(Project,on_delete=models.CASCADE)
 
