@@ -7,7 +7,7 @@ import pandas as pd
 from .contentbased import *
 import spacy
 from CPRS_admin.models import StudentGroup, Project
-
+from django.conf import settings
 
 def make_recommendations_view(request, group_id):
     connection = psycopg2.connect(
@@ -18,13 +18,13 @@ def make_recommendations_view(request, group_id):
         database="test2",
     )
     postgreSQL_student_Query = (
-        "select * from " + '"CPRS_admin_student"' + f" where group_id ={group_id}"
+        "select * from " + '"CPRS_admin_student_profile"' + f" where group_id ={group_id}"
     )
 
     postgreSQL_project_Query = (
         "select * from " + '"CPRS_admin_project"' + f" where is_assigned = False"
     )
-    df_student = pd.read_sql_query(postgreSQL_group_Query, connection)
+    df_student = pd.read_sql_query(postgreSQL_student_Query, connection)
     df_project = pd.read_sql_query(postgreSQL_project_Query, connection)
     df_student["details"] = (
         df_student["course_taken"]
@@ -45,11 +45,9 @@ def make_recommendations_view(request, group_id):
     df_group.at[0, "details"] = " "
     for index, row in df_student.iterrows():
         df_group.at[0, "details"] = df_group.at[0, "details"] + " " + row["details"]
-    nlp = spacy.load("en_core_web_md")
+    nlp = settings.LANGUAGE_MODELS['en']
     rec = make_recommendations(df_project, df_group, nlp)
-    rec_data = rec.to_json()
-    rec_data = json.loads(rec_data)
-    context = {"rec": rec_data}
+    context = {"rec": rec}
     template_name = "HOD/recommendations_view.html"
     return render(request, template_name, context)
 

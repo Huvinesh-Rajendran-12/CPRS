@@ -12,6 +12,7 @@ from .models import (
     Recommended_Project,
     Project,
     Student,
+    Student_Profile, 
     StudentGroup,
     Client,
     Supervisor,
@@ -95,7 +96,7 @@ def student_deactivate(request, student_id):
     student = Student.objects.get(id=student_id)
     student.is_active = 0
     student.save()
-    return redirect(reverse("student_view_list"))
+    return redirect(reverse("coordinator_view_students"))
 
 
 @admin_required
@@ -103,7 +104,7 @@ def student_activate(request, student_id):
     student = Student.objects.get(id=student_id)
     student.is_active = 1
     student.save()
-    return redirect(reverse("student_view_list"))
+    return redirect(reverse("coordinator_view_students"))
 
 
 # activate or deactivate the clients
@@ -112,7 +113,7 @@ def client_deactivate(request, client_id):
     client = Client.objects.get(id=client_id)
     client.is_active = 0
     client.save()
-    return redirect(reverse("clientview_list"))
+    return redirect(reverse("coordinator_view_clients"))
 
 
 @admin_required
@@ -120,7 +121,7 @@ def client_activate(request, client_id):
     client = Client.objects.get(id=client_id)
     client.is_active = 1
     client.save()
-    return redirect(reverse("clientview_list"))
+    return redirect(reverse("coordinator_views_clients"))
 
 
 # activate or deactivate supervisors
@@ -129,7 +130,7 @@ def supervisor_deactivate(request, supervisor_id):
     supervisor = Supervisor.objects.get(id=supervisor_id)
     supervisor.is_active = 0
     supervisor.save()
-    return redirect(reverse("supervisorview_list"))
+    return redirect(reverse("coordinator_views_supervisors"))
 
 
 @admin_required
@@ -137,7 +138,7 @@ def supervisor_activate(request, supervisor_id):
     supervisor = Supervisor.objects.get(id=supervisor_id)
     supervisor.is_active = 1
     supervisor.save()
-    return redirect(reverse("supervisorview_list"))
+    return redirect(reverse("coordinator_views_supervisors"))
 
 
 # view requests
@@ -161,7 +162,7 @@ def disapprove_request(request, request_id):
     request = Client_Request.objects.get(id=request_id)
     request.approval_status = 2
     request.save()
-    return redirect(reverse("supervisorview_list"))
+    return redirect(reverse("coordinator_view_pending_client_requests"))
 
 
 @admin_required
@@ -169,12 +170,13 @@ def approve_request(request, request_id):
     request = Client_Request.objects.get(id=request_id)
     request.approval_status = 1
     request.save()
-    return redirect(reverse("supervisorview_list"))
+    return redirect(reverse("coordinator_view_pending_client_requests"))
 
 
 @admin_required
 def create_group_with_students(request):
     template_name = "HOD/create_group_with_student.html"
+    heading = "Create Student Group"
     if request.method == "GET":
         groupform = StudentGroupModelForm(request.GET or None)
         formset = StudentFormset(queryset=Student.objects.none())
@@ -191,17 +193,20 @@ def create_group_with_students(request):
                 name = form.cleaned_data.get("name")
                 print(name)
                 student = Student.objects.get(name=name)
+                student_profile = Student_Profile.objects.get(student=student)
                 print(student)
-                student.group = group
+                student_profile.group = group
                 student.has_group = True
+                student_profile.save()
                 student.save()
-            return redirect("admin_dashboard")
+            return redirect("coordinator_dashboard")
         else:
             print("Error...")
     return render(
         request,
         template_name,
         {
+            "heading":heading,
             "groupform": groupform,
             "formset": formset,
         },

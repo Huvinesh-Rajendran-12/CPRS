@@ -112,7 +112,7 @@ def LoginFormView(request):
                 if user.is_supervisor:
                     return redirect("supervisor_dashboard")
                 if user.is_superuser:
-                    return redirect("admin_dashboard")
+                    return redirect("coordinator_dashboard")
             else:
                 messages.add_message(
                     request, messages.INFO, "Wrong credential,please try again"

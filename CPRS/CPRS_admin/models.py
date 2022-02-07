@@ -123,6 +123,7 @@ class Student_Profile(models.Model):
     area_of_interest = models.CharField(max_length=255, null=True)
     skills = models.CharField(max_length=255, null=True)
     cgpa = models.FloatField()
+    group = models.ForeignKey(StudentGroup,null=True,on_delete=models.CASCADE)
 
     def __str__(self):
         return (

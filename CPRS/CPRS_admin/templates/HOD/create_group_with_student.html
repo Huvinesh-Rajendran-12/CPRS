@@ -1,43 +1,45 @@
 {% extends "main/base.html" %}
 
 {% block content %}
+<div class="center">
 {% if heading %}
 <h3>{{heading}}</h3>
 {% endif %}
-<form class="form-horizontal" method="POST" action="">
-    {% csrf_token %}
-<div class="row spacer">
-<div class="col-2">
-    <label>{{groupform.name.label}}</label>
-</div>
-<div class="col-4">
-    <div class="input-group">
-        {{groupform.name}}
-    </div>
-</div>
-</div>
-{{ formset.management_form }}
-{% for form in formset %}
-<div class="row form-row spacer">
+    <form class="form-horizontal" method="POST" action="">
+        {% csrf_token %}
+    <div class="center row spacer">
     <div class="col-2">
-        <label>{{form.name.label}}</label>
+        <label>{{groupform.name.label}}</label>
     </div>
     <div class="col-4">
         <div class="input-group">
-            {{form.name}}
-            <div class="input-group-append">
-                <button class="btn btn-success add-form-row">+</button>
+            {{groupform.name}}
+        </div>
+    </div>
+    </div>
+    {{ formset.management_form }}
+    {% for form in formset %}
+    <div class="row form-row spacer">
+        <div class="col-2">
+            <label>{{form.name.label}}</label>
+        </div>
+        <div class="col-4">
+            <div class="input-group">
+                {{form.name}}
+                <div class="input-group-append">
+                    <button class="btn btn-success add-form-row">+</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endfor %}
-<div class="row spacer">
-    <div class="col-4 offset-2">
-        <button type="submit" class="btn btn-block btn-primary">Create</button>
+    {% endfor %}
+    <div class="row spacer">
+        <div class="col-4 offset-2">
+            <button type="submit" class="btn btn-block btn-primary">Create</button>
+        </div>
     </div>
-</div>
-</form>
+    </form>
+</div> 
 {% endblock content %}
 
 {% block custom_js %}

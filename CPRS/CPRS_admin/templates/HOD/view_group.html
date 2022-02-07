@@ -3,6 +3,9 @@
 
 {% block content %}
 
+<div class="card card-body">
+    <h3>Groups</h3>
+</div>
 <table class="table">
   <thead>
     <tr>
@@ -23,12 +26,15 @@
         <td>{{group.project.title}}</td>
         <td>{{group.supervisor}}</td>
         <td>
-            <a href="{% url 'make_recommendations' group_id=group.id %}">View Recommended Projects</a>  
+            <a href="{% url 'coordinator_view_project_recommendations' group_id=group.id %}">View Recommended Projects</a>  
         </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 
+<div class="center"> 
+    <a href="{% url 'coordinator_create_group_with_students' %}" class="btn btn-primary" >Add Group</a>
+</div> 
 {% endblock %}
  

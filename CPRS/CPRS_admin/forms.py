@@ -144,7 +144,7 @@ class GroupAdminForm(ModelForm):
 class StudentProfileForm(ModelForm):
     class Meta:
         model = Student_Profile
-        exclude = ["student"]
+        exclude = ["student","group"]
 
 
 class EditStudetProfileForm(ModelForm):
