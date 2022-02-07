@@ -19,7 +19,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView
 from django.contrib import messages
 from django.urls import reverse
-from dal import autocomplete 
+from dal import autocomplete
+
 
 class StudentSignUpView(CreateView):
     model = User
@@ -81,49 +82,14 @@ def project(request):
     return render(request, "main/projects.html")
 
 
-@student_required
-def student_dashboard(request):
-    template_name = "student/student_dashboard.html"
-    return render(request, template_name)
-
-
 @supervisor_required
 def supervisor_dashboard(request):
     template_name = "supervisor/supervisor_dashboard.html"
     return render(request, template_name)
 
 
-@client_required
-def client_dashboard(request):
-    template_name = "client/client_dashboard.html"
-    return render(request, template_name)
-
-
 def main_view(request):
     return render(request, "main/main.html")
-
-
-@student_required
-def StudentProfile(request):
-    user = request.user
-    student_profile = Student.objects.get(user=user)
-    return render(
-        request,
-        "student/student_profile_view.html",
-        {"student_profile": student_profile},
-    )
-
-
-class StudentProfileView(CreateView):
-    model = Student_Profile
-    form_class = StudentProfileForm
-    template_name = "student/student_profile.html"
-
-    def form_valid(self, form):
-        profile = form.save(commit=False)
-        profile.student = Student.objects.get(user=self.request.user)
-        profile.save()
-        return redirect("student_profile_view")
 
 
 def LoginFormView(request):
@@ -146,7 +112,7 @@ def LoginFormView(request):
                 if user.is_supervisor:
                     return redirect("supervisor_dashboard")
                 if user.is_superuser:
-                    return redirect("admin_dashboard")
+                    return redirect("coordinator_dashboard")
             else:
                 messages.add_message(
                     request, messages.INFO, "Wrong credential,please try again"
@@ -166,6 +132,7 @@ def signup2(request):
     form = StudentSignUpForm
     return render(request, "registration/signup2.html", {"form": form})
 
+
 class StudentNameAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
@@ -175,6 +142,6 @@ class StudentNameAutocomplete(autocomplete.Select2QuerySetView):
         qs = Student.objects.all()
 
         if self.q:
-            qs = qs.filter(name__istartswith=self.q,has_group=False)
+            qs = qs.filter(name__istartswith=self.q, has_group=False)
 
         return qs

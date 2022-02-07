@@ -1,49 +1,47 @@
 {% extends "main/base.html" %}
-{% load static %}
+
 {% block content %}
+<div class="center">
 {% if heading %}
 <h3>{{heading}}</h3>
 {% endif %}
-<div class="center">
-<form class="form-horizontal" method="POST" action="">
-    {% csrf_token %}
-<div class="row spacer">
-<div class="col-2">
-    <label>{{groupform.name.label}}</label>
-</div>
-<div class="col-4">
-    <div class="input-group">
-        {{groupform.name}}
-    </div>
-    <br></br>
-</div>
-<br></br>
-</div>
-{{ formset.management_form }}
-{% for form in formset %}
-<div class="row form-row spacer">
+    <form class="form-horizontal" method="POST" action="">
+        {% csrf_token %}
+    <div class="center row spacer">
     <div class="col-2">
-        <label>{{form.student_no.label}}</label>
+        <label>{{groupform.name.label}}</label>
     </div>
     <div class="col-4">
         <div class="input-group">
-            {{form.student_no}}
-            <div class="input-group-append">
-                <button class="btn btn-success add-form-row">+</button>
+            {{groupform.name}}
+        </div>
+    </div>
+    </div>
+    {{ formset.management_form }}
+    {% for form in formset %}
+    <div class="row form-row spacer">
+        <div class="col-2">
+            <label>{{form.name.label}}</label>
+        </div>
+        <div class="col-4">
+            <div class="input-group">
+                {{form.name}}
+                <div class="input-group-append">
+                    <button class="btn btn-success add-form-row">+</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endfor %}
-<br></br> 
-<div class="row spacer">
-    <div class="col-4 offset-2">
-        <button type="submit" class="btn btn-block btn-primary">Create</button>
+    {% endfor %}
+    <div class="row spacer">
+        <div class="col-4 offset-2">
+            <button type="submit" class="btn btn-block btn-primary">Create</button>
+        </div>
     </div>
-</div>
-</form>
+    </form>
 </div> 
 {% endblock content %}
+
 {% block custom_js %}
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script type="text/javascript">
@@ -52,17 +50,17 @@ function updateElementIndex(el, prefix, ndx) {
     var replacement = prefix + '-' + ndx;
     if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
     if (el.id) el.id = el.id.replace(id_regex, replacement);
-    if (el.student_no) el.student_no = el.student_no.replace(id_regex, replacement);
+    if (el.name) el.name = el.name.replace(id_regex, replacement);
 }
 function cloneMore(selector, prefix) {
     var newElement = $(selector).clone(true);
     var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
     newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
-        var student_no = $(this).attr('student_no')
-        if(student_no) {
-            student_no = student_no.replace('-' + (total-1) + '-', '-' + total + '-');
-            var id = 'id_' + student_no;
-            $(this).attr({'student_no': student_no, 'id': id}).val('').removeAttr('checked');
+        var name = $(this).attr('name')
+        if(name) {
+            name = name.replace('-' + (total-1) + '-', '-' + total + '-');
+            var id = 'id_' + name;
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
         }
     });
     newElement.find('label').each(function() {
@@ -108,5 +106,4 @@ $(document).on('click', '.remove-form-row', function(e){
 });
 
 </script>
-{% endblock custom_js %}
-
+{% endblock custom_js %} 

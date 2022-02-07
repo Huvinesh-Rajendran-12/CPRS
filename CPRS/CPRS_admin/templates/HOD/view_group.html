@@ -3,15 +3,18 @@
 
 {% block content %}
 
+<div class="card card-body">
+    <h3>Groups</h3>
+</div>
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-      <th scope="col">#</th>
-      <th scope="col">#</th>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Client</th>
+      <th scope="col">Project</th>
+      <th scope="col">Supervisor</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -19,12 +22,19 @@
     <tr>
         <th scope="row">{{group.id}}</th>
         <td>{{group.name}}</td>
-        <td>{{group.project}}</td>
-        <td>{{group.project.supervisor}}</td>
+        <td>{{group.client}}</td>
+        <td>{{group.project.title}}</td>
+        <td>{{group.supervisor}}</td>
+        <td>
+            <a href="{% url 'coordinator_view_project_recommendations' group_id=group.id %}">View Recommended Projects</a>  
+        </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 
+<div class="center"> 
+    <a href="{% url 'coordinator_create_group_with_students' %}" class="btn btn-primary" >Add Group</a>
+</div> 
 {% endblock %}
  

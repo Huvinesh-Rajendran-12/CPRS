@@ -1,10 +1,10 @@
 import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
-
-
+from django.conf import settings
+import pandas as pd 
 def clean_txt(text):
     # load spacy
-    nlp = spacy.load("en_core_web_md")
+    nlp = settings.LANGUAGE_MODELS['en']
     doc = nlp(text)
     words = [
         token.lemma_
@@ -15,13 +15,16 @@ def clean_txt(text):
 
 
 def get_recommendation(user, top, df_project, scores):
-    recommendation = pd.DataFrame(columns=["Group", "Title", "Client", "Score"])
+    recommendation = pd.DataFrame(
+        columns=["group", "project_id", "title", "client", "score"]
+    )
     count = 0
     for i in top:
-        recommendation.at[count, "Group"] = user
-        recommendation.at[count, "Title"] = df_project["title"][i]
-        recommendation.at[count, "Client"] = df_project["client"][i]
-        recommendation.at[count, "Score"] = scores[count]
+        recommendation.at[count, "group"] = user
+        recommendation.at[count, "project_id"] = df_project["id"][i]
+        recommendation.at[count, "title"] = df_project["title"][i]
+        recommendation.at[count, "client"] = df_project["client_id"][i]
+        recommendation.at[count, "score"] = scores[count]
         count += 1
     return recommendation
 

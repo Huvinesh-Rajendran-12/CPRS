@@ -39,9 +39,10 @@
                     <td>{{client.client_type}}</td>
                   <td>
                        {% if client.is_active == 1 %}
-                                            <a href="{% url 'client_deactivate' student_id=client.id %}" class="btn btn-success" >Deactivate</a>
+                                            <a href="{% url 'coordinator_deactivate_client' student_id=client.id %}" class="btn btn-success" >Deactivate</a>
                        {% elif client.is_active == 0  %}
                                              <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Deactivated</button> 
+                                            <a href="{% url 'coordinator_activate_client' student_id=client.id %}" class="btn btn-success" >Activate</a>
                         {% endif %}                            
                   </td>
                 </tr>

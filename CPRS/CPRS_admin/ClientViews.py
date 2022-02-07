@@ -10,8 +10,10 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Client, Client_Request, StudentGroup, Project
 from .forms import ClientRequestForm, ProjectForm
 from django.views.generic import CreateView
+from .decorators import client_required
 
 # client requests to view group details
+@client_required
 def client_request_group(request, group_id):
     template_name = "client/client_request_group.html"
     group = StudentGroup.objects.get(id=group_id)
@@ -29,6 +31,7 @@ def client_request_group(request, group_id):
 
 
 # client views the details of the requests made so far
+@client_required
 def client_view_requests(request):
     groups = StudentGroup.objects.get(client=request.user.client)
     context = {"groups": groups, "form": form}
@@ -36,6 +39,7 @@ def client_view_requests(request):
 
 
 # client views group details if given permission by the admin
+@client_required
 def client_view_group_details(request, group_id):
     group = StudentGroup.objects.get(id=group_id)
     context = {"group": group, "form": form}
@@ -43,6 +47,7 @@ def client_view_group_details(request, group_id):
 
 
 # clients views the list of projects
+@client_required
 def client_view_projects(request):
     template_name = "client/view_projects.html"
     projects = Project.objects.filter(client=request.user.client)
@@ -51,6 +56,7 @@ def client_view_projects(request):
 
 
 # client adds the project
+@client_required
 def add_project_view(request):
     template_name = "client/add_project.html"
     if request.method == "GET":
@@ -69,3 +75,9 @@ def add_project_view(request):
         return redirect("client_view_projects")
     context = {"form": form}
     return render(request, template_name, context)
+
+
+@client_required
+def client_dashboard(request):
+    template_name = "client/client_dashboard.html"
+    return render(request, template_name)

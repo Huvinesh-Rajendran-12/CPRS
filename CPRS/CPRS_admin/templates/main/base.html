@@ -13,7 +13,17 @@
 </head>
 
 <body>
-    {% include 'main/navbar.html' %}
+    {% if user.is_authenticated and user.is_student %}
+        {% include 'main/navbar_student.html' %}
+    {% elif user.is_authenticated and user.is_client %}
+        {% include 'main/navbar_client.html' %}
+    {% elif user.is_authenticated and user.is_superuser %}
+        {% include 'main/navbar_coordinator.html' %}
+    {% elif user.is_authenticated and user.is_supervisor %}
+        {% include 'main/navbar_supervisor.html' %}
+    {% else %}
+        {% include 'main/navbar.html' %}
+    {% endif %}
     <div class="page-container">
         <div class="content-wrap">
             {% block content %}

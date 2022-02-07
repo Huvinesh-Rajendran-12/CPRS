@@ -1,8 +1,15 @@
+{% extends "main/base.html" %}
+
 {% load crispy_forms_tags %}
 
-<form actio = "" method = "post">
-    {% csrf_token %}
-    {{form | crispy}}
-    <input type="submit" value=Submit">
-</form>
-n
+{% block content %}
+<div class="container center">
+    <h2>Add Profile</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <br></br> 
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+{% endblock content %} 

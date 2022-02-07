@@ -17,6 +17,7 @@ from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from dal import autocomplete
 
+
 class StudentSignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, label="First Name")
     last_name = forms.CharField(max_length=30, required=True, label="Last Name")
@@ -143,7 +144,7 @@ class GroupAdminForm(ModelForm):
 class StudentProfileForm(ModelForm):
     class Meta:
         model = Student_Profile
-        exclude = ["student"]
+        exclude = ["student","group"]
 
 
 class EditStudetProfileForm(ModelForm):
