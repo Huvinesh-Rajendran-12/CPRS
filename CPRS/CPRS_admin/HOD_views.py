@@ -24,14 +24,20 @@ from .decorators import admin_required
 # the dashboard of the admin
 @admin_required
 def admin_dashboard(request):
+    student_count = Student.objects.all().count()
+    Supervisor_count = Supervisor.objects.all().count()
+    project_count = Project.objects.all().count()
+    client_count = Client.objects.all().count()
+
     # requests = Request.objects.filter(is_approved=0)
-    context = {"requests": request}
-    return render(request, "HOD/dashboard.html")
+    context = {"student_count":student_count,"Supervisor_count":Supervisor_count,"project_count":project_count,"client_count":client_count}
+    return render(request, "HOD/dashboard.html",context)
 
 
 @admin_required
 def search(request):
     return render(request, "HOD/search.html")
+
 
 
 # view the list of the projects
