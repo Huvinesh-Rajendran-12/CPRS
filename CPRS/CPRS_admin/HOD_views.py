@@ -19,7 +19,7 @@ from .models import (
     Client_Request,
 )
 from .decorators import admin_required
-
+from .filters import StudentFilter
 
 # the dashboard of the admin
 @admin_required
@@ -76,7 +76,8 @@ def recommendations_disapprove_view(request, recommendation_id):
 @admin_required
 def student_view_list(request):
     students = Student.objects.all()
-    context = {"students": students}
+    student_filter = StudentFilter(request.GET,queryset=students)
+    context = {"students": students,"student_filter":student_filter}
     return render(request, "HOD/students.html", context)
 
 

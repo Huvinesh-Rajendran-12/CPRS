@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "recommendation_system",
     "crispy_forms",
     "phonenumbers",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
