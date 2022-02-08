@@ -70,7 +70,7 @@ class Project(models.Model):
     file = models.FileField(upload_to="documents/", null=True)
 
     def __str__(self):
-        return self.projecttitle + "," + self.projectoverview
+        return self.title + "," + self.overview
 
 
 class Supervisor(models.Model):

@@ -19,7 +19,7 @@ from .models import (
     Client_Request,
 )
 from .decorators import admin_required
-from .filters import StudentFilter
+from .filters import StudentFilter, ProjectFilter, ClientFilter, SupervisorFilter, GroupFilter
 
 # the dashboard of the admin
 @admin_required
@@ -44,7 +44,8 @@ def search(request):
 @admin_required
 def project(request):
     projects = Project.objects.all()
-    context = {"projects": projects}
+    project_filter = ProjectFilter(request.GET,queryset=projects)
+    context = {"projects": projects,"project_filter":project_filter}
     return render(request, "HOD/projects.html", context)
 
 
@@ -85,7 +86,8 @@ def student_view_list(request):
 @admin_required
 def clientview_list(request):
     clients = Client.objects.all()
-    context = {"clients": clients}
+    client_filter = ClientFilter(request.GET,queryset=clients)
+    context = {"clients": clients,"client_filter":client_filter}
     return render(request, "HOD/client_list.html", context)
 
 
@@ -93,7 +95,8 @@ def clientview_list(request):
 @admin_required
 def supervisorview_list(request):
     supervisors = Supervisor.objects.all()
-    context = {"supervisors": supervisors}
+    supervisor_filter = SupervisorFilter(request.GET,queryset=supervisors)
+    context = {"supervisors": supervisors,"Supervisor_filter":supervisor_filter}
     return render(request, "HOD/supervisors.html", context)
 
 
@@ -224,5 +227,6 @@ def create_group_with_students(request):
 def view_group_list(request):
     template_name = "HOD/view_group.html"
     groups = StudentGroup.objects.all()
-    context = {"groups": groups}
+    group_filter = GroupFilter(request.GET,queryset=groups)
+    context = {"groups": groups,"group_filter":group_filter}
     return render(request, template_name, context)

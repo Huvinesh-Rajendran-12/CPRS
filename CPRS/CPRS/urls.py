@@ -73,7 +73,7 @@ urlpatterns = [
     path(
         "coordinator/client_deactivate/<str:client_id>",
         client_deactivate,
-        name="coordinator_deactviate_client",
+        name="coordinator_deactivate_client",
     ),
     path(
         "coordinator/client_activate/<str:client_id>",
