@@ -25,12 +25,15 @@ from .filters import StudentFilter, ProjectFilter, ClientFilter, SupervisorFilte
 @admin_required
 def admin_dashboard(request):
     student_count = Student.objects.all().count()
+    student_without_group_count = Student.objects.filter(has_group=False).count()
+    group_count = StudentGroup.objects.all().count()
     Supervisor_count = Supervisor.objects.all().count()
     project_count = Project.objects.all().count()
+    pending_project_count = Project.objects.filter(is_assigned=False).count()
     client_count = Client.objects.all().count()
 
     # requests = Request.objects.filter(is_approved=0)
-    context = {"student_count":student_count,"Supervisor_count":Supervisor_count,"project_count":project_count,"client_count":client_count}
+    context = {"student_count":student_count,"Supervisor_count":Supervisor_count,"project_count":project_count,"client_count":client_count,"group_count":group_count,"student_without_group_count":student_without_group_count,"pending_project_count":pending_project_count}
     return render(request, "HOD/dashboard.html",context)
 
 
@@ -96,7 +99,7 @@ def clientview_list(request):
 def supervisorview_list(request):
     supervisors = Supervisor.objects.all()
     supervisor_filter = SupervisorFilter(request.GET,queryset=supervisors)
-    context = {"supervisors": supervisors,"Supervisor_filter":supervisor_filter}
+    context = {"supervisors": supervisors,"supervisor_filter":supervisor_filter}
     return render(request, "HOD/supervisors.html", context)
 
 
