@@ -12,6 +12,9 @@ from .models import (
     Project,
     Student_Profile,
     Client_Request,
+    MLEClient,
+    UniversityClient,
+    IndustryClient, 
 )
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
@@ -48,7 +51,13 @@ class StudentSignUpForm(UserCreationForm):
 
 
 class ClientSignUpForm(UserCreationForm):
-
+    first_name = forms.CharField(max_length=30, required=True, label="First Name")
+    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
+    email = forms.EmailField(
+        max_length=254,
+        label="Email",
+        help_text="Required. Inform a valid email address.",
+    )
     CLIENT_TYPE_CHOICES = (
         (1, "University"),
         (2, "MLE"),
@@ -68,8 +77,11 @@ class ClientSignUpForm(UserCreationForm):
     def save(self):
         user = super().save(commit=False)
         user.is_client = True
+        user.first_name = self.cleaned_data.get("first_name")
+        user.last_name = self.cleaned_data.get("last_name")
+        user.email = self.cleaned_data.get("email")
         user.save()
-        client = Client.objects.create(user=user)
+        client = Client.objects.create(user=user,name=user.first_name+ " " + user.last_name)
         client.client_type = self.cleaned_data.get("client_type")
         client.save()
         return user
@@ -93,9 +105,11 @@ class SupervisorSignUpForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.first_name = self.cleaned_data.get("first_name")
+        user.last_name = self.cleaned_data.get("last_name")
+        user.email = self.cleaned_data.get("email")
         user.is_supervisor = True
-        if commit:
-            user.save()
+        supervisor = Supervisor.objects.create(user=user,name=user.first_name+ " " + user.first_name)
         return user
 
 
@@ -146,6 +160,35 @@ class StudentProfileForm(ModelForm):
         model = Student_Profile
         exclude = ["student","group"]
 
+class IndustryClientProfileForm(ModelForm):
+    class Meta:
+        model = IndustryClient
+        exclude = ["client"]
+
+class EditIndustryClientProfileForm(ModelForm):
+    class Meta:
+        model = IndustryClient
+        exclude = ["client"]
+
+class MLEClientProfileForm(ModelForm):
+    class Meta:
+        model = MLEClient
+        exclude = ["client"]
+
+class EditMLEClientProfileForm(ModelForm):
+    class Meta:
+        model = MLEClient
+        exclude = ["client"]
+
+class UniversityClientProfileForm(ModelForm):
+    class Meta:
+        model = UniversityClient
+        exclude = ["client"]
+        
+class EditUniversityClientProfileForm(ModelForm):
+    class Meta:
+        model = UniversityClient
+        exclude = ["client"]
 
 class EditStudetProfileForm(ModelForm):
     class Meta:

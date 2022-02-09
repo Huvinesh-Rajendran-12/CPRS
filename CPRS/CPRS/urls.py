@@ -127,16 +127,21 @@ urlpatterns = [
     ),
     # student urls
     path("accounts/profile/student", student_dashboard, name="student_dashboard"),
-    path("student/profile/view", StudentProfile, name="student_profile_view"),
+    path("student/profile/view", StudentProfile, name="student_view_profile"),
     path(
         "student/profile/edit",
         StudentProfileView.as_view(),
-        name="student_profile_edit",
+        name="student_edit_profile",
     ),
+    path("student/group/details", student_view_group_details, name="student_view_group_details"),
+    path("student/project/details", student_view_project_details, name="student_view_project_details"),
     # client urls
     path("signup2/", signup2, name="signup2"),
     path("accounts/profile/client", client_dashboard, name="client_dashboard"),
     path("client/view_projects", client_view_projects, name="client_view_projects"),
+    path("client/view_groups", client_view_groups, name="client_view_groups"),
+    path("client/view_profile", client_view_profile, name="client_view_profile"),
+    path("client/edit_profile", client_edit_profile, name="client_edit_profile"),
     path("client/addproject", add_project_view, name="client_add_project"),
     path(
         "client/request_group_details/<str:group_id>",

@@ -22,7 +22,10 @@
                 <div class="col col-lg-2">
                     {% if user.is_superuser %}
                             {% include 'HOD/sidebar_template.html' %}
-                    {% elif user.is_student}
+                    {% elif user.is_student %}
+                            {% include 'student/sidebar_template.html' %}
+                    {% elif user.is_client %}
+                            {% include 'client/sidebar_template.html' %}
                     {% endif %}
                 </div> 
                 <div class="col-10 col-lg-10">
