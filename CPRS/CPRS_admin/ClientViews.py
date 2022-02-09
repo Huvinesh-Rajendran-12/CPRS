@@ -8,9 +8,45 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Client, Client_Request, StudentGroup, Project
-from .forms import ClientRequestForm, ProjectForm
+from .forms import ClientRequestForm, ProjectForm , MLEClientProfileForm , IndustryClientProfileForm,UniversityClientProfileForm
 from django.views.generic import CreateView
 from .decorators import client_required
+
+
+
+@client_required
+def client_view_profile(request):
+    user = request.user
+    client = Client.objects.get(user=user)
+    if client.client_type == "Industry":
+        template_name = "client/industry_profile.html"
+    elif client.client_type == "MLE":
+        template_name = "client/mle_profile.html"
+    elif client.client_type == "University":
+        template_name = "client/university_profile.html"
+    return render(
+        request,
+        template_name,
+        {"client": client},
+    )
+
+
+@client_required
+def client_edit_profile(request):
+    template_name = "client/client_edit_profile.html"
+    user = request.user
+    client = Client.objects.get(user=user)
+    if client.client_type == "Industry":
+        form = IndustryClientProfileForm
+    elif client.client_type == "MLE":
+        form = MLEClientProfileForm
+    elif client.client_type == "University":
+        form = UniversityClientProfileForm
+    return render(
+        request,
+        template_name,
+        {"form": form},
+    )
 
 # client requests to view group details
 @client_required
@@ -44,6 +80,12 @@ def client_view_group_details(request, group_id):
     group = StudentGroup.objects.get(id=group_id)
     context = {"group": group, "form": form}
     return render(request, "client/client_view_group_details.html", context)
+
+@client_required
+def client_view_groups(request):
+    groups = StudentGroup.objects.get(client=request.user.client)
+    context = {"groups": groups}
+    return render(request, "client/client_view_group_list.html", context)
 
 
 # clients views the list of projects

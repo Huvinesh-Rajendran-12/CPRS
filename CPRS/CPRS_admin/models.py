@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone 
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -17,6 +18,7 @@ class User(AbstractUser):
 
 class Client(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, null=True)
     id = models.AutoField(primary_key=True)
     is_active = models.IntegerField(default=1)
     client_type = models.CharField(null=True, max_length=50)
@@ -44,7 +46,8 @@ class MLEClient(models.Model):
         related_name="mle",
         on_delete=models.CASCADE,
     )
-
+    school = models.CharField(max_length=255,null=True)
+    contact = PhoneNumberField(null=True,unique=True)
 
 class UniversityClient(models.Model):
     client = models.OneToOneField(
@@ -54,6 +57,8 @@ class UniversityClient(models.Model):
         related_name="university",
         on_delete=models.CASCADE,
     )
+    faculty = models.CharField(max_length=255,null=True)
+    contact = models.CharField(max_length=255,null=True)
 
 
 class Project(models.Model):
@@ -71,6 +76,7 @@ class Project(models.Model):
 
 class Supervisor(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255,null=True)
     id = models.AutoField(primary_key=True)
     is_active = models.IntegerField(default=1)
 
@@ -79,6 +85,17 @@ class Supervisor(models.Model):
             full_name = self.user.first_name + " " + self.user.last_name
         return full_name
 
+
+class Supevisor_Profile(models.Model):
+    supervisor = models.OneToOneField(
+        Supervisor,
+        related_name="profile",
+        primary_key=True,
+        on_delete=models.CASCADE,
+        default=None,
+    )
+    school = models.CharField(max_length=50, null=True)
+    email = models.EmailField(null=True)
 
 class StudentGroup(models.Model):
     id = models.AutoField(primary_key=True)
@@ -137,12 +154,6 @@ class Client_Type(models.Model):
     categoryname = models.CharField(max_length=100, null=True)
 
 
-class Task(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, null=True)
-    description = models.CharField(max_length=255, null=True)
-    progress = models.IntegerField(max_length=3, null=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
 
 class File_Attachment(models.Model):
@@ -159,22 +170,6 @@ class Client_Request(models.Model):
     approval_status = models.IntegerField(default=0)
 
 
-class Feedback(models.Model):
-    id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50, null=True)
-    description = models.CharField(max_length=255, null=True)
-    feedbacksupervisorid = models.ForeignKey(Supervisor, on_delete=models.CASCADE)
-    feedbacktaskid = models.ForeignKey(Task, on_delete=models.CASCADE)
-
-
-class Student_Feedback(models.Model):
-    feedbackid = models.ForeignKey(Feedback, on_delete=models.CASCADE)
-    studentid = models.ForeignKey(Student, on_delete=models.CASCADE)
-
-
-class Student_Task(models.Model):
-    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    taskid = models.ForeignKey(Task, on_delete=models.CASCADE)
 
 
 class Recommended_Project(models.Model):
@@ -184,3 +179,42 @@ class Recommended_Project(models.Model):
     project_title = models.CharField(max_length=255)
     similarity_score = models.FloatField()
     is_approved = models.IntegerField(default=0)
+
+
+TASK_STATUS = (
+    ("New", "New"),
+    ("Started", "Started"),
+    ("Ongoing", "Ongoing"),
+    ("In QA", "In QA"),
+    ("Completed", "Completed"),
+)
+
+class Task(models.Model):
+    '''The Task dataclass to store the task in database'''
+    title = models.CharField(max_length= 70,null=True)
+    project = models.ForeignKey(Project, on_delete= models.CASCADE, null= True, verbose_name= 'Project')
+    description = models.TextField(max_length= 500, null= True)
+    created_date = models.DateField(default= timezone.now, blank= True)
+    created_by = models.ForeignKey(
+        Student,
+        null= True,
+        blank= True,
+        related_name="task_created_by",
+        on_delete= models.CASCADE,
+    )
+    assigned_to = models.ForeignKey(
+        Student,
+        null= True,
+        blank= True,
+        related_name="task_assigned_to",
+        on_delete= models.CASCADE,
+    )
+    # assigned_by = models.ForeignKey(User, on_delete= models.CASCADE)
+    status = models.CharField(max_length= 50, choices= TASK_STATUS, default= "New")
+    # attachments = models.FileField()
+
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse("task-detail", kwargs= {"pk": self.pk})

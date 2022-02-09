@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import Project
 from .decorators import student_required
@@ -7,13 +8,13 @@ from .models import Student_Profile, Student
 from .forms import StudentProfileForm
 import os
 
-
+@login_required
 @student_required
 def student_dashboard(request):
     template_name = "student/student_dashboard.html"
     return render(request, template_name)
 
-
+@login_required
 @student_required
 def StudentProfile(request):
     user = request.user
@@ -34,9 +35,9 @@ class StudentProfileView(CreateView):
         profile = form.save(commit=False)
         profile.student = Student.objects.get(user=self.request.user)
         profile.save()
-        return redirect("student_profile_view")
+        return redirect("student_view_profile")
 
-
+@login_required
 @student_required
 def download(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
@@ -49,10 +50,20 @@ def download(request, path):
             return response
     raise Http404
 
-
+@login_required
 @student_required
 def student_view_project_details(request):
     template_name = "student/view_project_details.html"
     project = Project.objects.get(group=request.user.student.group)
+    client = Client.objects.get(id=project.client.id)
     context = {"project": project}
     return render(request, template_name, context)
+
+def student_view_group_details(request):
+    template_name = "student/view_group_details.html"
+    group = StudentGroup.objects.get(id=request.user.student.group.id)
+    students = Student.objects.filter(group=group)
+    context = {"group":group,"students":students}
+    return render(request,template_name,context)
+
+
