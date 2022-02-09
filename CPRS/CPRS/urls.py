@@ -106,12 +106,12 @@ urlpatterns = [
         name="coordinator_view_pending_client_requests",
     ),
     path(
-        "coordinator/approve_client_requests/<str:request_id",
+        "coordinator/approve_client_requests/<str:request_id>",
         approve_request,
         name="coordinator_approve_client_request",
     ),
     path(
-        "coordinator/disapprove_client_request/<str:request_id",
+        "coordinator/disapprove_client_request/<str:request_id>",
         disapprove_request,
         name="coordinator_disapprove_client_request",
     ),
@@ -121,8 +121,8 @@ urlpatterns = [
         name="coordinator_view_groups",
     ),
     path(
-        "coordinator/assign_recommended_project/<str:group_id/str:client_id/str:project_id",
-        view_group_list,
+        "coordinator/assign_recommended_project/<str:group_id>/<str:client_id>/<str:project_id>",
+        assign_recommended_project,
         name="coordinator_assign_project_recommendations",
     ),
     # student urls
@@ -139,7 +139,7 @@ urlpatterns = [
     path("client/view_projects", client_view_projects, name="client_view_projects"),
     path("client/addproject", add_project_view, name="client_add_project"),
     path(
-        "client/request_group_details/<str:group_id",
+        "client/request_group_details/<str:group_id>",
         client_request_group,
         name="client_request_group_details",
     ),
@@ -147,7 +147,7 @@ urlpatterns = [
         "client/view_group_requests", client_view_requests, name="client_view_requests"
     ),
     path(
-        "client/view_group_details/<str:group_id",
+        "client/view_group_details/<str:group_id>",
         client_view_group_details,
         name="client_view_requests",
     ),

@@ -29,7 +29,7 @@
         <td>{{cell}}</td>
         {% endfor %}
 		<td>
-            <a href="{% url 'assign_recommended_project' group_id=i.group project_id=i.project_id client_id=i.client }" class="btn btn-primary">Assign</a>
+            <a href="{% url 'coordinator_assign_project_recommendations' group_id=row.group client_id=row.client  project_id=row.project_id %}" class="btn btn-primary">Assign</a>
         </td>
 	</tr>
 	{% endfor %}

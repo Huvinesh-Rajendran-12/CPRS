@@ -21,10 +21,6 @@ class Client(models.Model):
     is_active = models.IntegerField(default=1)
     client_type = models.CharField(null=True, max_length=50)
 
-    def __str__(self):
-        if self.user.first_name and self.user.last_name:
-            full_name = self.user.first_name + " " + self.user.last_name
-        return full_name
 
 
 class IndustryClient(models.Model):
@@ -70,7 +66,7 @@ class Project(models.Model):
     file = models.FileField(upload_to="documents/", null=True)
 
     def __str__(self):
-        return self.title + "," + self.overview
+        return self.title 
 
 
 class Supervisor(models.Model):
@@ -91,6 +87,7 @@ class StudentGroup(models.Model):
     project = models.OneToOneField(Project, null=True, on_delete=models.CASCADE)
     supervisor = models.ForeignKey(Supervisor, null=True, on_delete=models.CASCADE)
     can_view = models.IntegerField(default=0)
+    has_project = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id) + "," + self.name
