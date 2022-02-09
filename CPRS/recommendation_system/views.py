@@ -6,7 +6,7 @@ import psycopg2
 import pandas as pd
 from .contentbased import *
 import spacy
-from CPRS_admin.models import StudentGroup, Project
+from CPRS_admin.models import StudentGroup, Project, Client 
 from django.conf import settings
 
 def make_recommendations_view(request, group_id):
@@ -53,11 +53,14 @@ def make_recommendations_view(request, group_id):
 
 
 def assign_recommended_project(request, group_id, client_id, project_id):
+    client = Client.objects.get(id=client_id)
     group = StudentGroup.objects.get(id=group_id)
-    group.client = client_id
-    group.project = project_id
-    group.save()
     project = Project.objects.get(id=project_id)
+    print(client)
+    group.client = client 
+    group.project = project 
+    group.has_project = True 
+    group.save()
     project.is_assigned = True
     project.save()
-    return redirect("view_group_list")
+    return redirect("coordinator_view_groups")

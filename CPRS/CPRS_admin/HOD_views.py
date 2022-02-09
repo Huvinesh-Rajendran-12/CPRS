@@ -19,18 +19,21 @@ from .models import (
     Client_Request,
 )
 from .decorators import admin_required
-
+from .filters import StudentFilter, ProjectFilter, ClientFilter, SupervisorFilter, GroupFilter
 
 # the dashboard of the admin
 @admin_required
 def admin_dashboard(request):
     student_count = Student.objects.all().count()
+    student_without_group_count = Student.objects.filter(has_group=False).count()
+    group_count = StudentGroup.objects.all().count()
     Supervisor_count = Supervisor.objects.all().count()
     project_count = Project.objects.all().count()
+    pending_project_count = Project.objects.filter(is_assigned=False).count()
     client_count = Client.objects.all().count()
 
     # requests = Request.objects.filter(is_approved=0)
-    context = {"student_count":student_count,"Supervisor_count":Supervisor_count,"project_count":project_count,"client_count":client_count}
+    context = {"student_count":student_count,"Supervisor_count":Supervisor_count,"project_count":project_count,"client_count":client_count,"group_count":group_count,"student_without_group_count":student_without_group_count,"pending_project_count":pending_project_count}
     return render(request, "HOD/dashboard.html",context)
 
 
@@ -44,7 +47,8 @@ def search(request):
 @admin_required
 def project(request):
     projects = Project.objects.all()
-    context = {"projects": projects}
+    project_filter = ProjectFilter(request.GET,queryset=projects)
+    context = {"projects": projects,"project_filter":project_filter}
     return render(request, "HOD/projects.html", context)
 
 
@@ -76,7 +80,8 @@ def recommendations_disapprove_view(request, recommendation_id):
 @admin_required
 def student_view_list(request):
     students = Student.objects.all()
-    context = {"students": students}
+    student_filter = StudentFilter(request.GET,queryset=students)
+    context = {"students": students,"student_filter":student_filter}
     return render(request, "HOD/students.html", context)
 
 
@@ -84,7 +89,8 @@ def student_view_list(request):
 @admin_required
 def clientview_list(request):
     clients = Client.objects.all()
-    context = {"clients": clients}
+    client_filter = ClientFilter(request.GET,queryset=clients)
+    context = {"clients": clients,"client_filter":client_filter}
     return render(request, "HOD/client_list.html", context)
 
 
@@ -92,7 +98,8 @@ def clientview_list(request):
 @admin_required
 def supervisorview_list(request):
     supervisors = Supervisor.objects.all()
-    context = {"supervisors": supervisors}
+    supervisor_filter = SupervisorFilter(request.GET,queryset=supervisors)
+    context = {"supervisors": supervisors,"supervisor_filter":supervisor_filter}
     return render(request, "HOD/supervisors.html", context)
 
 
@@ -223,5 +230,6 @@ def create_group_with_students(request):
 def view_group_list(request):
     template_name = "HOD/view_group.html"
     groups = StudentGroup.objects.all()
-    context = {"groups": groups}
+    group_filter = GroupFilter(request.GET,queryset=groups)
+    context = {"groups": groups,"group_filter":group_filter}
     return render(request, template_name, context)

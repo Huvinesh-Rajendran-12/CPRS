@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block content %}
+{% block main %}
 <div class="center">
     <img src="{% static 'images/taylors-logo-latest.png' %}" alt="Taylor's logo" width="700" height="500"> 
     <h1>Welcome to the Capstone Project Recommender System</h1>
@@ -15,7 +15,7 @@
         <button type="button" class="btn btn-primary" onclick="location.href='{% url 'supervisor_signup' %}'">Supervisor</button>
     </div> 
 </div>
-{% endblock content %}
+{% endblock main %}
 
 
 
