@@ -1,6 +1,5 @@
 {% load static %}
 <br>
-
 <div class="row">
     <div class="col">
         <div class="col-md">
@@ -18,7 +17,7 @@
 
     <div class="col">
         <div class="col-md">
-            <div class="card text-center  mb-3" id="ongoing">
+            <div class="card text-center  mb-3">
                 <div class="card-header">
                     <h5 class="card-title">Total Students</h5>
                 </div>
@@ -32,28 +31,85 @@
 
     <div class="col">
         <div class="col-md">
-            <div class="card text-center text-white mb-3" id="completed">
+            <div class="card text-center  mb-3">
                 <div class="card-header">
-                    <h5 class="card-title">Completed Projects</h5>
+                    <h5 class="card-title">Total Projects</h5>
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title"></h3>
-                    <a href="{% url 'coordinator_view_groups' %}" class="btn btn-primary">View groups</a>
+                    <h3 class="card-title">{{project_count}}</h3>
+                    <a href="{% url 'coordinator_view_groups' %}" class="btn btn-primary">View Projects</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="col">
         <div class="col-md">
-            <div class="card text-center text-white mb-3" id="completed">
+            <div class="card text-center mb-3" id="completed">
                 <div class="card-header">
                     <h5 class="card-title">Total Clients</h5>
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title"></h3>
+                    <h3 class="card-title">{{client_count}}</h3>
                     <a href="{% url 'coordinator_view_groups' %}" class="btn btn-primary">View groups</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Ongoing Projects</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{active_project_count}}</h3>
+                    <a href="{% url 'coordinator_view_students' %}" class="btn btn-primary">View groups</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center  mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Completed Projects</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{completed_project_count}}</h3>
+                    <a href="{% url 'coordinator_view_groups' %}" class="btn btn-primary">View groups</a> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center  mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Projects Not Assigned</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{pending_project_count}}</h3>
+                    <a href="{% url 'coordinator_view_groups' %}" class="btn btn-primary">View Projects</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="completed">
+                <div class="card-header">
+                    <h5 class="card-title">Students without group</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{student_without_group_count}}</h3>
+                    <a href="{% url 'coordinator_view_groups' %}" class="btn btn-primary">View groups</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

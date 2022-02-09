@@ -25,7 +25,7 @@ from dal import autocomplete
 class StudentSignUpView(CreateView):
     model = User
     form_class = StudentSignUpForm
-    template_name = "registration/signup.html"
+    template_name = "registration/signup2.html"
 
     def get_context_data(self, **kwargs):
         kwargs["user_type"] = "student"
@@ -70,8 +70,6 @@ class SupervisorSignUpView(CreateView):
         return redirect("login")
 
 
-def admin_dashboard(request):
-    return render(request, "main/dashboard.html")
 
 
 def search(request):
@@ -89,7 +87,17 @@ def supervisor_dashboard(request):
 
 
 def main_view(request):
-    return render(request, "main/main.html")
+    if request.user.is_authenticated:
+        if request.user.is_student:
+            return redirect("student_dashboard")
+        elif request.user.is_supervisor:
+            return redirect("supervisor_dashboard")
+        elif request.user.is_client:
+            return redirect("client_dashboard")
+        else:
+            return redirect("coordinator_dashboard")
+    else: 
+        return render(request, "main/main.html")
 
 
 def LoginFormView(request):
