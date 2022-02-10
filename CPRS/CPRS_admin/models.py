@@ -61,6 +61,13 @@ class UniversityClient(models.Model):
     contact = models.CharField(max_length=255,null=True)
 
 
+PROJECT_STATUS = (
+    ("New", "New"),
+    ("Started", "Started"),
+    ("Ongoing", "Ongoing"),
+    ("In QA", "In QA"),
+    ("Completed", "Completed"),
+)
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -68,6 +75,7 @@ class Project(models.Model):
     overview = models.TextField(null=True)
     requirements = models.TextField(null=True)
     is_assigned = models.BooleanField(default=False)
+    status = models.CharField(max_length= 50, choices= PROJECT_STATUS, default= "New")
     file = models.FileField(upload_to="documents/", null=True)
 
     def __str__(self):
@@ -86,7 +94,7 @@ class Supervisor(models.Model):
         return full_name
 
 
-class Supevisor_Profile(models.Model):
+class Supervisor_Profile(models.Model):
     supervisor = models.OneToOneField(
         Supervisor,
         related_name="profile",
@@ -149,17 +157,10 @@ class Student_Profile(models.Model):
         )
 
 
-class Client_Type(models.Model):
-    id = models.IntegerField(max_length=5, primary_key=True)
-    categoryname = models.CharField(max_length=100, null=True)
 
 
 
 
-class File_Attachment(models.Model):
-    id = models.IntegerField(max_length=10, primary_key=True)
-    file_path = models.CharField(max_length=255, null=True)
-    faprojectid = models.ForeignKey(Project, on_delete=models.CASCADE)
 
 
 class Client_Request(models.Model):
@@ -192,9 +193,11 @@ TASK_STATUS = (
 class Task(models.Model):
     '''The Task dataclass to store the task in database'''
     title = models.CharField(max_length= 70,null=True)
-    project = models.ForeignKey(Project, on_delete= models.CASCADE, null= True, verbose_name= 'Project')
+    project = models.ForeignKey(Project, on_delete= models.CASCADE, null= True)
+    group = models.ForeignKey(StudentGroup, on_delete= models.CASCADE, null= True)
     description = models.TextField(max_length= 500, null= True)
     created_date = models.DateField(default= timezone.now, blank= True)
+    due_date = models.DateField(default= timezone.now, blank= True)
     created_by = models.ForeignKey(
         Student,
         null= True,

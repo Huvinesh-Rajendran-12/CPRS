@@ -163,6 +163,18 @@ urlpatterns = [
     path(
         "accounts/profile/supervisor", supervisor_dashboard, name="supervisor_dashboard"
     ),
+    path(
+        "supervisor/view_profile", supervisor_view_profile, name="supervisor_view_profile"
+    ),
+    path(
+        "supervisor/edit_profile", SupervisorProfileEditView.as_view(), name="supervisor_edit_profile"
+    ),
+    path(
+        "supervisor/view_groups", supervisor_view_groups, name="supervisor_view_groups"
+    ),
+    path(
+        "supervisor/view_projects", supervisor_view_projects, name="supervisor_view_projects"
+    ),
 ]
 
 if settings.DEBUG:

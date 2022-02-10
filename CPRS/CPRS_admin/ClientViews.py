@@ -121,5 +121,12 @@ def add_project_view(request):
 
 @client_required
 def client_dashboard(request):
+    project_count = Project.objects.filter(client=request.user.client).count()
+    completed_project_count = Project.objects.filter(client=request.user.client,status="Completed").count()
+    ongoing_project_count = Project.objects.filter(client=request.user.client,status="Ongoing").count()
+    not_assigned_project_count = Project.objects.filter(client=request.user.client,is_assigned=False).count()
+    group_count = StudentGroup.objects.filter(client=request.user.client).count()
     template_name = "client/client_dashboard.html"
-    return render(request, template_name)
+
+    context = {"project_count":project_count,"completed_project_count":completed_project_count,"ongoing_project_count":ongoing_project_count,"not_assigned_project_count":not_assigned_project_count,"group_count":group_count}
+    return render(request, template_name,context)

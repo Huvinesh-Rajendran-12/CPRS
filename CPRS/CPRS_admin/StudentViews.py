@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .models import Project
 from .decorators import student_required
 from django.views.generic import CreateView
-from .models import Student_Profile, Student, Task
+from .models import Student_Profile, Student, Task, StudentGroup
 from .forms import StudentProfileForm, TaskForm, UpdateTaskForm
 import os
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -12,8 +12,14 @@ from django.utils.decorators import method_decorator
 @login_required
 @student_required
 def student_dashboard(request):
+    task_count = Task.objects.filter(group=request.user.student.group).count()  
+    new_task_count = Task.objects.filter(group=request.user.student.group,status="New").count()  
+    completed_task_count = Task.objects.filter(group=request.user.student.group,status="Completed").count()  
+    ongoing_task_count = Task.objects.filter(group=request.user.student.group,status="Ongoing").count()  
     template_name = "student/student_dashboard.html"
-    return render(request, template_name)
+
+    context = {"task_count":task_count,"new_task_count":new_task_count,"completed_task_count":completed_task_count,"ongoing_task_count":ongoing_task_count}
+    return render(request, template_name,context)
 
 @login_required
 @student_required
@@ -54,11 +60,14 @@ def download(request, path):
 @login_required
 @student_required
 def student_view_project_details(request):
-    template_name = "student/view_project_details.html"
-    project = Project.objects.get(group=request.user.student.group)
-    client = Client.objects.get(id=project.client.id)
-    context = {"project": project}
-    return render(request, template_name, context)
+    if request.user.student.group.has_project:
+        template_name = "student/view_project_details.html"
+        project = Project.objects.get(id=request.user.student.group.project)
+        client = Client.objects.get(id=project.client.id)
+        context = {"project": project}
+        return render(request, template_name, context)
+    else:
+        return HttpResponse("No projects.")
 
 def student_view_group_details(request):
     template_name = "student/view_group_details.html"
@@ -69,17 +78,6 @@ def student_view_group_details(request):
 
 
 
-@method_decorator(student_required, name='dispatch')
-class TaskCreateView(CreateView, LoginRequiredMixin):
-    model = Task
-    form_class = TaskForm
-    template_name = "student/task_form.html"
-
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user.student 
-        form.instance.project = self.request.user.student.group.project 
-
-        return super().form_valid(form)
 
 @student_required
 def create_task(request):

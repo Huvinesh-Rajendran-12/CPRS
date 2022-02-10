@@ -1,4 +1,4 @@
-{% load static %}
+{%load static %}
 
 <!DOCTYPE html>
 <html>
@@ -26,6 +26,8 @@
                             {% include 'student/sidebar_template.html' %}
                     {% elif user.is_client %}
                             {% include 'client/sidebar_template.html' %}
+                    {% elif user.is_supervisor %}
+                            {% include 'supervisor/sidebar_template.html' %}
                     {% endif %}
                 </div> 
                 <div class="col-10 col-lg-10">
@@ -54,4 +56,4 @@
             <small>Copyright &copy; Your Website</small>
         </div> 
     </footer>
-</html>
+</html> 

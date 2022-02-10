@@ -9,6 +9,7 @@ from .models import (
     User,
     Client,
     Supervisor,
+    Supervisor_Profile,
     Project,
     Student_Profile,
     Client_Request,
@@ -23,8 +24,8 @@ from dal import autocomplete
 
 
 class StudentSignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
+    first_name = forms.CharField(max_length=30, required=True, label="First Name",help_text="Required")
+    last_name = forms.CharField(max_length=30, required=True, label="Last Name",help_text="Required")
     email = forms.EmailField(
         max_length=254,
         label="Email",
@@ -52,17 +53,17 @@ class StudentSignUpForm(UserCreationForm):
 
 
 class ClientSignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
+    first_name = forms.CharField(max_length=30, required=True, label="First Name",help_text="Required")
+    last_name = forms.CharField(max_length=30, required=True, label="Last Name",help_text="Required")
     email = forms.EmailField(
         max_length=254,
         label="Email",
         help_text="Required. Inform a valid email address.",
     )
     CLIENT_TYPE_CHOICES = (
-        (1, "University"),
-        (2, "MLE"),
-        (3, "Industry"),
+        ("University", "University"),
+        ("MLE", "MLE"),
+        ("Industry", "Industry"),
     )
 
     client_type = forms.CharField(
@@ -105,14 +106,15 @@ class SupervisorSignUpForm(UserCreationForm):
         model = User
     
     @transaction.atomic
-    def save(self, commit=True):
+    def save(self):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data.get("first_name")
         user.last_name = self.cleaned_data.get("last_name")
         user.email = self.cleaned_data.get("email")
         user.is_supervisor = True
         user.save()
-        supervisor = Supervisor.objects.create(user=user,name=user.first_name+ " " + user.first_name)
+        supervisor = Supervisor.objects.create(user=user,name=user.first_name+ " " + user.last_name)
+        supervisor.save()
         return user
 
 
@@ -140,12 +142,13 @@ class TaskForm(ModelForm):
 
     class Meta:
         model = Task
-        fields = ["title","description","assigned_to"]
+        fields = ["title","description","due_date","assigned_to"]
     
     @transaction.atomic
     def save(self,commit=True):
         task = super().save(commit=False)
         task.created_by = self.request.user.student
+        task.project = self.request.user.student.group.project
         task.assigned_to = self.cleaned_data.get("assigned_to")
         task.save()
         return task 
@@ -185,6 +188,11 @@ class StudentProfileForm(ModelForm):
     class Meta:
         model = Student_Profile
         exclude = ["student","group"]
+
+class SupervisorProfileForm(ModelForm):
+    class Meta:
+        model = Supervisor_Profile
+        exclude = ["supervisor"]
 
 class IndustryClientProfileForm(ModelForm):
     class Meta:

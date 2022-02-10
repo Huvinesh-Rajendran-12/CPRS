@@ -1,0 +1,54 @@
+{%load static %}
+<br>
+<div class="row">
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="total-task">
+                <div class="card-header">
+                    <h5 class="card-title">Total Task</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{task_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="completed-task">
+                <div class="card-header">
+                    <h5 class="card-title">Completed Task</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{completed_task_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="task">
+                <div class="card-header">
+                    <h5 class="card-title">Task Not Completed</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title"></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="ongoing-task">
+                <div class="card-header">
+                    <h5 class="card-title">Ongoing Task</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{ongoing_task_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
