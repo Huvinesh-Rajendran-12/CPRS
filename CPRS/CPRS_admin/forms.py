@@ -91,10 +91,10 @@ class ClientSignUpForm(UserCreationForm):
 
 class SupervisorSignUpForm(UserCreationForm):
     first_name = forms.CharField(
-        max_length=30, required=True, label="First Name", help_text="Optional."
+        max_length=30, required=True, label="First Name", help_text="Required"
     )
     last_name = forms.CharField(
-        max_length=30, required=True, label="Last Name", help_text="Optional."
+        max_length=30, required=True, label="Last Name", help_text="Required"
     )
     email = forms.EmailField(
         max_length=254,

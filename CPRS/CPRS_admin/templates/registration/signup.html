@@ -24,12 +24,9 @@
           {% csrf_token %}
           <h3 class="text-dark fw-bolder fs-4 mb-2">Sign up as {{user_type}} </h3>
           <div class="fw-normal text-muted mb-4"> Already have an account ?
-              <a href="{% url 'main' %}" class="text-primary fw-bold text-decoration-none">Log in here</a>
+              <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-none">Log in here</a>
           </div>	
 		{{form|crispy}}          
-          <div class="mt-2 text-end">
-            <a href="#" class="text-primary fw-bold text-decoration-none">Forget Password?</a>
-          </div>
           <button type="submit" class="btn btn-primary submit_btn w-100 my-4">Continue</button>
         </form>
       </div>

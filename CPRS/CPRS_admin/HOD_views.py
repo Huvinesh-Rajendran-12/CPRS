@@ -234,7 +234,7 @@ def view_group_list(request):
     context = {"groups": groups,"group_filter":group_filter}
     return render(request, template_name, context)
 
-@student_required
+@admin_required
 def AssignSupervisor(request,group_id):
     """logged in student can create task"""
     template_name = "student/update_task_form.html"

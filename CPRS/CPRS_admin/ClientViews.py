@@ -78,17 +78,18 @@ def client_request_group(request, group_id):
 
 # client views the details of the requests made so far
 @client_required
-def client_view_requests(request):
+def client_view_groups(request):
     groups = StudentGroup.objects.get(client=request.user.client)
-    context = {"groups": groups, "form": form}
-    return render(request, "client/client_view_request.html", context)
+    context = {"groups": groups}
+    return render(request, "client/client_view_group_list.html", context)
 
 
 # client views group details if given permission by the admin
 @client_required
 def client_view_group_details(request, group_id):
     group = StudentGroup.objects.get(id=group_id)
-    context = {"group": group, "form": form}
+    students = Student.objects.get(group=group)
+    context = {"group": group, "students":students}
     return render(request, "client/client_view_group_details.html", context)
 
 @client_required
