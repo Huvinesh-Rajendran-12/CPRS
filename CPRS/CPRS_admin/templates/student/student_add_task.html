@@ -1,27 +1,17 @@
-{%extends 'main/base.html' %}
+
+{% extends "main/base.html" %}
+
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form>
-  <div class="mb-3">
-    <label for="exampleInputText" class="form-label">Task Name</label>
-    {{form.name}}
-    <div id="textHelp" class="form-text">Please enter a valid Task Name.</div>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputText" class="form-label">Description</label>
-    {{form.description}}
-    <div id="textHelp" class="form-text">Please enter a Description for the Task stated</div>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputText" class="form-label">Due Date</label>
-    <input type="Date" class="form-control" id="exampleInputText" aria-describedby="textHelp">
-    <div id="textHelp" class="form-text">Please state the due date of the Task</div>
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Confirm</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-{% endblock content %} 
+<div class="container center">
+    <h2>Add Task</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <br></br> 
+        <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+</div>
+{% endblock content %}
+

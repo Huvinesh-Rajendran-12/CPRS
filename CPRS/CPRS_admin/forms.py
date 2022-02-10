@@ -14,7 +14,8 @@ from .models import (
     Client_Request,
     MLEClient,
     UniversityClient,
-    IndustryClient, 
+    IndustryClient,
+    Task,
 )
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
@@ -102,13 +103,15 @@ class SupervisorSignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-
+    
+    @transaction.atomic
     def save(self, commit=True):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data.get("first_name")
         user.last_name = self.cleaned_data.get("last_name")
         user.email = self.cleaned_data.get("email")
         user.is_supervisor = True
+        user.save()
         supervisor = Supervisor.objects.create(user=user,name=user.first_name+ " " + user.first_name)
         return user
 
@@ -128,6 +131,29 @@ class StudentForm(ModelForm):
     class Meta:
         model = Student
         exclude = []
+
+class TaskForm(ModelForm): 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
+        self.fields["assigned_to"] = forms.ModelChoiceField(queryset=Student.objects.filter(group=self.request.user.student.group))
+
+    class Meta:
+        model = Task
+        fields = ["title","description","assigned_to"]
+    
+    @transaction.atomic
+    def save(self,commit=True):
+        task = super().save(commit=False)
+        task.created_by = self.request.user.student
+        task.assigned_to = self.cleaned_data.get("assigned_to")
+        task.save()
+        return task 
+
+class UpdateTaskForm(ModelForm):
+    class Meta:
+        model = Task 
+        fields = ["status"]
 
 
 class GroupAdminForm(ModelForm):
