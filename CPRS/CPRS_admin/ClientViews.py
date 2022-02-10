@@ -18,6 +18,7 @@ from .decorators import client_required
 def client_view_profile(request):
     user = request.user
     client = Client.objects.get(user=user)
+    context = {"client":client}
     if client.client_type == "Industry":
         template_name = "client/industry_profile.html"
     elif client.client_type == "MLE":
@@ -27,7 +28,7 @@ def client_view_profile(request):
     return render(
         request,
         template_name,
-        {"client": client},
+        context
     )
 
 
@@ -42,6 +43,15 @@ def client_edit_profile(request):
         form = MLEClientProfileForm
     elif client.client_type == "University":
         form = UniversityClientProfileForm
+
+    if request.method == "GET":
+        profileform = form(request.GET or None)
+    elif request.method == "POST":
+        profileform = form(request.POST)
+        if profileform.is_valid():
+            profileform.client = request.user.client
+            profileform.save()
+        return redirect("client_view_profile")
     return render(
         request,
         template_name,

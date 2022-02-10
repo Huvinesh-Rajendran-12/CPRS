@@ -159,29 +159,6 @@ class UpdateTaskForm(ModelForm):
         fields = ["status"]
 
 
-class GroupAdminForm(ModelForm):
-    class Meta:
-        model = Group
-        exclude = []
-
-    users = forms.ModelMultipleChoiceField(
-        queryset=User.objects.filter(is_student=True),
-        required=False,
-        widget=FilteredSelectMultiple("users", False),
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(GroupAdminForm, self).__init__(*args, **kwargs)
-        if self.instance.pk:
-            self.fields["users"].initial = self.instance.user_set.all()
-
-    def save_m2m(self):
-        self.instance.user_set.set(self.cleaned_data["users"])
-
-    def save(self, *args, **kwargs):
-        instance = super(GroupAdminForm, self).save()
-        self.save_m2m()
-        return instance
 
 
 class StudentProfileForm(ModelForm):
@@ -265,3 +242,8 @@ StudentFormset = modelformset_factory(
         )
     },
 )
+
+class AssignSupervisorForm(ModelForm):
+    class Meta:
+        model = StudentGroup
+        fields = ["supervisor"]

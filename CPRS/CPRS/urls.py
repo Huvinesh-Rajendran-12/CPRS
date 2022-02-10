@@ -121,6 +121,12 @@ urlpatterns = [
         name="coordinator_view_groups",
     ),
     path(
+        "coordinator/assign_supervisor/<str:group_id>",
+        AssignSupervisor,
+        name="coordinator_assign_supervisor",
+    ),
+    
+    path(
         "coordinator/assign_recommended_project/<str:group_id>/<str:client_id>/<str:project_id>",
         assign_recommended_project,
         name="coordinator_assign_project_recommendations",
@@ -153,6 +159,12 @@ urlpatterns = [
     ),
     path(
         "client/view_group_requests", client_view_requests, name="client_view_requests"
+    ),
+    path(
+        "client/view_profile", client_view_profile, name="client_view_profile"
+    ),
+    path(
+        "client/edit_profile", client_edit_profile, name="client_edit_profile"
     ),
     path(
         "client/view_group_details/<str:group_id>",

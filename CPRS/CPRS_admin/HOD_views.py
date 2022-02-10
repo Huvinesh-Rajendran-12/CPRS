@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from .forms import StudentFormset, StudentGroupModelForm
+from .forms import StudentFormset, StudentGroupModelForm, AssignSupervisorForm
 from .models import (
     Recommended_Project,
     Project,
@@ -232,4 +232,20 @@ def view_group_list(request):
     groups = StudentGroup.objects.all()
     group_filter = GroupFilter(request.GET,queryset=groups)
     context = {"groups": groups,"group_filter":group_filter}
+    return render(request, template_name, context)
+
+@student_required
+def AssignSupervisor(request,group_id):
+    """logged in student can create task"""
+    template_name = "student/update_task_form.html"
+    group = StudentGroup.objects.get(id=group_id)
+    if request.method == "GET":
+        assignsupervisorform = AssignSupervisorForm(request.GET or None)
+    elif request.method == "POST":
+        assignsupervisorform = AssignSupervisorForm(request.POST)
+        if assignsupervisorform.is_valid():
+            group.supervisor = assignsupervisorform.cleaned_data.get("supervisor")
+            group.save()
+        return redirect("coordinator_view_groups")
+    context = {"form": assignsupervisorform}
     return render(request, template_name, context)
