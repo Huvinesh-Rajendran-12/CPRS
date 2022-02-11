@@ -25,3 +25,8 @@ class GroupFilter(django_filters.FilterSet):
     class Meta:
         model = StudentGroup
         exclude = ["client"]
+
+class TaskFilter(django_filters.FilterSet):
+    class Meta:
+        model = Task
+        exclude = ["description","project","group"]

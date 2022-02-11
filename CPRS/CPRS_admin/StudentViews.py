@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .models import Project
 from .decorators import student_required
 from django.views.generic import CreateView
-from .models import Student_Profile, Student, Task, StudentGroup
+from .models import Student_Profile, Student, Task, StudentGroup, Client
 from .forms import StudentProfileForm, TaskForm, UpdateTaskForm
 import os
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -60,21 +60,25 @@ def download(request, path):
 @login_required
 @student_required
 def student_view_project_details(request):
-    if request.user.student.group.has_project:
-        template_name = "student/view_project_details.html"
-        project = Project.objects.get(id=request.user.student.group.project)
-        client = Client.objects.get(id=project.client.id)
-        context = {"project": project}
-        return render(request, template_name, context)
+    if request.user.student.has_group:
+        if request.user.student.profile.group.has_project:
+            template_name = "student/view_project_details.html"
+            project = Project.objects.get(id=request.user.student.profile.group.project.id)
+            client = Client.objects.get(id=project.client.id)
+            context = {"project": project,"client":client}
+            return render(request, template_name, context)
     else:
         return HttpResponse("No projects.")
 
 def student_view_group_details(request):
-    template_name = "student/view_group_details.html"
-    group = StudentGroup.objects.get(id=request.user.student.group.id)
-    students = Student.objects.filter(group=group)
-    context = {"group":group,"students":students}
-    return render(request,template_name,context)
+    if request.user.student.has_group:
+        template_name = "student/view_group_details.html"
+        group = StudentGroup.objects.get(id=request.user.student.profile.group.id)
+        students = Student.objects.filter(group=group)
+        context = {"group":group,"students":students}
+        return render(request,template_name,context)
+    else:
+        return HttpResponse("No group to view.")
 
 
 

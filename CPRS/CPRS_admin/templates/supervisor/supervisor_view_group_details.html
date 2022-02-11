@@ -4,8 +4,42 @@
 {% block content %}
 <div class="">
     <br> 
-     <h3> Project Details </h3>
-    <div class="card" style="width: 70rem;">
+    <h3> Group {{group.id}} Members </h3>
+    <div class="card" style="width: 80rem;">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Course Taken</th>
+                  <th scope="col">Specialization</th>
+                  <th scope="col">Interests</th>
+                  <th scope="col">CGPA</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{student.id}}</td>
+                    <td>{{student.user.first_name}}</td>
+                    <td>{{student.user.last_name}}</td>
+                    <td>{{student.user.email}}</td>
+                    <td>{{student.profile.course_taken}}</td>
+                    <td>{{student.profile.specialization}}</td>
+                    <td>{{student.profile.area_of_interest}}</td>
+                    <td>{{student.profile.cgpa}}</td>
+                  <td>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+    </div>
+    <br>
+    <h3> Project Details </h3>
+    <div class="card" style="width: 80rem;">
         <table class="table">
             <tbody>
                 <tr>
@@ -31,7 +65,7 @@
     </div>
     <br>
     <h3> Client Details </h3>
-    <div class="card" style="width: 70rem;">
+    <div class="card" style="width: 80rem;">
         <table class="table">
             <tbody>
                 <tr>

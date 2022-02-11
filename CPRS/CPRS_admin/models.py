@@ -70,7 +70,7 @@ PROJECT_STATUS = (
 )
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client,related_name="project",on_delete=models.CASCADE)
     title = models.CharField(max_length=100, null=True)
     overview = models.TextField(null=True)
     requirements = models.TextField(null=True)
@@ -110,9 +110,10 @@ class StudentGroup(models.Model):
     name = models.CharField(max_length=50, null=True)
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
     project = models.OneToOneField(Project, null=True, on_delete=models.CASCADE)
-    supervisor = models.ForeignKey(Supervisor, null=True, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(Supervisor, related_name="supervisor_of",null=True, on_delete=models.CASCADE)
     can_view = models.IntegerField(default=0)
     has_project = models.BooleanField(default=False)
+    has_requested = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id) + "," + self.name
@@ -164,10 +165,9 @@ class Student_Profile(models.Model):
 
 
 class Client_Request(models.Model):
-    id = models.CharField(max_length=150, primary_key=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
-    group = models.ForeignKey(StudentGroup, on_delete=models.CASCADE, null=True)
-    message = models.CharField(max_length=255, null=True)
+    group = models.ForeignKey(StudentGroup, related_name="client_request",on_delete=models.CASCADE, null=True)
+    message = models.TextField(null=True)
     approval_status = models.IntegerField(default=0)
 
 

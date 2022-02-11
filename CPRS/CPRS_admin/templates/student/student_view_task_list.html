@@ -44,7 +44,7 @@
               </tbody>
             </table>
     </div>
-        {% if student.group.has_project %}
+        {% if user.student.profile.group.has_project %}
         <div class="center"> 
         <a href="{% url 'student_add_task' %}" class="btn btn-primary" >Add Task</a>
         </div> 

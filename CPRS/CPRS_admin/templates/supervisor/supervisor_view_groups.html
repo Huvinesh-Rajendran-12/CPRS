@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+{% block content %}
+<div class="card card-body">
+    <div class="card card-body">
+        <h3>Student Groups</h3>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Project</th>
+          <th scope="col">Client</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for group in groups %}
+        <tr>
+            <td>{{group.id}}</td>
+            <td>{{group.name}}</td>
+            <td>{{group.project.title}}</td>
+            <td>{{group.client.user.first_name}} {{group.client.user.last_name}}</td>
+            <td>
+                <a href="{% url 'supervisor_view_group_details' group_id=group.id %}" class="btn btn-primary">View group details</a>
+                <a href="{% url 'supervisor_view_group_progress' group_id=group.id %}" class="btn btn-primary">View group progress</a>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock content %}

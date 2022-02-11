@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Client, Client_Request, StudentGroup, Project
+from .models import Client, Client_Request, StudentGroup, Project, Student
 from .forms import ClientRequestForm, ProjectForm , MLEClientProfileForm , IndustryClientProfileForm,UniversityClientProfileForm
 from django.views.generic import CreateView
 from .decorators import client_required
@@ -66,12 +66,14 @@ def client_request_group(request, group_id):
     if request.method == "GET":
         requestform = ClientRequestForm(request.GET or None)
     elif request.method == "POST":
-        requestform = StudentGroupModelForm(request.POST)
+        requestform = ClientRequestForm(request.POST)
         if requestform.is_valid():
-            requestform.client = request.user.client
-            requestform.group = group
-            requestform.save()
-        return redirect("client_view_requests")
+            message = requestform.cleaned_data.get("message")
+            group.has_requested = True
+            request = Client_Request.objects.create(client=request.user.client,group=group,message=message)
+            request.save()
+            group.save()
+        return redirect("client_view_groups")
     context = {"group": group, "form": requestform}
     return render(request, "client/client_request_group.html", context)
 
@@ -79,24 +81,24 @@ def client_request_group(request, group_id):
 # client views the details of the requests made so far
 @client_required
 def client_view_groups(request):
-    groups = StudentGroup.objects.get(client=request.user.client)
-    context = {"groups": groups}
-    return render(request, "client/client_view_group_list.html", context)
-
+    assigned_project_count = Project.objects.filter(client=request.user.client,is_assigned=True).count()
+    print(assigned_project_count)
+    if assigned_project_count != 0:
+        groups = StudentGroup.objects.filter(client=request.user.client)
+        requests = Client_Request.objects.filter(client=request.user.client)
+        context = {"groups": groups,"requests":requests}
+        return render(request, "client/client_view_group_list.html", context)
+    else:
+        return HttpResponse("No groups")
 
 # client views group details if given permission by the admin
 @client_required
 def client_view_group_details(request, group_id):
     group = StudentGroup.objects.get(id=group_id)
-    students = Student.objects.get(group=group)
+    students = Student.objects.filter(group=group)
     context = {"group": group, "students":students}
     return render(request, "client/client_view_group_details.html", context)
 
-@client_required
-def client_view_groups(request):
-    groups = StudentGroup.objects.get(client=request.user.client)
-    context = {"groups": groups}
-    return render(request, "client/client_view_group_list.html", context)
 
 
 # clients views the list of projects

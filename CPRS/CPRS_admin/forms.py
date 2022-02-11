@@ -150,6 +150,7 @@ class TaskForm(ModelForm):
         task.created_by = self.request.user.student
         task.project = self.request.user.student.group.project
         task.assigned_to = self.cleaned_data.get("assigned_to")
+        task.group = self.request.user.student.profile.group
         task.save()
         return task 
 
@@ -217,7 +218,7 @@ class LoginForm(forms.Form):
 class ClientRequestForm(ModelForm):
     class Meta:
         model = Client_Request
-        exclude = ["client", "group"]
+        exclude = ["client", "group","approval_status"]
 
 
 class StudentGroupModelForm(ModelForm):
@@ -238,7 +239,7 @@ StudentFormset = modelformset_factory(
     extra=1,
     widgets={
         "name": forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Enter Student Number here"}
+            attrs={"class": "form-control", "placeholder": "Enter Student Name here"}
         )
     },
 )

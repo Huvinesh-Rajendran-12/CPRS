@@ -19,19 +19,23 @@
                     <th>Client</th>
                     <th>Group No.</th>
                     <th>Message</th>
-                    <th>Approve</th>
+                    <th>Action</th>
                 </tr>
                 <tbody>
                     {% for r in requests %}
-                    <td>{{r.project.title}}</td>
-                    <td>{{r.project.id}}</td>
-                    <td>{{r.client.user.username}}</td>
+                    <tr>
+                    <td>{{r.group.project.title}}</td>
+                    <td>{{r.group.project.id}}</td>
+                    <td>{{r.client.user}}</td>
                     <td>{{r.group.id}}</td>
                     <td>{{r.message}}</td>
                     <td>
-                        <a class="btn btn-primary btn-sm btn-block" href="">Give Permission</a>
+                        <a class="btn btn-primary btn-sm btn-block" href="{% url 'approve_client_request' request_id=r.id group_id=r.group.id %}">Approve</a>
+                        <a class="btn btn-primary btn-sm btn-block" href="{% url 'disapprove_client_request' request_id=r.id group_id=r.group.id %}">Reject</a>
                     </td>
+                    </tr>
                     {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

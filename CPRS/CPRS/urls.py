@@ -106,14 +106,14 @@ urlpatterns = [
         name="coordinator_view_pending_client_requests",
     ),
     path(
-        "coordinator/approve_client_requests/<str:request_id>",
-        approve_request,
-        name="coordinator_approve_client_request",
+        "coordinator/approve_client_requests/<str:request_id>/<str:group_id>",
+        approve_client_request,
+        name="approve_client_request",
     ),
     path(
-        "coordinator/disapprove_client_request/<str:request_id>",
-        disapprove_request,
-        name="coordinator_disapprove_client_request",
+        "coordinator/disapprove_client_request/<str:request_id>/<str:group_id>",
+        disapprove_client_request,
+        name="disapprove_client_request",
     ),
     path(
         "coordinator/view_group_list/",
@@ -184,7 +184,10 @@ urlpatterns = [
         "supervisor/view_groups", supervisor_view_groups, name="supervisor_view_groups"
     ),
     path(
-        "supervisor/view_projects", supervisor_view_projects, name="supervisor_view_projects"
+        "supervisor/view_group_details/<str:group_id>", supervisor_view_group_details, name="supervisor_view_group_details"
+    ),
+    path(
+        "supervisor/view_group_progress/<str:group_id>", supervisor_view_group_progress, name="supervisor_view_group_progress"
     ),
 ]
 
