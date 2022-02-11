@@ -1,0 +1,54 @@
+{%load static %}
+<br>
+<div class="row">
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="total-task">
+                <div class="card-header">
+                    <h5 class="card-title">Total Group</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{group_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="completed-task">
+                <div class="card-header">
+                    <h5 class="card-title">Total Project</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{project_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="task">
+                <div class="card-header">
+                    <h5 class="card-title">Ongoing Projects</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{ongoing_project_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="ongoing-task">
+                <div class="card-header">
+                    <h5 class="card-title">Completed Projects</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{completed_project_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

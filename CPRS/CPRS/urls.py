@@ -106,20 +106,26 @@ urlpatterns = [
         name="coordinator_view_pending_client_requests",
     ),
     path(
-        "coordinator/approve_client_requests/<str:request_id>",
-        approve_request,
-        name="coordinator_approve_client_request",
+        "coordinator/approve_client_requests/<str:request_id>/<str:group_id>",
+        approve_client_request,
+        name="approve_client_request",
     ),
     path(
-        "coordinator/disapprove_client_request/<str:request_id>",
-        disapprove_request,
-        name="coordinator_disapprove_client_request",
+        "coordinator/disapprove_client_request/<str:request_id>/<str:group_id>",
+        disapprove_client_request,
+        name="disapprove_client_request",
     ),
     path(
         "coordinator/view_group_list/",
         view_group_list,
         name="coordinator_view_groups",
     ),
+    path(
+        "coordinator/assign_supervisor/<str:group_id>",
+        AssignSupervisor,
+        name="coordinator_assign_supervisor",
+    ),
+    
     path(
         "coordinator/assign_recommended_project/<str:group_id>/<str:client_id>/<str:project_id>",
         assign_recommended_project,
@@ -139,7 +145,6 @@ urlpatterns = [
     path("student/update_task_status/<str:task_id>", update_task, name="student_update_task"),
     path("student/student_view_task_list", student_view_task_list, name="student_view_task_list"),
     # client urls
-    path("signup2/", signup2, name="signup2"),
     path("accounts/profile/client", client_dashboard, name="client_dashboard"),
     path("client/view_projects", client_view_projects, name="client_view_projects"),
     path("client/view_groups", client_view_groups, name="client_view_groups"),
@@ -152,16 +157,37 @@ urlpatterns = [
         name="client_request_group_details",
     ),
     path(
-        "client/view_group_requests", client_view_requests, name="client_view_requests"
+        "client/view_groups", client_view_groups, name="client_view_groups"
+    ),
+    path(
+        "client/view_profile", client_view_profile, name="client_view_profile"
+    ),
+    path(
+        "client/edit_profile", client_edit_profile, name="client_edit_profile"
     ),
     path(
         "client/view_group_details/<str:group_id>",
         client_view_group_details,
-        name="client_view_requests",
+        name="client_view_group_details",
     ),
     # supervisor urls
     path(
         "accounts/profile/supervisor", supervisor_dashboard, name="supervisor_dashboard"
+    ),
+    path(
+        "supervisor/view_profile", supervisor_view_profile, name="supervisor_view_profile"
+    ),
+    path(
+        "supervisor/edit_profile", SupervisorProfileEditView.as_view(), name="supervisor_edit_profile"
+    ),
+    path(
+        "supervisor/view_groups", supervisor_view_groups, name="supervisor_view_groups"
+    ),
+    path(
+        "supervisor/view_group_details/<str:group_id>", supervisor_view_group_details, name="supervisor_view_group_details"
+    ),
+    path(
+        "supervisor/view_group_progress/<str:group_id>", supervisor_view_group_progress, name="supervisor_view_group_progress"
     ),
 ]
 

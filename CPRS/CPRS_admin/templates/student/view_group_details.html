@@ -1,0 +1,72 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h3>Group Details</h3>
+            {{group.name}}
+            {{group.id}}
+        </div>
+        <div class="card card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Course Taken</th>
+                  <th scope="col">Specialization</th>
+                  <th scope="col">Interests</th>
+                  <th scope="col">CGPA</th>
+                  <th scope="col">Group</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{student.id}}</td>
+                    <td>{{student.name}}</td>
+                    <td>{{student.user.email}}</td>
+                    <td>{{student.profile.course_taken}}</td>
+                    <td>{{student.profile.specialization}}</td>
+                    <td>{{student.profile.area_of_interest}}</td>
+                    <td>{{student.profile.cgpa}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div>
+</div> 
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

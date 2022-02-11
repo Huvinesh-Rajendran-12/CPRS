@@ -9,6 +9,7 @@ from .models import (
     User,
     Client,
     Supervisor,
+    Supervisor_Profile,
     Project,
     Student_Profile,
     Client_Request,
@@ -23,8 +24,8 @@ from dal import autocomplete
 
 
 class StudentSignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
+    first_name = forms.CharField(max_length=30, required=True, label="First Name",help_text="Required")
+    last_name = forms.CharField(max_length=30, required=True, label="Last Name",help_text="Required")
     email = forms.EmailField(
         max_length=254,
         label="Email",
@@ -52,17 +53,17 @@ class StudentSignUpForm(UserCreationForm):
 
 
 class ClientSignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
+    first_name = forms.CharField(max_length=30, required=True, label="First Name",help_text="Required")
+    last_name = forms.CharField(max_length=30, required=True, label="Last Name",help_text="Required")
     email = forms.EmailField(
         max_length=254,
         label="Email",
         help_text="Required. Inform a valid email address.",
     )
     CLIENT_TYPE_CHOICES = (
-        (1, "University"),
-        (2, "MLE"),
-        (3, "Industry"),
+        ("University", "University"),
+        ("MLE", "MLE"),
+        ("Industry", "Industry"),
     )
 
     client_type = forms.CharField(
@@ -90,10 +91,10 @@ class ClientSignUpForm(UserCreationForm):
 
 class SupervisorSignUpForm(UserCreationForm):
     first_name = forms.CharField(
-        max_length=30, required=True, label="First Name", help_text="Optional."
+        max_length=30, required=True, label="First Name", help_text="Required"
     )
     last_name = forms.CharField(
-        max_length=30, required=True, label="Last Name", help_text="Optional."
+        max_length=30, required=True, label="Last Name", help_text="Required"
     )
     email = forms.EmailField(
         max_length=254,
@@ -105,14 +106,15 @@ class SupervisorSignUpForm(UserCreationForm):
         model = User
     
     @transaction.atomic
-    def save(self, commit=True):
+    def save(self):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data.get("first_name")
         user.last_name = self.cleaned_data.get("last_name")
         user.email = self.cleaned_data.get("email")
         user.is_supervisor = True
         user.save()
-        supervisor = Supervisor.objects.create(user=user,name=user.first_name+ " " + user.first_name)
+        supervisor = Supervisor.objects.create(user=user,name=user.first_name+ " " + user.last_name)
+        supervisor.save()
         return user
 
 
@@ -140,13 +142,15 @@ class TaskForm(ModelForm):
 
     class Meta:
         model = Task
-        fields = ["title","description","assigned_to"]
+        fields = ["title","description","due_date","assigned_to"]
     
     @transaction.atomic
     def save(self,commit=True):
         task = super().save(commit=False)
         task.created_by = self.request.user.student
+        task.project = self.request.user.student.group.project
         task.assigned_to = self.cleaned_data.get("assigned_to")
+        task.group = self.request.user.student.profile.group
         task.save()
         return task 
 
@@ -156,35 +160,17 @@ class UpdateTaskForm(ModelForm):
         fields = ["status"]
 
 
-class GroupAdminForm(ModelForm):
-    class Meta:
-        model = Group
-        exclude = []
-
-    users = forms.ModelMultipleChoiceField(
-        queryset=User.objects.filter(is_student=True),
-        required=False,
-        widget=FilteredSelectMultiple("users", False),
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(GroupAdminForm, self).__init__(*args, **kwargs)
-        if self.instance.pk:
-            self.fields["users"].initial = self.instance.user_set.all()
-
-    def save_m2m(self):
-        self.instance.user_set.set(self.cleaned_data["users"])
-
-    def save(self, *args, **kwargs):
-        instance = super(GroupAdminForm, self).save()
-        self.save_m2m()
-        return instance
 
 
 class StudentProfileForm(ModelForm):
     class Meta:
         model = Student_Profile
         exclude = ["student","group"]
+
+class SupervisorProfileForm(ModelForm):
+    class Meta:
+        model = Supervisor_Profile
+        exclude = ["supervisor"]
 
 class IndustryClientProfileForm(ModelForm):
     class Meta:
@@ -232,7 +218,7 @@ class LoginForm(forms.Form):
 class ClientRequestForm(ModelForm):
     class Meta:
         model = Client_Request
-        exclude = ["client", "group"]
+        exclude = ["client", "group","approval_status"]
 
 
 class StudentGroupModelForm(ModelForm):
@@ -253,7 +239,12 @@ StudentFormset = modelformset_factory(
     extra=1,
     widgets={
         "name": forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Enter Student Number here"}
+            attrs={"class": "form-control", "placeholder": "Enter Student Name here"}
         )
     },
 )
+
+class AssignSupervisorForm(ModelForm):
+    class Meta:
+        model = StudentGroup
+        fields = ["supervisor"]

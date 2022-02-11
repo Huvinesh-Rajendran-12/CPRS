@@ -1,17 +1,60 @@
-{% extends "main/base.html" %}
+{%extends "main/base.html" %}
 {% load static %}
 
 {% block content %}
-<div> 
-    <h2>{{project.title}}</h2> 
-    <div>
-        <label>Project Overview</label>
-        {{project.overview}}
-        <label>Project Requirements</label>
-        {{project.requirements}}
-        <label>File Attachment</label>
-        <a href="{{project.file.url}}" download="{{project.file.url}}">Download Attached Files</a> 
-    </div> 
+<div class="">
+    <br> 
+     <h3> Project Details </h3>
+    <div class="card" style="width: 70rem;">
+        <table class="table">
+            <tbody>
+                <tr>
+                  <th>Project Title</th>
+                  <td>{{project.title}}</td>
+                </tr>
+                <tr>
+                  <th>Project Overview</th>
+                  <td>{{project.overview}}</td>
+                </tr>
+                <tr>
+                    <th>Project Requirements</th>
+                    <td>{{project.requirements}}</td>
+                </tr>
+              <tr>
+                  <th>File Attachment</th>
+                  <td>
+                    <a href="{{project.file.url}}" download="{{project.file.url}}" class="btn btn-primary btn-sm btn-block">Download Attached Files</a>
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <h3> Client Details </h3>
+    <div class="card" style="width: 70rem;">
+        <table class="table">
+            <tbody>
+                <tr>
+                  <th>Client Name</th>
+                  <td>{{client.user.first_name}} {{client.user.last_name}}</td>
+                </tr>
+                <tr>
+                  <th>Client Company</th>
+                  <td>{{client.industry.company}}</td>
+                </tr>
+                <tr>
+                    <th>Client Type</th>
+                    <td>{{client.client_type}}</td>
+                </tr>
+              <tr>
+                  <th>Client Email</th>
+                  <td>
+                      {{client.user.email}}
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+        <br> 
 </div> 
-{% endblock content %}
-
+{% endblock content %} 

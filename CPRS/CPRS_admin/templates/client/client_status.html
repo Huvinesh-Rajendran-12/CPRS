@@ -1,0 +1,70 @@
+{%load static %}
+
+<br>
+
+<div class="row">
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center mb-3" id="total-projects">
+                <div class="card-header">
+                    <h5 class="card-title">Total Projects</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{project_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center  mb-3" id="total-groups">
+                <div class="card-header">
+                    <h5 class="card-title">Total Groups</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{group_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center  mb-3" id="ongoing">
+                <div class="card-header">
+                    <h5 class="card-title">Ongoing Projects</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{ongoing_project_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center  mb-3" id="completed">
+                <div class="card-header">
+                    <h5 class="card-title">Completed Projects</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{completed_project_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center  mb-3" id="not-assigned">
+                <div class="card-header">
+                    <h5 class="card-title">Projects Not Assigned</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">{{not_assigned_project_count}}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

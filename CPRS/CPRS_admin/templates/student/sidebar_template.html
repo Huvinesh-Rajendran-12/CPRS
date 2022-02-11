@@ -9,6 +9,7 @@
         {% endif %}
         <li> <a href="{% url 'student_view_group_details' %}" class="nav-link text-white"> <i class="fa fa-group"></i>  <span class="ms-2">Group</span> </a> </li>
         <li> <a href="{% url 'student_view_project_details' %}" class="nav-link text-white"> <i class="fa fa-paperclip"></i>  <span class="ms-2">Projects</span> </a> </li>
+        <li> <a href="{% url 'student_view_task_list' %}" class="nav-link text-white"> <i class="fa fa-edit"></i>  <span class="ms-2">Task History</span> </a> </li>
     </ul>
     <hr>
     <div class="dropdown"> <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false"> <i alt="" width="32" height="32" class="fa fa-user-circle-o rounded-circle me-2"></i> <strong> {{user.username}} </strong> </a>
