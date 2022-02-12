@@ -70,16 +70,12 @@ class SupervisorSignUpView(CreateView):
         return redirect("login")
 
 
-
-
 def search(request):
     return render(request, "main/search.html")
 
 
 def project(request):
     return render(request, "main/projects.html")
-
-
 
 
 def main_view(request):
@@ -92,7 +88,7 @@ def main_view(request):
             return redirect("client_dashboard")
         else:
             return redirect("coordinator_dashboard")
-    else: 
+    else:
         return render(request, "main/main.html")
 
 

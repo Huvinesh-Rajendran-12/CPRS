@@ -1,12 +1,11 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-{% include 'supervisor/supervisor_status.html' %}
-<br>
 
+<br>
 <div class="row">
     <div class="col">
-        <h5>Feedback Replies</h5>
+        <h5>Feedback History</h5>
         <hr>
         <div class="card card-body">
             <table class="table table-sm">
@@ -16,23 +15,16 @@
                     <th>Task Title</th>
                     <th>Feedback</th>
                     <th>Feedback Reply</th>
-                    <th>Student</th>
-                    <th>Action</th>
                 </tr>
                 <tbody>
                     {% for feedback in feedbacks %}
-                        {% if feedback.feedback_reply != "" and feedback.is_archived == False %}
+                    {% if feedback.feedback_reply != "" and feedback.is_archived %}
                             <tr>
                             <td>{{feedback.id}}</td>
                             <td>{{feedback.task.id}}</td>
                             <td>{{feedback.task.title}}</td>
                             <td>{{feedback.feedback}}</td>
                             <td>{{feedback.feedback_reply}}</td>
-                            <td>{{feedback.task.assigned_to}}</td>
-                            <td>
-                                <a class="btn btn-primary btn-sm btn-block" href="{% url 'supervisor_gives_feedback' task_id=feedback.task.id %}">Give Feedback</a>
-                                <a class="btn btn-primary btn-sm btn-block" href="{% url 'supervisor_archive_feedback' feedback_id=feedback.id %}">Archive</a>
-                            </td>
                             </tr>
                         {% endif %}
                     {% endfor %}
@@ -40,6 +32,7 @@
             </table>
         </div>
     </div>
+
 </div>
-<!--supervisor dahsboard-->
-{% endblock %}
+
+{% endblock content %}

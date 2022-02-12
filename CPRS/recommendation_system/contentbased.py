@@ -1,10 +1,12 @@
 import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
 from django.conf import settings
-import pandas as pd 
+import pandas as pd
+
+
 def clean_txt(text):
     # load spacy
-    nlp = settings.LANGUAGE_MODELS['en']
+    nlp = settings.LANGUAGE_MODELS["en"]
     doc = nlp(text)
     words = [
         token.lemma_

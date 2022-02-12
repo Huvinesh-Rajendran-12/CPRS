@@ -2,11 +2,10 @@
 
 {% block content %}
 
-{% include 'student/student_status.html' %}
-<!--student dahsboard-->
+<br>
 <div class="row">
     <div class="col">
-        <h5>Active Feedback</h5>
+        <h5>Feedback History</h5>
         <hr>
         <div class="card card-body">
             <table class="table table-sm">
@@ -15,22 +14,20 @@
                     <th>Task ID</th>
                     <th>Task Title</th>
                     <th>Feedback</th>
+                    <th>Feedback Reply</th>
                     <th>Supervisor</th>
-                    <th>Action</th>
                 </tr>
                 <tbody>
                     {% for task in tasks %}
                         {% for t in task.feedbackoftask.all %}
-                        {% if t.feedback_reply == "" %}
+                        {% if t.feedback_reply != "" %}
                             <tr>
                             <td>{{t.id}}</td>
                             <td>{{task.id}}</td>
                             <td>{{task.title}}</td>
                             <td>{{t.feedback}}</td>
+                            <td>{{t.feedback_reply}}</td>
                             <td>{{t.supervisor}}</td>
-                            <td>
-                                <a class="btn btn-primary btn-sm btn-block" href="{% url 'student_reply_feedback' feedback_id=t.id %}">Reply</a>
-                            </td>
                             </tr>
                         {% endif %}
                         {% endfor %}
@@ -38,10 +35,8 @@
                 </tbody>
             </table>
         </div>
-            <div class="center">
-                            <a class="btn btn-primary btn-sm btn-block" href="{% url 'student_view_feedback_history' %}">View Feedback History</a>
-            </div> 
     </div>
 
 </div>
-{% endblock %}
+
+{% endblock content %}

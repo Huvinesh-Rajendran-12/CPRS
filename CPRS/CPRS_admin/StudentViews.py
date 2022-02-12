@@ -4,22 +4,38 @@ from django.http import HttpResponse
 from .models import Project
 from .decorators import student_required
 from django.views.generic import CreateView
-from .models import Student_Profile, Student, Task, StudentGroup, Client
-from .forms import StudentProfileForm, TaskForm, UpdateTaskForm
+from .models import Student_Profile, Student, Task, StudentGroup, Client, StudentFeedback
+from .forms import StudentProfileForm, TaskForm, UpdateTaskForm, StudentFeedbackReplyForm
 import os
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.decorators import method_decorator
+
+
 @login_required
 @student_required
 def student_dashboard(request):
-    task_count = Task.objects.filter(group=request.user.student.group).count()  
-    new_task_count = Task.objects.filter(group=request.user.student.group,status="New").count()  
-    completed_task_count = Task.objects.filter(group=request.user.student.group,status="Completed").count()  
-    ongoing_task_count = Task.objects.filter(group=request.user.student.group,status="Ongoing").count()  
+    task_count = Task.objects.filter(group=request.user.student.group).count()
+    tasks = Task.objects.filter(assigned_to=request.user.student)
+    new_task_count = Task.objects.filter(
+        group=request.user.student.group, status="New"
+    ).count()
+    completed_task_count = Task.objects.filter(
+        group=request.user.student.group, status="Completed"
+    ).count()
+    ongoing_task_count = Task.objects.filter(
+        group=request.user.student.group, status="Ongoing"
+    ).count()
     template_name = "student/student_dashboard.html"
 
-    context = {"task_count":task_count,"new_task_count":new_task_count,"completed_task_count":completed_task_count,"ongoing_task_count":ongoing_task_count}
-    return render(request, template_name,context)
+    context = {
+        "task_count": task_count,
+        "new_task_count": new_task_count,
+        "completed_task_count": completed_task_count,
+        "ongoing_task_count": ongoing_task_count,
+        "tasks":tasks, 
+    }
+    return render(request, template_name, context)
+
 
 @login_required
 @student_required
@@ -44,6 +60,7 @@ class StudentProfileView(CreateView):
         profile.save()
         return redirect("student_view_profile")
 
+
 @login_required
 @student_required
 def download(request, path):
@@ -57,30 +74,32 @@ def download(request, path):
             return response
     raise Http404
 
+
 @login_required
 @student_required
 def student_view_project_details(request):
     if request.user.student.has_group:
         if request.user.student.profile.group.has_project:
             template_name = "student/view_project_details.html"
-            project = Project.objects.get(id=request.user.student.profile.group.project.id)
+            project = Project.objects.get(
+                id=request.user.student.profile.group.project.id
+            )
             client = Client.objects.get(id=project.client.id)
-            context = {"project": project,"client":client}
+            context = {"project": project, "client": client}
             return render(request, template_name, context)
     else:
         return HttpResponse("No projects.")
+
 
 def student_view_group_details(request):
     if request.user.student.has_group:
         template_name = "student/view_group_details.html"
         group = StudentGroup.objects.get(id=request.user.student.profile.group.id)
         students = Student.objects.filter(group=group)
-        context = {"group":group,"students":students}
-        return render(request,template_name,context)
+        context = {"group": group, "students": students}
+        return render(request, template_name, context)
     else:
         return HttpResponse("No group to view.")
-
-
 
 
 @student_required
@@ -88,17 +107,18 @@ def create_task(request):
     """logged in student can create task"""
     template_name = "student/task_form.html"
     if request.method == "GET":
-        taskform = TaskForm(request.GET or None,request=request)
+        taskform = TaskForm(request.GET or None, request=request)
     elif request.method == "POST":
-        taskform = TaskForm(request.POST,request=request)
+        taskform = TaskForm(request.POST, request=request)
         if taskform.is_valid():
             taskform.save()
         return redirect("student_view_task_list")
     context = {"form": taskform}
     return render(request, template_name, context)
 
+
 @student_required
-def update_task(request,task_id):
+def update_task(request, task_id):
     """logged in student can create task"""
     template_name = "student/update_task_form.html"
     task = Task.objects.get(id=task_id)
@@ -113,10 +133,34 @@ def update_task(request,task_id):
     context = {"form": updatetaskform}
     return render(request, template_name, context)
 
+
 def student_view_task_list(request):
-    tasks = Task.objects.filter(created_by=request.user.student) | Task.objects.filter(assigned_to=request.user.student)
+    tasks = Task.objects.filter(created_by=request.user.student) | Task.objects.filter(
+        assigned_to=request.user.student
+    )
     print(tasks)
     template_name = "student/student_view_task_list.html"
+    context = {"tasks": tasks}
+    return render(request, template_name, context)
+
+def student_reply_feedback(request,feedback_id):
+    """logged in student can reply to feedback to supervisor"""
+    template_name = "student/student_reply_feedback.html"
+    feedback = StudentFeedback.objects.get(id=feedback_id)
+    if request.method == "GET":
+        feedbackreplyform = StudentFeedbackReplyForm(request.GET or None)
+    elif request.method == "POST":
+        feedbackreplyform = StudentFeedbackReplyForm(request.POST)
+        if feedbackreplyform.is_valid():
+            feedback_reply = feedbackreplyform.cleaned_data.get("feedback_reply")
+            feedback.feedback_reply = feedback_reply
+            feedback.save()
+        return redirect("student_dashboard")
+    context = {"form": feedbackreplyform}
+    return render(request, template_name, context)
+
+def student_view_feedback_history(request):
+    template_name = "student/student_view_feedback_history.html"
+    tasks = Task.objects.filter(assigned_to=request.user.student)
     context = {"tasks":tasks}
     return render(request,template_name,context)
-

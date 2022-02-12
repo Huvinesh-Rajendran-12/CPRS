@@ -51,7 +51,7 @@
                         <td>{{task.due_date}}</td>
                         <td>{{task.status}}</td>
                         <td>
-                            <a href="{% url 'student_update_task' task_id=task.id %}" class="btn btn-primary">Give Feedback</a>
+                            <a href="{% url 'supervisor_gives_feedback' task_id=task.id %}" class="btn btn-primary">Give Feedback</a>
                         </td>
                     </tr>
                     {% endfor %}

@@ -12,14 +12,20 @@ from .models import (
     Recommended_Project,
     Project,
     Student,
-    Student_Profile, 
+    Student_Profile,
     StudentGroup,
     Client,
     Supervisor,
     Client_Request,
 )
 from .decorators import admin_required
-from .filters import StudentFilter, ProjectFilter, ClientFilter, SupervisorFilter, GroupFilter
+from .filters import (
+    StudentFilter,
+    ProjectFilter,
+    ClientFilter,
+    SupervisorFilter,
+    GroupFilter,
+)
 
 # the dashboard of the admin
 @admin_required
@@ -32,8 +38,17 @@ def admin_dashboard(request):
     pending_project_count = Project.objects.filter(is_assigned=False).count()
     client_count = Client.objects.all().count()
     requests = Client_Request.objects.filter(approval_status=0)
-    context = {"student_count":student_count,"Supervisor_count":Supervisor_count,"project_count":project_count,"client_count":client_count,"group_count":group_count,"student_without_group_count":student_without_group_count,"pending_project_count":pending_project_count,"requests":requests}
-    return render(request, "HOD/dashboard.html",context)
+    context = {
+        "student_count": student_count,
+        "Supervisor_count": Supervisor_count,
+        "project_count": project_count,
+        "client_count": client_count,
+        "group_count": group_count,
+        "student_without_group_count": student_without_group_count,
+        "pending_project_count": pending_project_count,
+        "requests": requests,
+    }
+    return render(request, "HOD/dashboard.html", context)
 
 
 @admin_required
@@ -41,13 +56,12 @@ def search(request):
     return render(request, "HOD/search.html")
 
 
-
 # view the list of the projects
 @admin_required
 def project(request):
     projects = Project.objects.all()
-    project_filter = ProjectFilter(request.GET,queryset=projects)
-    context = {"projects": projects,"project_filter":project_filter}
+    project_filter = ProjectFilter(request.GET, queryset=projects)
+    context = {"projects": projects, "project_filter": project_filter}
     return render(request, "HOD/projects.html", context)
 
 
@@ -79,8 +93,8 @@ def recommendations_disapprove_view(request, recommendation_id):
 @admin_required
 def student_view_list(request):
     students = Student.objects.all()
-    student_filter = StudentFilter(request.GET,queryset=students)
-    context = {"students": students,"student_filter":student_filter}
+    student_filter = StudentFilter(request.GET, queryset=students)
+    context = {"students": students, "student_filter": student_filter}
     return render(request, "HOD/students.html", context)
 
 
@@ -88,8 +102,8 @@ def student_view_list(request):
 @admin_required
 def clientview_list(request):
     clients = Client.objects.all()
-    client_filter = ClientFilter(request.GET,queryset=clients)
-    context = {"clients": clients,"client_filter":client_filter}
+    client_filter = ClientFilter(request.GET, queryset=clients)
+    context = {"clients": clients, "client_filter": client_filter}
     return render(request, "HOD/client_list.html", context)
 
 
@@ -97,8 +111,8 @@ def clientview_list(request):
 @admin_required
 def supervisorview_list(request):
     supervisors = Supervisor.objects.all()
-    supervisor_filter = SupervisorFilter(request.GET,queryset=supervisors)
-    context = {"supervisors": supervisors,"supervisor_filter":supervisor_filter}
+    supervisor_filter = SupervisorFilter(request.GET, queryset=supervisors)
+    context = {"supervisors": supervisors, "supervisor_filter": supervisor_filter}
     return render(request, "HOD/supervisors.html", context)
 
 
@@ -170,7 +184,7 @@ def admin_view_all_client_requests(request):
 
 # approve or disapprove client requests
 @admin_required
-def disapprove_client_request(request, request_id,group_id):
+def disapprove_client_request(request, request_id, group_id):
     group = StudentGroup.objects.get(id=group_id)
     group.can_view = 2
     group.save()
@@ -181,7 +195,7 @@ def disapprove_client_request(request, request_id,group_id):
 
 
 @admin_required
-def approve_client_request(request, request_id,group_id):
+def approve_client_request(request, request_id, group_id):
     group = StudentGroup.objects.get(id=group_id)
     group.can_view = 1
     group.save()
@@ -195,7 +209,7 @@ def approve_client_request(request, request_id,group_id):
 def create_group_with_students(request):
     template_name = "HOD/create_group_with_student.html"
     heading = "Create Student Group"
-    students_valid = True 
+    students_valid = True
     if request.method == "GET":
         groupform = StudentGroupModelForm(request.GET or None)
         formset = StudentFormset(queryset=Student.objects.none())
@@ -222,7 +236,7 @@ def create_group_with_students(request):
                     student_profile = Student_Profile.objects.get(student=student)
                     print(student)
                     student_profile.group = group
-                    student.group = group 
+                    student.group = group
                     student.has_group = True
                     student_profile.save()
                     student.save()
@@ -233,7 +247,7 @@ def create_group_with_students(request):
         request,
         template_name,
         {
-            "heading":heading,
+            "heading": heading,
             "groupform": groupform,
             "formset": formset,
         },
@@ -244,12 +258,13 @@ def create_group_with_students(request):
 def view_group_list(request):
     template_name = "HOD/view_group.html"
     groups = StudentGroup.objects.all()
-    group_filter = GroupFilter(request.GET,queryset=groups)
-    context = {"groups": groups,"group_filter":group_filter}
+    group_filter = GroupFilter(request.GET, queryset=groups)
+    context = {"groups": groups, "group_filter": group_filter}
     return render(request, template_name, context)
 
+
 @admin_required
-def AssignSupervisor(request,group_id):
+def AssignSupervisor(request, group_id):
     """logged in student can create task"""
     template_name = "HOD/assign_supervisor.html"
     group = StudentGroup.objects.get(id=group_id)

@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0006_delete_client_type_project_status_and_more'),
+        ("CPRS_admin", "0006_delete_client_type_project_status_and_more"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Supevisor_Profile',
-            new_name='Supervisor_Profile',
+            old_name="Supevisor_Profile",
+            new_name="Supervisor_Profile",
         ),
     ]

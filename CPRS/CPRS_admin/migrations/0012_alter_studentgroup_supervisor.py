@@ -7,13 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0011_studentgroup_has_requested_and_more'),
+        ("CPRS_admin", "0011_studentgroup_has_requested_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='studentgroup',
-            name='supervisor',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='supervisor_of', to='CPRS_admin.supervisor'),
+            model_name="studentgroup",
+            name="supervisor",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="supervisor_of",
+                to="CPRS_admin.supervisor",
+            ),
         ),
     ]

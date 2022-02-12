@@ -135,11 +135,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# spaCy settings 
+# spaCy settings
 import spacy
 
 LANGUAGE_MODELS = {}
 
-LANGUAGE_MODELS['en'] = spacy.load('en_core_web_md')
-
-
+LANGUAGE_MODELS["en"] = spacy.load("en_core_web_md")

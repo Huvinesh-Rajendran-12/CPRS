@@ -125,7 +125,6 @@ urlpatterns = [
         AssignSupervisor,
         name="coordinator_assign_supervisor",
     ),
-    
     path(
         "coordinator/assign_recommended_project/<str:group_id>/<str:client_id>/<str:project_id>",
         assign_recommended_project,
@@ -139,11 +138,37 @@ urlpatterns = [
         StudentProfileView.as_view(),
         name="student_edit_profile",
     ),
-    path("student/group/details", student_view_group_details, name="student_view_group_details"),
-    path("student/project/details", student_view_project_details, name="student_view_project_details"),
+    path(
+        "student/group/details",
+        student_view_group_details,
+        name="student_view_group_details",
+    ),
+    path(
+        "student/project/details",
+        student_view_project_details,
+        name="student_view_project_details",
+    ),
     path("student/add_task", create_task, name="student_add_task"),
-    path("student/update_task_status/<str:task_id>", update_task, name="student_update_task"),
-    path("student/student_view_task_list", student_view_task_list, name="student_view_task_list"),
+    path(
+        "student/update_task_status/<str:task_id>",
+        update_task,
+        name="student_update_task",
+    ),
+    path(
+        "student/student_view_task_list",
+        student_view_task_list,
+        name="student_view_task_list",
+    ),
+    path(
+            "student/reply_feedback/<str:feedback_id>",
+        student_reply_feedback,
+        name="student_reply_feedback",
+    ),
+    path(
+            "student/view_feedback_history",
+        student_view_feedback_history,
+        name="student_view_feedback_history",
+    ),
     # client urls
     path("accounts/profile/client", client_dashboard, name="client_dashboard"),
     path("client/view_projects", client_view_projects, name="client_view_projects"),
@@ -156,15 +181,9 @@ urlpatterns = [
         client_request_group,
         name="client_request_group_details",
     ),
-    path(
-        "client/view_groups", client_view_groups, name="client_view_groups"
-    ),
-    path(
-        "client/view_profile", client_view_profile, name="client_view_profile"
-    ),
-    path(
-        "client/edit_profile", client_edit_profile, name="client_edit_profile"
-    ),
+    path("client/view_groups", client_view_groups, name="client_view_groups"),
+    path("client/view_profile", client_view_profile, name="client_view_profile"),
+    path("client/edit_profile", client_edit_profile, name="client_edit_profile"),
     path(
         "client/view_group_details/<str:group_id>",
         client_view_group_details,
@@ -175,19 +194,42 @@ urlpatterns = [
         "accounts/profile/supervisor", supervisor_dashboard, name="supervisor_dashboard"
     ),
     path(
-        "supervisor/view_profile", supervisor_view_profile, name="supervisor_view_profile"
+        "supervisor/view_profile",
+        supervisor_view_profile,
+        name="supervisor_view_profile",
     ),
     path(
-        "supervisor/edit_profile", SupervisorProfileEditView.as_view(), name="supervisor_edit_profile"
+        "supervisor/edit_profile",
+        SupervisorProfileEditView.as_view(),
+        name="supervisor_edit_profile",
     ),
     path(
         "supervisor/view_groups", supervisor_view_groups, name="supervisor_view_groups"
     ),
     path(
-        "supervisor/view_group_details/<str:group_id>", supervisor_view_group_details, name="supervisor_view_group_details"
+        "supervisor/view_group_details/<str:group_id>",
+        supervisor_view_group_details,
+        name="supervisor_view_group_details",
     ),
     path(
-        "supervisor/view_group_progress/<str:group_id>", supervisor_view_group_progress, name="supervisor_view_group_progress"
+        "supervisor/view_group_progress/<str:group_id>",
+        supervisor_view_group_progress,
+        name="supervisor_view_group_progress",
+    ),
+    path(
+        "supervisor/give_feedback/<str:task_id>",
+        supervisor_gives_feedback,
+        name="supervisor_gives_feedback",
+    ),
+    path(
+        "supervisor/view_feedback_history",
+        supervisor_view_feedback_history,
+        name="supervisor_view_feedback_history",
+    ),
+    path(
+            "supervisor/archive_feedback/<str:feedback_id>",
+        supervisor_archive_feedback,
+        name="supervisor_archive_feedback",
     ),
 ]
 
