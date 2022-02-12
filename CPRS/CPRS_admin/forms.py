@@ -24,8 +24,12 @@ from dal import autocomplete
 
 
 class StudentSignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name",help_text="Required")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name",help_text="Required")
+    first_name = forms.CharField(
+        max_length=30, required=True, label="First Name", help_text="Required"
+    )
+    last_name = forms.CharField(
+        max_length=30, required=True, label="Last Name", help_text="Required"
+    )
     email = forms.EmailField(
         max_length=254,
         label="Email",
@@ -53,8 +57,12 @@ class StudentSignUpForm(UserCreationForm):
 
 
 class ClientSignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name",help_text="Required")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name",help_text="Required")
+    first_name = forms.CharField(
+        max_length=30, required=True, label="First Name", help_text="Required"
+    )
+    last_name = forms.CharField(
+        max_length=30, required=True, label="Last Name", help_text="Required"
+    )
     email = forms.EmailField(
         max_length=254,
         label="Email",
@@ -83,7 +91,9 @@ class ClientSignUpForm(UserCreationForm):
         user.last_name = self.cleaned_data.get("last_name")
         user.email = self.cleaned_data.get("email")
         user.save()
-        client = Client.objects.create(user=user,name=user.first_name+ " " + user.last_name)
+        client = Client.objects.create(
+            user=user, name=user.first_name + " " + user.last_name
+        )
         client.client_type = self.cleaned_data.get("client_type")
         client.save()
         return user
@@ -104,7 +114,7 @@ class SupervisorSignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-    
+
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
@@ -113,7 +123,9 @@ class SupervisorSignUpForm(UserCreationForm):
         user.email = self.cleaned_data.get("email")
         user.is_supervisor = True
         user.save()
-        supervisor = Supervisor.objects.create(user=user,name=user.first_name+ " " + user.last_name)
+        supervisor = Supervisor.objects.create(
+            user=user, name=user.first_name + " " + user.last_name
+        )
         supervisor.save()
         return user
 
@@ -134,73 +146,83 @@ class StudentForm(ModelForm):
         model = Student
         exclude = []
 
-class TaskForm(ModelForm): 
+
+class TaskForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super().__init__(*args, **kwargs)
-        self.fields["assigned_to"] = forms.ModelChoiceField(queryset=Student.objects.filter(group=self.request.user.student.group))
+        self.fields["assigned_to"] = forms.ModelChoiceField(
+            queryset=Student.objects.filter(group=self.request.user.student.group)
+        )
 
     class Meta:
         model = Task
-        fields = ["title","description","due_date","assigned_to"]
-    
+        fields = ["title", "description", "due_date", "assigned_to"]
+
     @transaction.atomic
-    def save(self,commit=True):
+    def save(self, commit=True):
         task = super().save(commit=False)
         task.created_by = self.request.user.student
         task.project = self.request.user.student.group.project
         task.assigned_to = self.cleaned_data.get("assigned_to")
         task.group = self.request.user.student.profile.group
         task.save()
-        return task 
+        return task
+
 
 class UpdateTaskForm(ModelForm):
     class Meta:
-        model = Task 
+        model = Task
         fields = ["status"]
-
-
 
 
 class StudentProfileForm(ModelForm):
     class Meta:
         model = Student_Profile
-        exclude = ["student","group"]
+        exclude = ["student", "group"]
+
 
 class SupervisorProfileForm(ModelForm):
     class Meta:
         model = Supervisor_Profile
         exclude = ["supervisor"]
 
+
 class IndustryClientProfileForm(ModelForm):
     class Meta:
         model = IndustryClient
         exclude = ["client"]
+
 
 class EditIndustryClientProfileForm(ModelForm):
     class Meta:
         model = IndustryClient
         exclude = ["client"]
 
+
 class MLEClientProfileForm(ModelForm):
     class Meta:
         model = MLEClient
         exclude = ["client"]
+
 
 class EditMLEClientProfileForm(ModelForm):
     class Meta:
         model = MLEClient
         exclude = ["client"]
 
+
 class UniversityClientProfileForm(ModelForm):
     class Meta:
         model = UniversityClient
         exclude = ["client"]
-        
+
+
 class EditUniversityClientProfileForm(ModelForm):
     class Meta:
         model = UniversityClient
         exclude = ["client"]
+
 
 class EditStudetProfileForm(ModelForm):
     class Meta:
@@ -218,7 +240,7 @@ class LoginForm(forms.Form):
 class ClientRequestForm(ModelForm):
     class Meta:
         model = Client_Request
-        exclude = ["client", "group","approval_status"]
+        exclude = ["client", "group", "approval_status"]
 
 
 class StudentGroupModelForm(ModelForm):
@@ -243,6 +265,7 @@ StudentFormset = modelformset_factory(
         )
     },
 )
+
 
 class AssignSupervisorForm(ModelForm):
     class Meta:

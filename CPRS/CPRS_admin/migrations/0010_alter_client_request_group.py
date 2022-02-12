@@ -7,13 +7,18 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0009_alter_client_request_message'),
+        ("CPRS_admin", "0009_alter_client_request_message"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='client_request',
-            name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='request', to='CPRS_admin.studentgroup'),
+            model_name="client_request",
+            name="group",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="request",
+                to="CPRS_admin.studentgroup",
+            ),
         ),
     ]

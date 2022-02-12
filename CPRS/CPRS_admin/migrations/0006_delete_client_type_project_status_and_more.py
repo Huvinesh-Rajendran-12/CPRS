@@ -6,19 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0005_task_due_date_task_group_alter_task_project'),
+        ("CPRS_admin", "0005_task_due_date_task_group_alter_task_project"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='Client_Type',
+            name="Client_Type",
         ),
         migrations.AddField(
-            model_name='project',
-            name='status',
-            field=models.CharField(choices=[('New', 'New'), ('Started', 'Started'), ('Ongoing', 'Ongoing'), ('In QA', 'In QA'), ('Completed', 'Completed')], default='New', max_length=50),
+            model_name="project",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("New", "New"),
+                    ("Started", "Started"),
+                    ("Ongoing", "Ongoing"),
+                    ("In QA", "In QA"),
+                    ("Completed", "Completed"),
+                ],
+                default="New",
+                max_length=50,
+            ),
         ),
         migrations.DeleteModel(
-            name='File_Attachment',
+            name="File_Attachment",
         ),
     ]

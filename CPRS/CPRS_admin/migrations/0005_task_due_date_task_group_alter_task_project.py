@@ -8,23 +8,34 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0004_supevisor_profile_remove_student_feedback_feedbackid_and_more'),
+        (
+            "CPRS_admin",
+            "0004_supevisor_profile_remove_student_feedback_feedbackid_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='due_date',
+            model_name="task",
+            name="due_date",
             field=models.DateField(blank=True, default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='task',
-            name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='CPRS_admin.studentgroup'),
+            model_name="task",
+            name="group",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="CPRS_admin.studentgroup",
+            ),
         ),
         migrations.AlterField(
-            model_name='task',
-            name='project',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='CPRS_admin.project'),
+            model_name="task",
+            name="project",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="CPRS_admin.project",
+            ),
         ),
     ]

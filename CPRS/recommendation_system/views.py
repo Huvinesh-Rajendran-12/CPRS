@@ -6,8 +6,9 @@ import psycopg2
 import pandas as pd
 from .contentbased import *
 import spacy
-from CPRS_admin.models import StudentGroup, Project, Client 
+from CPRS_admin.models import StudentGroup, Project, Client
 from django.conf import settings
+
 
 def make_recommendations_view(request, group_id):
     connection = psycopg2.connect(
@@ -18,7 +19,9 @@ def make_recommendations_view(request, group_id):
         database="test2",
     )
     postgreSQL_student_Query = (
-        "select * from " + '"CPRS_admin_student_profile"' + f" where group_id ={group_id}"
+        "select * from "
+        + '"CPRS_admin_student_profile"'
+        + f" where group_id ={group_id}"
     )
 
     postgreSQL_project_Query = (
@@ -45,7 +48,7 @@ def make_recommendations_view(request, group_id):
     df_group.at[0, "details"] = " "
     for index, row in df_student.iterrows():
         df_group.at[0, "details"] = df_group.at[0, "details"] + " " + row["details"]
-    nlp = settings.LANGUAGE_MODELS['en']
+    nlp = settings.LANGUAGE_MODELS["en"]
     rec = make_recommendations(df_project, df_group, nlp)
     context = {"rec": rec}
     template_name = "HOD/recommendations_view.html"
@@ -57,9 +60,9 @@ def assign_recommended_project(request, group_id, client_id, project_id):
     group = StudentGroup.objects.get(id=group_id)
     project = Project.objects.get(id=project_id)
     print(client)
-    group.client = client 
-    group.project = project 
-    group.has_project = True 
+    group.client = client
+    group.project = project
+    group.has_project = True
     group.save()
     project.is_assigned = True
     project.save()
