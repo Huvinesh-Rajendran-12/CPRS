@@ -8,8 +8,9 @@ from .models import (
     Student,
     Client,
     Task,
+    StudentFeedback,
 )
-from .forms import SupervisorProfileForm
+from .forms import SupervisorProfileForm, StudentFeedbackForm
 from django.views.generic import CreateView
 from .filters import TaskFilter
 
@@ -22,6 +23,7 @@ def supervisor_dashboard(request):
     project_count = 0
     ongoing_project_count = 0
     completed_project_count = 0
+    feedbacks = StudentFeedback.objects.filter(supervisor=request.user.supervisor)
     template_name = "supervisor/supervisor_dashboard.html"
 
     context = {
@@ -29,6 +31,7 @@ def supervisor_dashboard(request):
         "project_count": project_count,
         "ongoing_project_count": ongoing_project_count,
         "completed_project_count": completed_project_count,
+        "feedbacks":feedbacks
     }
     return render(request, template_name, context)
 
@@ -85,3 +88,31 @@ def supervisor_view_group_progress(request, group_id):
     template_name = "supervisor/supervisor_view_group_progress.html"
     context = {"tasks": tasks, "task_filter": task_filter}
     return render(request, template_name, context)
+
+@supervisor_required
+def supervisor_gives_feedback(request, task_id):
+    """logged in supervisor can send feedback to student"""
+    template_name = "supervisor/supervisor_gives_feedback.html"
+    task = Task.objects.get(id=task_id)
+    if request.method == "GET":
+        feedbackform = StudentFeedbackForm(request.GET or None)
+    elif request.method == "POST":
+        feedbackform = StudentFeedbackForm(request.POST)
+        if feedbackform.is_valid():
+            feedback_message = feedbackform.cleaned_data.get("feedback")
+            feedback = StudentFeedback.objects.create(supervisor=request.user.supervisor,task=task,feedback=feedback_message)
+        return redirect("supervisor_view_groups")
+    context = {"form": feedbackform}
+    return render(request, template_name, context)
+
+def supervisor_archive_feedback(request,feedback_id):
+    feedback = StudentFeedback.objects.get(id=feedback_id)
+    feedback.is_archived = True
+    feedback.save()
+    return redirect("supervisor_dashboard")
+
+def supervisor_view_feedback_history(request):
+    feedbacks = StudentFeedback.objects.filter(supervisor=request.user.supervisor)
+    template_name = "supervisor/supervisor_view_feedback_history.html"
+    context = {"feedbacks":feedbacks}
+    return render(request,template_name,context)

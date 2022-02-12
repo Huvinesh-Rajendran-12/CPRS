@@ -159,6 +159,16 @@ urlpatterns = [
         student_view_task_list,
         name="student_view_task_list",
     ),
+    path(
+            "student/reply_feedback/<str:feedback_id>",
+        student_reply_feedback,
+        name="student_reply_feedback",
+    ),
+    path(
+            "student/view_feedback_history",
+        student_view_feedback_history,
+        name="student_view_feedback_history",
+    ),
     # client urls
     path("accounts/profile/client", client_dashboard, name="client_dashboard"),
     path("client/view_projects", client_view_projects, name="client_view_projects"),
@@ -205,6 +215,21 @@ urlpatterns = [
         "supervisor/view_group_progress/<str:group_id>",
         supervisor_view_group_progress,
         name="supervisor_view_group_progress",
+    ),
+    path(
+        "supervisor/give_feedback/<str:task_id>",
+        supervisor_gives_feedback,
+        name="supervisor_gives_feedback",
+    ),
+    path(
+        "supervisor/view_feedback_history",
+        supervisor_view_feedback_history,
+        name="supervisor_view_feedback_history",
+    ),
+    path(
+            "supervisor/archive_feedback/<str:feedback_id>",
+        supervisor_archive_feedback,
+        name="supervisor_archive_feedback",
     ),
 ]
 

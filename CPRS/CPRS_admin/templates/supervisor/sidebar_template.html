@@ -10,7 +10,7 @@
         {% endif %}
         <li> <a href="{% url 'supervisor_view_groups' %}" class="nav-link text-white"> <i class="fa fa-group"></i>  <span class="ms-2">Group</span> </a> </li>
         <li> <a href="#" class="nav-link text-white"> <i class="fa fa-paperclip"></i>  <span class="ms-2">Projects</span> </a> </li>
-        <li> <a href="#" class="nav-link text-white"> <i class="fa fa-edit"></i>  <span class="ms-2">Feedback History</span> </a> </li>
+        <li> <a href="{% url 'supervisor_view_feedback_history' %}" class="nav-link text-white"> <i class="fa fa-edit"></i>  <span class="ms-2">Feedback History</span> </a> </li>
     </ul>
     <hr>
     <div class="dropdown"> <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false"> <i alt="" width="32" height="32" class="fa fa-user-circle-o rounded-circle me-2"></i> <strong> {{user.username}} </strong> </a>

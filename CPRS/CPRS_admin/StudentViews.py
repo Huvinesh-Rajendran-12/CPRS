@@ -4,8 +4,8 @@ from django.http import HttpResponse
 from .models import Project
 from .decorators import student_required
 from django.views.generic import CreateView
-from .models import Student_Profile, Student, Task, StudentGroup, Client
-from .forms import StudentProfileForm, TaskForm, UpdateTaskForm
+from .models import Student_Profile, Student, Task, StudentGroup, Client, StudentFeedback
+from .forms import StudentProfileForm, TaskForm, UpdateTaskForm, StudentFeedbackReplyForm
 import os
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.decorators import method_decorator
@@ -15,6 +15,7 @@ from django.utils.decorators import method_decorator
 @student_required
 def student_dashboard(request):
     task_count = Task.objects.filter(group=request.user.student.group).count()
+    tasks = Task.objects.filter(assigned_to=request.user.student)
     new_task_count = Task.objects.filter(
         group=request.user.student.group, status="New"
     ).count()
@@ -31,6 +32,7 @@ def student_dashboard(request):
         "new_task_count": new_task_count,
         "completed_task_count": completed_task_count,
         "ongoing_task_count": ongoing_task_count,
+        "tasks":tasks, 
     }
     return render(request, template_name, context)
 
@@ -140,3 +142,25 @@ def student_view_task_list(request):
     template_name = "student/student_view_task_list.html"
     context = {"tasks": tasks}
     return render(request, template_name, context)
+
+def student_reply_feedback(request,feedback_id):
+    """logged in student can reply to feedback to supervisor"""
+    template_name = "student/student_reply_feedback.html"
+    feedback = StudentFeedback.objects.get(id=feedback_id)
+    if request.method == "GET":
+        feedbackreplyform = StudentFeedbackReplyForm(request.GET or None)
+    elif request.method == "POST":
+        feedbackreplyform = StudentFeedbackReplyForm(request.POST)
+        if feedbackreplyform.is_valid():
+            feedback_reply = feedbackreplyform.cleaned_data.get("feedback_reply")
+            feedback.feedback_reply = feedback_reply
+            feedback.save()
+        return redirect("student_dashboard")
+    context = {"form": feedbackreplyform}
+    return render(request, template_name, context)
+
+def student_view_feedback_history(request):
+    template_name = "student/student_view_feedback_history.html"
+    tasks = Task.objects.filter(assigned_to=request.user.student)
+    context = {"tasks":tasks}
+    return render(request,template_name,context)
