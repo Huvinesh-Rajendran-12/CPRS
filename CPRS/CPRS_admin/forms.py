@@ -17,6 +17,7 @@ from .models import (
     UniversityClient,
     IndustryClient,
     Task,
+    StudentFeedback,
 )
 from django.contrib.auth.models import Group
 from django.contrib.admin.widgets import FilteredSelectMultiple
@@ -271,3 +272,14 @@ class AssignSupervisorForm(ModelForm):
     class Meta:
         model = StudentGroup
         fields = ["supervisor"]
+
+class StudentFeedbackForm(ModelForm):
+    class Meta:
+        model = StudentFeedback
+        fields = ["feedback"]
+
+class StudentFeedbackReplyForm(ModelForm):
+    class Meta:
+        model = StudentFeedback
+        fields = ["feedback_reply"]
+
