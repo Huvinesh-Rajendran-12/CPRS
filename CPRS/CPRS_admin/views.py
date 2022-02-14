@@ -70,12 +70,6 @@ class SupervisorSignUpView(CreateView):
         return redirect("login")
 
 
-def search(request):
-    return render(request, "main/search.html")
-
-
-def project(request):
-    return render(request, "main/projects.html")
 
 
 def main_view(request):

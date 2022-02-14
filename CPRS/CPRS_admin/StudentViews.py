@@ -60,6 +60,18 @@ class StudentProfileView(CreateView):
         profile.save()
         return redirect("student_view_profile")
 
+def student_update_profile(request):
+    profile = Student_Profile.objects.get(student=request.user.student)
+    print("profile",profile)
+    form = StudentProfileForm(instance=profile)
+    template_name = "student/student_profile.html"
+    if request.method == "POST":
+        form = StudentProfileForm(request.POST,instance=profile)
+        if form.is_valid:
+            form.save()
+            return redirect("studebt_view_profile")
+    context = {"form":form}
+    return render(request,template_name,context)
 
 @login_required
 @student_required

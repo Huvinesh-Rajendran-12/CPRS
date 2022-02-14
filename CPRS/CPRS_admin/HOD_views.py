@@ -240,7 +240,7 @@ def create_group_with_students(request):
                     student.has_group = True
                     student_profile.save()
                     student.save()
-                    return redirect("coordinator_dashboard")
+                return redirect("coordinator_dashboard")
         else:
             print("Error...")
     return render(

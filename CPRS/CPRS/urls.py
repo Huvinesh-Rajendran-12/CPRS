@@ -139,6 +139,11 @@ urlpatterns = [
         name="student_edit_profile",
     ),
     path(
+        "student/profile/update",
+        student_update_profile,
+        name="student_update_profile",
+    ),
+    path(
         "student/group/details",
         student_view_group_details,
         name="student_view_group_details",

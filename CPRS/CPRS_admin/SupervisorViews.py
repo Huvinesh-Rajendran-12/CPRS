@@ -56,6 +56,8 @@ class SupervisorProfileEditView(CreateView):
         return redirect("supervisor_view_profile")
 
 
+
+
 @supervisor_required
 def supervisor_view_groups(request):
     groups = StudentGroup.objects.filter(supervisor=request.user.supervisor)
