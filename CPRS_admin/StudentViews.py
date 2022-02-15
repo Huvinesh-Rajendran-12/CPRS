@@ -60,6 +60,8 @@ class StudentProfileView(CreateView):
         profile.save()
         return redirect("student_view_profile")
 
+@login_required
+@student_required
 def student_update_profile(request):
     profile = Student_Profile.objects.get(student=request.user.student)
     print(profile)
@@ -115,7 +117,7 @@ def student_view_group_details(request):
     else:
         return HttpResponse("No group to view.")
 
-
+@login_required
 @student_required
 def create_task(request):
     """logged in student can create task"""
@@ -130,7 +132,7 @@ def create_task(request):
     context = {"form": taskform}
     return render(request, template_name, context)
 
-
+@login_required
 @student_required
 def update_task(request, task_id):
     """logged in student can create task"""
@@ -148,6 +150,8 @@ def update_task(request, task_id):
     return render(request, template_name, context)
 
 
+@login_required
+@student_required
 def student_view_task_list(request):
     tasks = Task.objects.filter(created_by=request.user.student) | Task.objects.filter(
         assigned_to=request.user.student
@@ -157,6 +161,8 @@ def student_view_task_list(request):
     context = {"tasks": tasks,"task_filter":task_filter}
     return render(request, template_name, context)
 
+@login_required
+@student_required
 def student_reply_feedback(request,feedback_id):
     """logged in student can reply to feedback to supervisor"""
     template_name = "student/student_reply_feedback.html"
@@ -173,6 +179,8 @@ def student_reply_feedback(request,feedback_id):
     context = {"form": feedbackreplyform}
     return render(request, template_name, context)
 
+@login_required
+@student_required
 def student_view_feedback_history(request):
     template_name = "student/student_view_feedback_history.html"
     tasks = Task.objects.filter(assigned_to=request.user.student)

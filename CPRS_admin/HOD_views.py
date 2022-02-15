@@ -19,6 +19,7 @@ from .models import (
     Client_Request,
 )
 from .decorators import admin_required
+from django.contrib.auth.decorators import login_required
 from .filters import (
     StudentFilter,
     ProjectFilter,
@@ -28,6 +29,7 @@ from .filters import (
 )
 
 # the dashboard of the admin
+@login_required
 @admin_required
 def admin_dashboard(request):
     student_count = Student.objects.all().count()
@@ -55,12 +57,14 @@ def admin_dashboard(request):
     return render(request, "HOD/dashboard.html", context)
 
 
+@login_required
 @admin_required
 def search(request):
     return render(request, "HOD/search.html")
 
 
 # view the list of the projects
+@login_required
 @admin_required
 def project(request):
     projects = Project.objects.all()
@@ -70,12 +74,14 @@ def project(request):
 
 
 # view the recommendations
+@login_required
 @admin_required
 def recommendations_view(request):
     recommendations = Recommended_Project.objects.filter(is_approved=0)
     return render(request, "HOD/student_leave_view.html", {"leaves": leaves})
 
 
+@login_required
 @admin_required
 def recommendations_approve_view(request, recommendation_id):
     recommendations = Recommended_Project.objects.get(id=recommendation_id)
@@ -84,6 +90,7 @@ def recommendations_approve_view(request, recommendation_id):
     return HttpResponseRedirect(reverse("recommendations_view"))
 
 
+@login_required
 @admin_required
 def recommendations_disapprove_view(request, recommendation_id):
     recommendations = Recommended_Project.objects.get(id=leave_id)
@@ -94,6 +101,7 @@ def recommendations_disapprove_view(request, recommendation_id):
 
 
 # views the list of students
+@login_required
 @admin_required
 def student_view_list(request):
     students = Student.objects.all()
@@ -103,6 +111,7 @@ def student_view_list(request):
 
 
 # view the list of the clients
+@login_required
 @admin_required
 def clientview_list(request):
     clients = Client.objects.all()
@@ -112,6 +121,7 @@ def clientview_list(request):
 
 
 # view the list of the supervisors
+@login_required
 @admin_required
 def supervisorview_list(request):
     supervisors = Supervisor.objects.all()
@@ -121,6 +131,7 @@ def supervisorview_list(request):
 
 
 # activate or deactivate the students
+@login_required
 @admin_required
 def student_deactivate(request, student_id):
     student = Student.objects.get(id=student_id)
@@ -129,6 +140,7 @@ def student_deactivate(request, student_id):
     return redirect(reverse("coordinator_view_students"))
 
 
+@login_required
 @admin_required
 def student_activate(request, student_id):
     student = Student.objects.get(id=student_id)
@@ -138,6 +150,7 @@ def student_activate(request, student_id):
 
 
 # activate or deactivate the clients
+@login_required
 @admin_required
 def client_deactivate(request, client_id):
     client = Client.objects.get(id=client_id)
@@ -146,6 +159,7 @@ def client_deactivate(request, client_id):
     return redirect(reverse("coordinator_view_clients"))
 
 
+@login_required
 @admin_required
 def client_activate(request, client_id):
     client = Client.objects.get(id=client_id)
@@ -155,6 +169,7 @@ def client_activate(request, client_id):
 
 
 # activate or deactivate supervisors
+@login_required
 @admin_required
 def supervisor_deactivate(request, supervisor_id):
     supervisor = Supervisor.objects.get(id=supervisor_id)
@@ -163,6 +178,7 @@ def supervisor_deactivate(request, supervisor_id):
     return redirect(reverse("coordinator_views_supervisors"))
 
 
+@login_required
 @admin_required
 def supervisor_activate(request, supervisor_id):
     supervisor = Supervisor.objects.get(id=supervisor_id)
@@ -172,6 +188,7 @@ def supervisor_activate(request, supervisor_id):
 
 
 # view requests
+@login_required
 @admin_required
 def admin_view_pending_client_requests(request):
     requests = Client_Request.objects.get(approval_status=0)
@@ -179,6 +196,7 @@ def admin_view_pending_client_requests(request):
     return render(request, "HOD/view_pending_client_requests.html", context)
 
 
+@login_required
 @admin_required
 def admin_view_all_client_requests(request):
     requests = Client_Request.objects.all()
@@ -187,6 +205,7 @@ def admin_view_all_client_requests(request):
 
 
 # approve or disapprove client requests
+@login_required
 @admin_required
 def disapprove_client_request(request, request_id, group_id):
     group = StudentGroup.objects.get(id=group_id)
@@ -198,6 +217,7 @@ def disapprove_client_request(request, request_id, group_id):
     return redirect(reverse("coordinator_dashboard"))
 
 
+@login_required
 @admin_required
 def approve_client_request(request, request_id, group_id):
     group = StudentGroup.objects.get(id=group_id)
@@ -209,6 +229,7 @@ def approve_client_request(request, request_id, group_id):
     return redirect(reverse("coordinator_dashboard"))
 
 
+@login_required
 @admin_required
 def create_group_with_students(request):
     template_name = "HOD/create_group_with_student.html"
@@ -258,6 +279,8 @@ def create_group_with_students(request):
     )
 
 
+@login_required
+@admin_required
 def edit_student_group(request,group_id):
     template_name = "HOD/create_group_with_student.html"
     heading = "Edit Student Group"
@@ -311,6 +334,7 @@ def edit_student_group(request,group_id):
 
 
 
+@login_required
 @admin_required
 def view_group_list(request):
     template_name = "HOD/view_group.html"
@@ -320,6 +344,7 @@ def view_group_list(request):
     return render(request, template_name, context)
 
 
+@login_required
 @admin_required
 def AssignSupervisor(request, group_id):
     """logged in student can create task"""

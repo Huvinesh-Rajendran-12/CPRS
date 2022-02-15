@@ -1,4 +1,5 @@
 from .decorators import supervisor_required
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import (
     Supervisor_Profile,
@@ -14,7 +15,7 @@ from .forms import SupervisorProfileForm, StudentFeedbackForm
 from django.views.generic import CreateView
 from .filters import TaskFilter
 
-
+@login_required
 @supervisor_required
 def supervisor_dashboard(request):
     group_count = StudentGroup.objects.filter(
@@ -36,6 +37,7 @@ def supervisor_dashboard(request):
     return render(request, template_name, context)
 
 
+@login_required
 @supervisor_required
 def supervisor_view_profile(request):
     supervisor = Supervisor.objects.get(user=request.user)
@@ -58,6 +60,7 @@ class SupervisorProfileEditView(CreateView):
 
 
 
+@login_required
 @supervisor_required
 def supervisor_view_groups(request):
     groups = StudentGroup.objects.filter(supervisor=request.user.supervisor)
@@ -66,6 +69,7 @@ def supervisor_view_groups(request):
     return render(request, template_name, context)
 
 
+@login_required
 @supervisor_required
 def supervisor_view_group_details(request, group_id):
     group = StudentGroup.objects.get(id=group_id)
@@ -82,6 +86,7 @@ def supervisor_view_group_details(request, group_id):
     return render(request, template_name, context)
 
 
+@login_required
 @supervisor_required
 def supervisor_view_group_progress(request, group_id):
     group = StudentGroup.objects.get(id=group_id)
@@ -91,6 +96,7 @@ def supervisor_view_group_progress(request, group_id):
     context = {"tasks": tasks, "task_filter": task_filter}
     return render(request, template_name, context)
 
+@login_required
 @supervisor_required
 def supervisor_gives_feedback(request, task_id):
     """logged in supervisor can send feedback to student"""
@@ -107,12 +113,16 @@ def supervisor_gives_feedback(request, task_id):
     context = {"form": feedbackform}
     return render(request, template_name, context)
 
+@login_required
+@supervisor_required
 def supervisor_archive_feedback(request,feedback_id):
     feedback = StudentFeedback.objects.get(id=feedback_id)
     feedback.is_archived = True
     feedback.save()
     return redirect("supervisor_dashboard")
 
+@login_required
+@supervisor_required
 def supervisor_view_feedback_history(request):
     feedbacks = StudentFeedback.objects.filter(supervisor=request.user.supervisor)
     template_name = "supervisor/supervisor_view_feedback_history.html"

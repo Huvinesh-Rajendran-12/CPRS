@@ -17,8 +17,9 @@ from .forms import (
 )
 from django.views.generic import CreateView
 from .decorators import client_required
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 @client_required
 def client_view_profile(request):
     user = request.user
@@ -33,6 +34,7 @@ def client_view_profile(request):
     return render(request, template_name, context)
 
 
+@login_required
 @client_required
 def client_edit_profile(request):
     template_name = "client/client_edit_profile.html"
@@ -61,6 +63,7 @@ def client_edit_profile(request):
 
 
 # client requests to view group details
+@login_required
 @client_required
 def client_request_group(request, group_id):
     template_name = "client/client_request_group.html"
@@ -83,6 +86,7 @@ def client_request_group(request, group_id):
 
 
 # client views the details of the requests made so far
+@login_required
 @client_required
 def client_view_groups(request):
     assigned_project_count = Project.objects.filter(
@@ -99,6 +103,7 @@ def client_view_groups(request):
 
 
 # client views group details if given permission by the admin
+@login_required
 @client_required
 def client_view_group_details(request, group_id):
     group = StudentGroup.objects.get(id=group_id)
@@ -108,6 +113,7 @@ def client_view_group_details(request, group_id):
 
 
 # clients views the list of projects
+@login_required
 @client_required
 def client_view_projects(request):
     template_name = "client/view_projects.html"
@@ -117,6 +123,7 @@ def client_view_projects(request):
 
 
 # client adds the project
+@login_required
 @client_required
 def add_project_view(request):
     template_name = "client/add_project.html"
@@ -138,6 +145,7 @@ def add_project_view(request):
     return render(request, template_name, context)
 
 
+@login_required
 @client_required
 def edit_project_view(request,project_id):
     template_name = "client/add_project.html"
@@ -159,6 +167,7 @@ def edit_project_view(request,project_id):
     context = {"form": form}
     return render(request, template_name, context)
 
+@login_required
 @client_required
 def client_dashboard(request):
     project_count = Project.objects.filter(client=request.user.client).count()
