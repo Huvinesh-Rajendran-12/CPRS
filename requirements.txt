@@ -51,8 +51,3 @@ urllib3==1.26.8
 wasabi==0.9.0
 whitenoise==6.0.0
 
-try:
-        nlp = spacy.load("en_core_web_md")
-except: # If not present, we download
-        spacy.cli.download("en_core_web_md")
-        nlp = spacy.load("en_core_web_md")
