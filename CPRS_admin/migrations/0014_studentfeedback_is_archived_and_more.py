@@ -7,18 +7,23 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CPRS_admin', '0013_studentfeedback'),
+        ("CPRS_admin", "0013_studentfeedback"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='studentfeedback',
-            name='is_archived',
+            model_name="studentfeedback",
+            name="is_archived",
             field=models.BooleanField(default=False),
         ),
         migrations.AlterField(
-            model_name='studentfeedback',
-            name='task',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='feedbackoftask', to='CPRS_admin.task'),
+            model_name="studentfeedback",
+            name="task",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="feedbackoftask",
+                to="CPRS_admin.task",
+            ),
         ),
     ]

@@ -101,7 +101,7 @@ urlpatterns = [
         name="coordinator_create_group_with_students",
     ),
     path(
-            "coordinator/edit_student_group/<str:group_id>",
+        "coordinator/edit_student_group/<str:group_id>",
         edit_student_group,
         name="edit_student_group",
     ),
@@ -175,12 +175,12 @@ urlpatterns = [
         name="student_view_task_list",
     ),
     path(
-            "student/reply_feedback/<str:feedback_id>",
+        "student/reply_feedback/<str:feedback_id>",
         student_reply_feedback,
         name="student_reply_feedback",
     ),
     path(
-            "student/view_feedback_history",
+        "student/view_feedback_history",
         student_view_feedback_history,
         name="student_view_feedback_history",
     ),
@@ -191,7 +191,11 @@ urlpatterns = [
     path("client/view_profile", client_view_profile, name="client_view_profile"),
     path("client/edit_profile", client_edit_profile, name="client_edit_profile"),
     path("client/add_project", add_project_view, name="client_add_project"),
-    path("client/edit_project/<str:project_id>", edit_project_view, name="client_edit_project"),
+    path(
+        "client/edit_project/<str:project_id>",
+        edit_project_view,
+        name="client_edit_project",
+    ),
     path(
         "client/request_group_details/<str:group_id>",
         client_request_group,
@@ -243,7 +247,7 @@ urlpatterns = [
         name="supervisor_view_feedback_history",
     ),
     path(
-            "supervisor/archive_feedback/<str:feedback_id>",
+        "supervisor/archive_feedback/<str:feedback_id>",
         supervisor_archive_feedback,
         name="supervisor_archive_feedback",
     ),

@@ -68,13 +68,14 @@ def assign_recommended_project(request, group_id, client_id, project_id):
     project.save()
     return redirect("coordinator_view_groups")
 
-def change_recommended_project(request,group_id,project_id):
+
+def change_recommended_project(request, group_id, project_id):
     group = StudentGroup.objects.get(id=group_id)
     project = Project.objects.get(id=project_id)
-    group.client = None 
-    group.project = None 
-    group.has_project = False 
-    project.is_assigned = False 
+    group.client = None
+    group.project = None
+    group.has_project = False
+    project.is_assigned = False
     group.save()
     project.save()
-    return redirect("coordinator_view_project_recommendations",group_id)
+    return redirect("coordinator_view_project_recommendations", group_id)

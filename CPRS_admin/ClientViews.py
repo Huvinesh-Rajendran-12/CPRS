@@ -19,6 +19,7 @@ from django.views.generic import CreateView
 from .decorators import client_required
 from django.contrib.auth.decorators import login_required
 
+
 @login_required
 @client_required
 def client_view_profile(request):
@@ -147,13 +148,13 @@ def add_project_view(request):
 
 @login_required
 @client_required
-def edit_project_view(request,project_id):
+def edit_project_view(request, project_id):
     template_name = "client/add_project.html"
     project = Project.objects.get(id=project_id)
     if request.method == "GET":
-        form = ProjectForm(request.GET or None,instance=project)
+        form = ProjectForm(request.GET or None, instance=project)
     elif request.method == "POST":
-        form = ProjectForm(request.POST, request.FILES,instance=project)
+        form = ProjectForm(request.POST, request.FILES, instance=project)
         files = request.FILES.getlist("file")
         if form.is_valid():
             project = form.save(commit=False)
@@ -166,6 +167,7 @@ def edit_project_view(request,project_id):
         return redirect("client_view_projects")
     context = {"form": form}
     return render(request, template_name, context)
+
 
 @login_required
 @client_required

@@ -36,4 +36,4 @@ class GroupFilter(django_filters.FilterSet):
 class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
-        exclude = ["description", "project", "group","created_by","assigned_to"]
+        exclude = ["description", "project", "group", "created_by", "assigned_to"]

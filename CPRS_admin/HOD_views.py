@@ -281,18 +281,18 @@ def create_group_with_students(request):
 
 @login_required
 @admin_required
-def edit_student_group(request,group_id):
+def edit_student_group(request, group_id):
     template_name = "HOD/create_group_with_student.html"
     heading = "Edit Student Group"
     group = StudentGroup.objects.get(id=group_id)
     students = Student.objects.filter(group=group)
     students_valid = True
     if request.method == "GET":
-        groupform = StudentGroupModelForm(request.GET or None,instance=group)
+        groupform = StudentGroupModelForm(request.GET or None, instance=group)
         formset = StudentFormset(instance=students)
     elif request.method == "POST":
-        groupform = StudentGroupModelForm(request.POST,instance=group)
-        formset = StudentFormset(request.POST,instance=students)
+        groupform = StudentGroupModelForm(request.POST, instance=group)
+        formset = StudentFormset(request.POST, instance=students)
         if groupform.is_valid() and formset.is_valid():
             # first save this book, as its reference will be used in `Author`
             for form in formset:
@@ -329,9 +329,6 @@ def edit_student_group(request,group_id):
             "formset": formset,
         },
     )
-
-
-
 
 
 @login_required

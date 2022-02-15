@@ -160,7 +160,7 @@ class Student_Profile(models.Model):
             + self.specialization
             + self.area_of_interest
             + str(self.cgpa)
-        ) 
+        )
 
 
 class Client_Request(models.Model):
@@ -223,10 +223,13 @@ class Task(models.Model):
     def get_absolute_url(self):
         return reverse("task-detail", kwargs={"pk": self.pk})
 
+
 class StudentFeedback(models.Model):
-    supervisor = models.ForeignKey(Supervisor,null=True,on_delete=models.CASCADE)
-    student = models.ForeignKey(Student,null=True,on_delete=models.CASCADE)
-    task = models.ForeignKey(Task,related_name="feedbackoftask",null=True,on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(Supervisor, null=True, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE)
+    task = models.ForeignKey(
+        Task, related_name="feedbackoftask", null=True, on_delete=models.CASCADE
+    )
     feedback = models.TextField()
     feedback_reply = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

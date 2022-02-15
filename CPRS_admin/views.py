@@ -70,8 +70,6 @@ class SupervisorSignUpView(CreateView):
         return redirect("login")
 
 
-
-
 def main_view(request):
     if request.user.is_authenticated:
         if request.user.is_student:
