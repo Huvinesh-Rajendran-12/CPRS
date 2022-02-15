@@ -114,7 +114,7 @@ def LoginFormView(request):
     context = {"form": loginform}
     return render(request, template_name, context)
 
-
+@login_required
 def Logout(request):
     """logout logged in user"""
     logout(request)
