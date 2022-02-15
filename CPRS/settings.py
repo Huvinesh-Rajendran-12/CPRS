@@ -141,3 +141,5 @@ import spacy
 LANGUAGE_MODELS = {}
 
 LANGUAGE_MODELS["en"] = spacy.load("en_core_web_md")
+import django_heroku
+django_heroku.settings(locals())
