@@ -27,6 +27,7 @@
           <th scope="col">Supervisor</th>
           <th scope="col"></th>
           <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -40,7 +41,7 @@
             <td>
              {% if group.has_project %}
                 
-                <a href="{% url 'coordinator_view_project_recommendations' group_id=group.id %}">Edit Assigned Projects</a>  
+                <a href="{% url 'coordinator_edit_project_recommendations' group_id=group.id  project_id=group.project.id %}">Edit Assigned Projects</a>  
              {% else %}
                 <a href="{% url 'coordinator_view_project_recommendations' group_id=group.id %}">View Recommended Projects</a>
              {% endif %}
@@ -52,6 +53,9 @@
              {% else %}
              <a href="{% url 'coordinator_assign_supervisor' group_id=group.id %}">Assign Supervisor</a>
              {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'edit_student_group' group_id=group.id %}">Edit Group</a> 
             </td>
         </tr>
         {% endfor %}

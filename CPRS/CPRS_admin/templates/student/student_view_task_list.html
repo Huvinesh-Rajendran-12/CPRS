@@ -1,12 +1,23 @@
 {% extends "main/base.html" %}
-
+{% load static %}
 {% block content %}
 <div class="row">
     <div class="col-md">
         <div class="card card-body">
-            <h5>Tasks</h5>
+            <h3>Tasks</h3>
+        </div>
+        <div class="row">
+            <div class="col">
+            <div class="card card-body">
+            <form method="get">
+                   {{task_filter.form}}
+                <button class="center btn btn-primary" type="submit">Search</button>
+            </form>
+            </div>
+            </div>
         </div>
         <div class="card card-body">
+            {% if task_filter.qs %}
             <table class="table">
               <thead>
                 <tr>
@@ -22,38 +33,71 @@
                 </tr>
               </thead>
               <tbody>
-                {% if tasks %}
-                    {% for task in tasks %}
-                    <tr>
-                        <td>{{task.id}}</td>
-                        <td>{{task.title}}</td>
-                        <td>{{task.description}}</td>
-                        <td>{{task.created_by}}</td>
-                        <td>{{task.assigned_to}}</td>
-                        <td>{{task.created_date}}</td>
-                        <td>{{task.due_date}}</td>
-                        <td>{{task.status}}</td>
-                        <td>
-                            <a href="{% url 'student_update_task' task_id=task.id %}" class="btn btn-primary">Update Task</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
-                    There are no tasks. Please add. 
-                {% endif %}
+                {% for task in task_filter.qs %}
+                <tr>
+                    <td>{{task.id}}</td>
+                    <td>{{task.title}}</td>
+                    <td>{{task.description}}</td>
+                    <td>{{task.created_by}}</td>
+                    <td>{{task.assigned_to}}</td>
+                    <td>{{task.created_date}}</td>
+                    <td>{{task.due_date}}</td>
+                    <td>{{task.status}}</td>
+                    <td>
+                        <a href="{% url 'student_update_task' task_id=task.id %}" class="btn btn-primary">Update Task</a>
+                    </td>
+                </tr>
+                {% endfor %}
               </tbody>
             </table>
-    </div>
-        {% if user.student.profile.group.has_project %}
-        <div class="center"> 
-        <a href="{% url 'student_add_task' %}" class="btn btn-primary" >Add Task</a>
-        </div> 
-        {% else %}
-        <div class="center">
-            <br>You have no project to add task.</br>  
-        <a href="#" class="btn btn-secondary" >Add Task</a>
+            {% else %}
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Created by</th>
+                  <th scope="col">Assigned To</th>
+                  <th scope="col">Created Date</th>
+                  <th scope="col">Due Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{task.id}}</td>
+                    <td>{{task.title}}</td>
+                    <td>{{task.description}}</td>
+                    <td>{{task.created_by}}</td>
+                    <td>{{task.assigned_to}}</td>
+                    <td>{{task.created_date}}</td>
+                    <td>{{task.due_date}}</td>
+                    <td>{{task.status}}</td>
+                    <td>
+                        <a href="{% url 'student_update_task' task_id=task.id %}" class="btn btn-primary">Update Task</a>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
         </div>
-        {% endif %}
+    </div>
+</div>
+
+    {% if user.student.profile.group.has_project %}
+    <div class="center"> 
+    <a href="{% url 'student_add_task' %}" class="btn btn-primary" >Add Task</a>
+    </div> 
+    {% else %}
+    <div class="center">
+        <br>You have no project to add task.</br>  
+    <a href="#" class="btn btn-secondary" >Add Task</a>
+    </div>
+    {% endif %}
 
 </div>
 

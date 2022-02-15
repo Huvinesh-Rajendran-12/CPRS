@@ -9,7 +9,7 @@ from .forms import StudentProfileForm, TaskForm, UpdateTaskForm, StudentFeedback
 import os
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.decorators import method_decorator
-
+from .filters import TaskFilter
 
 @login_required
 @student_required
@@ -60,6 +60,18 @@ class StudentProfileView(CreateView):
         profile.save()
         return redirect("student_view_profile")
 
+def student_update_profile(request):
+    profile = Student_Profile.objects.get(student=request.user.student)
+    print(profile)
+    form = StudentProfileForm(instance=profile)
+    template_name = "student/student_profile.html"
+    if request.method == "POST":
+        form = StudentProfileForm(request.POST,instance=profile)
+        if form.is_valid:
+            form.save()
+            return redirect("student_view_profile")
+    context = {"form":form}
+    return render(request,template_name,context)
 
 @login_required
 @student_required
@@ -123,9 +135,9 @@ def update_task(request, task_id):
     template_name = "student/update_task_form.html"
     task = Task.objects.get(id=task_id)
     if request.method == "GET":
-        updatetaskform = UpdateTaskForm(request.GET or None)
+        updatetaskform = UpdateTaskForm(request.GET or None,instance=task)
     elif request.method == "POST":
-        updatetaskform = UpdateTaskForm(request.POST)
+        updatetaskform = UpdateTaskForm(request.POST,instance=task)
         if updatetaskform.is_valid():
             task.status = updatetaskform.cleaned_data.get("status")
             task.save()
@@ -138,9 +150,9 @@ def student_view_task_list(request):
     tasks = Task.objects.filter(created_by=request.user.student) | Task.objects.filter(
         assigned_to=request.user.student
     )
-    print(tasks)
+    task_filter = TaskFilter(request.GET,queryset=tasks)
     template_name = "student/student_view_task_list.html"
-    context = {"tasks": tasks}
+    context = {"tasks": tasks,"task_filter":task_filter}
     return render(request, template_name, context)
 
 def student_reply_feedback(request,feedback_id):

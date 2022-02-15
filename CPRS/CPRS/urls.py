@@ -83,7 +83,7 @@ urlpatterns = [
     path(
         "coordinator/supervisor_deactivate/<str:supervisor_id>",
         supervisor_deactivate,
-        name="coordinator_deactviate_supervisor",
+        name="coordinator_deactivate_supervisor",
     ),
     path(
         "coordinator/supervisor_activate/<str:supervisor_id>",
@@ -99,6 +99,11 @@ urlpatterns = [
         "coordinator/create_group_with_students",
         create_group_with_students,
         name="coordinator_create_group_with_students",
+    ),
+    path(
+            "coordinator/edit_student_group/<str:group_id>",
+        edit_student_group,
+        name="edit_student_group",
     ),
     path(
         "coordinator/view_pending_client_requests",
@@ -130,6 +135,11 @@ urlpatterns = [
         assign_recommended_project,
         name="coordinator_assign_project_recommendations",
     ),
+    path(
+        "coordinator/assign_recommended_project/<str:group_id>/<str:project_id>",
+        change_recommended_project,
+        name="coordinator_edit_project_recommendations",
+    ),
     # student urls
     path("accounts/profile/student", student_dashboard, name="student_dashboard"),
     path("student/profile/view", StudentProfile, name="student_view_profile"),
@@ -137,6 +147,11 @@ urlpatterns = [
         "student/profile/edit",
         StudentProfileView.as_view(),
         name="student_edit_profile",
+    ),
+    path(
+        "student/profile/update",
+        student_update_profile,
+        name="student_update_profile",
     ),
     path(
         "student/group/details",
@@ -175,7 +190,8 @@ urlpatterns = [
     path("client/view_groups", client_view_groups, name="client_view_groups"),
     path("client/view_profile", client_view_profile, name="client_view_profile"),
     path("client/edit_profile", client_edit_profile, name="client_edit_profile"),
-    path("client/addproject", add_project_view, name="client_add_project"),
+    path("client/add_project", add_project_view, name="client_add_project"),
+    path("client/edit_project/<str:project_id>", edit_project_view, name="client_edit_project"),
     path(
         "client/request_group_details/<str:group_id>",
         client_request_group,

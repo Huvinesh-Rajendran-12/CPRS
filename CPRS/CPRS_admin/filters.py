@@ -6,7 +6,7 @@ from .models import *
 class StudentFilter(django_filters.FilterSet):
     class Meta:
         model = Student
-        fields = "__all__"
+        exclude = ["user"]
 
 
 class ProjectFilter(django_filters.FilterSet):
@@ -18,13 +18,13 @@ class ProjectFilter(django_filters.FilterSet):
 class ClientFilter(django_filters.FilterSet):
     class Meta:
         model = Client
-        exclude = []
+        exclude = ["user"]
 
 
 class SupervisorFilter(django_filters.FilterSet):
     class Meta:
         model = Supervisor
-        exclude = []
+        exclude = ["user"]
 
 
 class GroupFilter(django_filters.FilterSet):
@@ -36,4 +36,4 @@ class GroupFilter(django_filters.FilterSet):
 class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
-        exclude = ["description", "project", "group"]
+        exclude = ["description", "project", "group","created_by","assigned_to"]

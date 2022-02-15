@@ -1,52 +1,31 @@
 {% extends "main/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-<section class="content">
-      <div class="container-fluid">
-                    <div class="row">
-              <div class="col-md-12">
-            <!-- general form elements -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Request to view group details</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-               <form method="post">
-                <div class="card-body">
-                     
-                   <div class="form-group">
-                    <label>Group name:</label>
-                       {% csrf_token %}
-                       {{group.name}}
-                  </div>
-                  <div class="form-group">
-                    {{form}}
-                  </div>
-                   <div class="form-group">
-                      {% if messages %}
-                        {% for message in messages %}
-                        {% if message.tags == 'error' %}
-                        <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
-                        {% endif %}
-                        {% if message.tags == 'success' %}
-                        <div class="alert alert-success" style="margin-top:10px">{{ message }}</div>
-                        {% endif %}
-                        {% endfor %}
-                      {% endif %}
-                    </div>
-
+<section class="content center">
+      <div class="center container-fluid">
+                 <h3> Project Details </h3>
+                <div class="card" style="width: 70rem;">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                              <th>Group Name</th>
+                              <td>{{group.name}}</td>
+                            </tr>
+                            <tr>
+                              <th>Group ID</th>
+                              <td>{{group.id}}</td>
+                            </tr>
+                            <tr>
+                                <th>Request Message</th>
+                                <td>{{form.message|as_crispy_field}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary btn-block" id="fetch_student">Request</button>
-                </div>
-               </form>
-            </div>
-          </div>
-          </div>
+              <div class="center">
+                  <button type="submit" class="btn btn-primary submit_btn  my-4">Submit</button>
+              </div>      
       </div>
-    </section>
+</section>
     <!-- /.content -->
 {% endblock content %}

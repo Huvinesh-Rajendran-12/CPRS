@@ -240,7 +240,7 @@ def create_group_with_students(request):
                     student.has_group = True
                     student_profile.save()
                     student.save()
-                    return redirect("coordinator_dashboard")
+                return redirect("coordinator_dashboard")
         else:
             print("Error...")
     return render(
@@ -252,6 +252,59 @@ def create_group_with_students(request):
             "formset": formset,
         },
     )
+
+
+def edit_student_group(request,group_id):
+    template_name = "HOD/create_group_with_student.html"
+    heading = "Edit Student Group"
+    group = StudentGroup.objects.get(id=group_id)
+    students = Student.objects.filter(group=group)
+    students_valid = True
+    if request.method == "GET":
+        groupform = StudentGroupModelForm(request.GET or None,instance=group)
+        formset = StudentFormset(instance=students)
+    elif request.method == "POST":
+        groupform = StudentGroupModelForm(request.POST,instance=group)
+        formset = StudentFormset(request.POST,instance=students)
+        if groupform.is_valid() and formset.is_valid():
+            # first save this book, as its reference will be used in `Author`
+            for form in formset:
+                # so that `book` instance can be attached.
+                name = form.cleaned_data.get("name")
+                students = Student.objects.filter(name=name).count()
+                if students == 0:
+                    return HttpResponse("The student " + name + " does not exist")
+                student = Student.objects.get(name=name)
+                if student.has_group:
+                    return HttpResponse("The student " + name + " has a group")
+                    students_valid = False
+            if students_valid:
+                group = groupform.save()
+                for form in formset:
+                    name = form.cleaned_data.get("name")
+                    student = Student.objects.get(name=name)
+                    student_profile = Student_Profile.objects.get(student=student)
+                    print(student)
+                    student_profile.group = group
+                    student.group = group
+                    student.has_group = True
+                    student_profile.save()
+                    student.save()
+                return redirect("coordinator_dashboard")
+        else:
+            print("Error...")
+    return render(
+        request,
+        template_name,
+        {
+            "heading": heading,
+            "groupform": groupform,
+            "formset": formset,
+        },
+    )
+
+
+
 
 
 @admin_required
