@@ -36,6 +36,8 @@ def admin_dashboard(request):
     Supervisor_count = Supervisor.objects.all().count()
     project_count = Project.objects.all().count()
     pending_project_count = Project.objects.filter(is_assigned=False).count()
+    ongoing_project_count = Project.objects.filter(status="Ongoing").count()
+    completed_project_count = Project.objects.filter(status="Completed").count()
     client_count = Client.objects.all().count()
     requests = Client_Request.objects.filter(approval_status=0)
     context = {
@@ -46,6 +48,8 @@ def admin_dashboard(request):
         "group_count": group_count,
         "student_without_group_count": student_without_group_count,
         "pending_project_count": pending_project_count,
+        "ongoing_project_count": ongoing_project_count,
+        "completed_project_count": completed_project_count,
         "requests": requests,
     }
     return render(request, "HOD/dashboard.html", context)

@@ -99,6 +99,8 @@ def student_view_project_details(request):
             client = Client.objects.get(id=project.client.id)
             context = {"project": project, "client": client}
             return render(request, template_name, context)
+        else: 
+            return HttpResponse("No projects assigned")
     else:
         return HttpResponse("No projects.")
 

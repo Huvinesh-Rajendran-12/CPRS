@@ -32,7 +32,7 @@
             {{form.password | as_crispy_field}}
           </div>
           <div class="mt-2 text-end">
-            <a href="#" class="text-primary fw-bold text-decoration-none">Forget Password?</a>
+              <a href="{% url 'password_reset' %}" class="text-primary fw-bold text-decoration-none">Forget Password?</a>
           </div>
           <button type="submit" class="btn btn-primary submit_btn w-100 my-4">Continue</button>
         </form>
