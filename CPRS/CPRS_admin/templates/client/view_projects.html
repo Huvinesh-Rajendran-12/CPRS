@@ -1,12 +1,26 @@
-{% extends "main/base.html" %}
+{% extends 'main/base.html' %}
+{% load static %}
 
 {% block content %}
+
+
 <div class="row">
     <div class="col-md">
         <div class="card card-body">
-            <h5>Projects</h5>
+            <h3>Projects</h3>
+        </div>
+        <div class="row">
+            <div class="col">
+            <div class="card card-body">
+            <form method="get">
+                   {{project_filter.form}}
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            </div>
+            </div>
         </div>
         <div class="card card-body">
+            {% if project_filter.qs %}
             <table class="table">
               <thead>
                 <tr>
@@ -15,6 +29,34 @@
                   <th scope="col">Overview</th>
                   <th scope="col">Requirements</th>
                   <th scope="col">Assigned Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for project in project_filter.qs %}
+                <tr>
+                    <td>{{project.id}}</td>
+                    <td>{{project.title}}</td>
+                    <td>{{project.overview}}</td>
+                    <td>{{project.requirements}}</td>
+                    <td>{{project.is_assigned}}</td>
+                  <td>
+                      <a href="{% url 'client_edit_project' project_id=project.id %}" class="btn btn-primary">Edit Project</a> 
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Overview</th>
+                  <th scope="col">Requirements</th>
+                  <th scope="col">Assigned Status</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -25,14 +67,43 @@
                     <td>{{project.overview}}</td>
                     <td>{{project.requirements}}</td>
                     <td>{{project.is_assigned}}</td>
+                  <td>
+                      <a href="{% url 'client_edit_project' project_id=project.id %}" class="btn btn-primary">Edit Project</a> 
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
+            {% endif %}
+        </div>
     </div>
-        <div class="center"> 
-        <a href="{% url 'client_add_project' %}" >Add Project</a>
-        </div> 
 </div>
 
-{% endblock content %} 
+<div class="center">
+    <a href="{% url 'client_add_project' %}" class="btn btn-primary">Add Project</a>
+</div> 
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -138,7 +138,7 @@ class ProjectForm(ModelForm):
 
     class Meta:
         model = Project
-        exclude = ["id", "client", "is_assigned"]
+        exclude = ["id", "client", "is_assigned","status"]
         widgets = {"file": ClearableFileInput(attrs={"multiple": True})}
 
 
@@ -174,7 +174,7 @@ class TaskForm(ModelForm):
 class UpdateTaskForm(ModelForm):
     class Meta:
         model = Task
-        fields = ["status"]
+        fields = ["title","description","due_date","assigned_to","status"]
 
 
 class StudentProfileForm(ModelForm):

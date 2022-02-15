@@ -155,12 +155,12 @@ class Student_Profile(models.Model):
 
     def __str__(self):
         return (
-            self.student.user.email
+            str(self.student.user)
             + self.course_taken
             + self.specialization
             + self.area_of_interest
-            + self.cgpa
-        )
+            + str(self.cgpa)
+        ) 
 
 
 class Client_Request(models.Model):

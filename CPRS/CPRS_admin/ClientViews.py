@@ -139,6 +139,27 @@ def add_project_view(request):
 
 
 @client_required
+def edit_project_view(request,project_id):
+    template_name = "client/add_project.html"
+    project = Project.objects.get(id=project_id)
+    if request.method == "GET":
+        form = ProjectForm(request.GET or None,instance=project)
+    elif request.method == "POST":
+        form = ProjectForm(request.POST, request.FILES,instance=project)
+        files = request.FILES.getlist("file")
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.client = request.user.client
+            project.save()
+
+            # for f in files:
+            # file_instance = Project(id=project.id, file=f)
+            # file_instance.save()
+        return redirect("client_view_projects")
+    context = {"form": form}
+    return render(request, template_name, context)
+
+@client_required
 def client_dashboard(request):
     project_count = Project.objects.filter(client=request.user.client).count()
     completed_project_count = Project.objects.filter(
