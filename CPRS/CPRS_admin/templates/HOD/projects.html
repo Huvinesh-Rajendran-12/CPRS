@@ -1,13 +1,13 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block content %}
 
-<br>
 
 <div class="row">
     <div class="col-md">
         <div class="card card-body">
-            <h5>Projects</h5>
+            <h3>Projects</h3>
         </div>
         <div class="row">
             <div class="col">
@@ -41,11 +41,7 @@
                     <td>{{project.overview}}</td>
                     <td>{{project.requirements}}</td>
                   <td>
-                       {% if project.is_active == 1 %}
-                                            <a href="{% url 'student_deactivate' student_id=student.id %}" class="btn btn-success" >Deactivate</a>
-                       {% elif student.is_active == 0  %}
-                                             <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Deactivated</button> 
-                        {% endif %}                            
+                      {{project.status}}
                   </td>
                 </tr>
                 {% endfor %}
@@ -72,18 +68,40 @@
                     <td>{{project.overview}}</td>
                     <td>{{project.requirements}}</td>
                   <td>
-                       {% if project.is_active == 1 %}
-                                            <a href="{% url 'student_deactivate' student_id=student.id %}" class="btn btn-success" >Deactivate</a>
-                       {% elif student.is_active == 0  %}
-                                             <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Deactivated</button> 
-                        {% endif %}                            
+                      {{project.status}}
                   </td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
             {% endif %}
+        </div>
     </div>
 </div>
+<div>
+</div> 
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
