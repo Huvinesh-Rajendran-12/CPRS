@@ -12,7 +12,7 @@ class StudentFilter(django_filters.FilterSet):
 class ProjectFilter(django_filters.FilterSet):
     class Meta:
         model = Project
-        exclude = ["file", "client"]
+        exclude = ["file"]
 
 
 class ClientFilter(django_filters.FilterSet):
