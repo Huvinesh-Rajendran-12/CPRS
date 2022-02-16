@@ -142,6 +142,16 @@ class ProjectForm(ModelForm):
         widgets = {"file": ClearableFileInput(attrs={"multiple": True})}
 
 
+class EditProjectForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["file"].required = False
+
+    class Meta:
+        model = Project
+        exclude = ["id", "client", "is_assigned"]
+        widgets = {"file": ClearableFileInput(attrs={"multiple": True})}
+
 class StudentForm(ModelForm):
     class Meta:
         model = Student

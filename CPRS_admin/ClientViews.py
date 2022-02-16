@@ -11,6 +11,7 @@ from .models import Client, Client_Request, StudentGroup, Project, Student, Indu
 from .forms import (
     ClientRequestForm,
     ProjectForm,
+    EditProjectForm,
     MLEClientProfileForm,
     IndustryClientProfileForm,
     UniversityClientProfileForm,
@@ -158,15 +159,14 @@ def edit_project_view(request, project_id):
     template_name = "client/add_project.html"
     project = Project.objects.get(id=project_id)
     if request.method == "GET":
-        form = ProjectForm(request.GET or None, instance=project)
+        form = EditProjectForm(request.GET or None, instance=project)
     elif request.method == "POST":
-        form = ProjectForm(request.POST, request.FILES, instance=project)
+        form = EditProjectForm(request.POST, request.FILES, instance=project)
         files = request.FILES.getlist("file")
         if form.is_valid():
             project = form.save(commit=False)
             project.client = request.user.client
             project.save()
-
             # for f in files:
             # file_instance = Project(id=project.id, file=f)
             # file_instance.save()
