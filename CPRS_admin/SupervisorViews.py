@@ -46,8 +46,8 @@ def supervisor_view_profile(request):
     context = {"supervisor": supervisor}
     return render(request, template_name, context)
 
-
-@method_decorator[[login_required,supervisor_required],name='dispatch']
+decorators = [login_required,supervisor_required]
+@method_decorator(decorators,name='dispatch')
 class SupervisorProfileEditView(CreateView):
     model = Supervisor_Profile
     form_class = SupervisorProfileForm
