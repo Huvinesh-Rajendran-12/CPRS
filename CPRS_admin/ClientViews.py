@@ -49,17 +49,18 @@ def client_edit_profile(request):
         form = UniversityClientProfileForm
 
     if request.method == "GET":
-        profileform = form(request.GET or None)
+        profileform = form(request.GET or None,request=request)
     elif request.method == "POST":
-        profileform = form(request.POST)
+        profileform = form(request.POST,request=request)
         if profileform.is_valid():
-            profileform.client = request.user.client
             profileform.save()
-        return redirect("client_view_profile")
+            return redirect("client_view_profile")
+        else:
+            print("error")
     return render(
         request,
         template_name,
-        {"form": form},
+        {"form": profileform},
     )
 
 
