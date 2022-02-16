@@ -35,8 +35,7 @@
                 {% for supervisor in supervisor_filter.qs %}
                 <tr>
                     <td>{{supervisor.id}}</td>
-                    <td>{{supervisor.user.first_name}}</td>
-                    <td>{{supervisor.user.last_name}}</td>
+                    <td>{{supervisor.name}}</td>
                     <td>{{supervisor.user.email}}</td>
                   <td>
                        {% if supervisor.is_active == 1 %}
@@ -65,8 +64,7 @@
                 {% for supervisor in supervisors %}
                 <tr>
                     <td>{{supervisor.id}}</td>
-                    <td>{{supervisor.user.first_name}}</td>
-                    <td>{{supervisor.user.last_name}}</td>
+                    <td>{{supervisor.name}}</td>
                     <td>{{supervisor.user.email}}</td>
                   <td>
                        {% if supervisor.is_active == 1 %}
