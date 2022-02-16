@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.contrib.auth.decorators import login_required
+from CPRS_admin.decorators import admin_required
 import json
 import psycopg2
 import pandas as pd
@@ -10,6 +12,8 @@ from CPRS_admin.models import StudentGroup, Project, Client
 from django.conf import settings
 
 
+@login_required
+@admin_required
 def make_recommendations_view(request, group_id):
     connection = psycopg2.connect(
         user="dev",
@@ -55,6 +59,8 @@ def make_recommendations_view(request, group_id):
     return render(request, template_name, context)
 
 
+@login_required
+@admin_required
 def assign_recommended_project(request, group_id, client_id, project_id):
     client = Client.objects.get(id=client_id)
     group = StudentGroup.objects.get(id=group_id)
@@ -69,6 +75,8 @@ def assign_recommended_project(request, group_id, client_id, project_id):
     return redirect("coordinator_view_groups")
 
 
+@login_required
+@admin_required
 def change_recommended_project(request, group_id, project_id):
     group = StudentGroup.objects.get(id=group_id)
     project = Project.objects.get(id=project_id)
