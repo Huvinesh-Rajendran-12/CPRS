@@ -23,6 +23,8 @@ class Client(models.Model):
     is_active = models.IntegerField(default=1)
     client_type = models.CharField(null=True, max_length=50)
 
+    def __str__(self):
+        return self.name
 
 class IndustryClient(models.Model):
     client = models.OneToOneField(
