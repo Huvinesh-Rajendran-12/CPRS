@@ -16,11 +16,11 @@ from django.conf import settings
 @admin_required
 def make_recommendations_view(request, group_id):
     connection = psycopg2.connect(
-        user="dev",
-        password="dev1234",
-        host="127.0.0.1",
+        user="glrglinfnkqojs",
+        password="10e469ee185cd0fa3bb8e74fa3c52335ab03323391603ba35bf4ea4c30064053",
+        host="ec2-52-205-6-133.compute-1.amazonaws.com",
         port="5432",
-        database="test2",
+        database="d6100ej6blful0",
     )
     postgreSQL_student_Query = (
         "select * from "
