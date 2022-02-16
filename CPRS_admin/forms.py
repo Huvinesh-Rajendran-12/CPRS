@@ -190,9 +190,19 @@ class SupervisorProfileForm(ModelForm):
 
 
 class IndustryClientProfileForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
     class Meta:
         model = IndustryClient
         exclude = ["client"]
+    
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        profile.client = self.request.user.client
+        profile.save()
+        return profile
+    
 
 
 class EditIndustryClientProfileForm(ModelForm):
@@ -206,6 +216,11 @@ class MLEClientProfileForm(ModelForm):
         model = MLEClient
         exclude = ["client"]
 
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        profile.client = self.request.user.client
+        profile.save()
+        return profile
 
 class EditMLEClientProfileForm(ModelForm):
     class Meta:
@@ -218,6 +233,11 @@ class UniversityClientProfileForm(ModelForm):
         model = UniversityClient
         exclude = ["client"]
 
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        profile.client = self.request.user.client
+        profile.save()
+        return profile
 
 class EditUniversityClientProfileForm(ModelForm):
     class Meta:

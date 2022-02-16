@@ -3,15 +3,31 @@
 {% block content %}
 
 <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-    <div class="card p-4">
-        <div class=" image d-flex flex-column justify-content-center align-items-center"> <span class="name mt-3"><h2>{{client.user.first_name}} {{client.user.last_name}}</h2></span> <span class="idd"></span>
-            <div class="d-flex flex-row justify-content-center align-items-center gap-2"> <span class="idd1">{{client.user.email}}</span> <span><i class="fa fa-copy"></i></span> </div>
-            <div class="d-flex flex-row justify-content-center align-items-center mt-3"> <span class="number">{{client.profile.school}}<span class="follow"></span></span> </div>
-            <div class="text mt-3"> <span> {{client.profile.contact}}</span> </div>
-            <div class=" d-flex mt-2"> <button class="btn1 btn-dark" onclick="location.href='{% url 'client_edit_profile' %}'">Edit Profile</button> </div>
-
-        </div>
+<div class="center">
+<h3>MLE Client Profile</h3>
+</div> 
+<div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+    <div class="card" style="width: 70rem;">
+        <table class="table">
+            <tbody>
+                <tr>
+                  <th>Name</th>
+                  <td>{{client.user.first_name}} {{client.user.last_name}}</td>
+                </tr>
+                <tr>
+                  <th>Email</th>
+                  <td>{{client.user.email}}</td>
+                </tr>
+                <tr>
+                    <th>School</th>
+                    <td>{{client.mle.school}}</td>
+                </tr>
+                <tr>
+                    <th>Contact</th>
+                    <td>{{client.mle.contact}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-</div>
-
+</div> 
 {% endblock %}
