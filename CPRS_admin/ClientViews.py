@@ -85,7 +85,7 @@ def client_request_group(request, group_id):
             )
             request.save()
             group.save()
-        return redirect("client_view_groups")
+            return redirect("client_view_groups")
     context = {"group": group, "form": requestform}
     return render(request, "client/client_request_group.html", context)
 

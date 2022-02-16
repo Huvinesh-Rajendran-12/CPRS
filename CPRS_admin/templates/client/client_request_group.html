@@ -16,8 +16,10 @@
                               <td>{{group.id}}</td>
                             </tr>
                             <tr>
+                                <form method="post">
                                 <th>Request Message</th>
                                 <td>{{form.message|as_crispy_field}}</td>
+                                </form>
                             </tr>
                         </tbody>
                     </table>
