@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Client, Client_Request, StudentGroup, Project, Student
+from .models import Client, Client_Request, StudentGroup, Project, Student, IndustryClient, MLEClient, UniversityClient
 from .forms import (
     ClientRequestForm,
     ProjectForm,
@@ -42,16 +42,19 @@ def client_edit_profile(request):
     user = request.user
     client = Client.objects.get(user=user)
     if client.client_type == "Industry":
+        profile = IndustryClient.objects.get(client=client)
         form = IndustryClientProfileForm
     elif client.client_type == "MLE":
+        profile = MLEClient.objects.get(client=client)
         form = MLEClientProfileForm
     elif client.client_type == "University":
+        profile = UniversityClient.objects.get(client=client)
         form = UniversityClientProfileForm
 
     if request.method == "GET":
-        profileform = form(request.GET or None,request=request)
+        profileform = form(request.GET or None,request=request,instance=profile)
     elif request.method == "POST":
-        profileform = form(request.POST,request=request)
+        profileform = form(request.POST,request=request,instance=profile)
         if profileform.is_valid():
             profileform.save()
             return redirect("client_view_profile")

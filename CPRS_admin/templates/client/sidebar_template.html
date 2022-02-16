@@ -8,12 +8,28 @@
     <hr>
     <div class="dropdown"> <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false"> <i alt="" width="32" height="32" class="fa fa-user-circle-o rounded-circle me-2"></i> <strong> {{user.username}} </strong> </a>
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-            {% if user.client.profile %}
-            <li><a class="dropdown-item" href="{% url 'client_view_profile' %}">Profile</a></li>
-            {% else %}
-            <li><a class="dropdown-item" href="{% url 'client_edit_profile' %}">Profile</a></li>
+            {% if user.client.client_type == "Industry" %}
+                {% if user.client.industry %}
+                <li><a class="dropdown-item" href="{% url 'client_view_profile' %}">Profile</a></li>
+                {% else %}
+                <li><a class="dropdown-item" href="{% url 'client_edit_profile' %}">Profile</a></li>
+                {% endif %}
+                <li>
+            {% elif user.client.client_type == 'MLE' %}
+                {% if user.client.industry %}
+                <li><a class="dropdown-item" href="{% url 'client_view_profile' %}">Profile</a></li>
+                {% else %}
+                <li><a class="dropdown-item" href="{% url 'client_edit_profile' %}">Profile</a></li>
+                {% endif %}
+                <li>
+            {% elif user.client.client_type == 'University' %}
+                {% if user.client.industry %}
+                <li><a class="dropdown-item" href="{% url 'client_view_profile' %}">Profile</a></li>
+                {% else %}
+                <li><a class="dropdown-item" href="{% url 'client_edit_profile' %}">Profile</a></li>
+                {% endif %}
+                <li>
             {% endif %}
-            <li>
                 <hr class="dropdown-divider">
             </li>
             <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
