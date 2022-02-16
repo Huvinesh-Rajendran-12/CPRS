@@ -16,6 +16,7 @@
     </div>
     </div>
 </div>
+<div class="card card-body">
 {% if group_filter %}
 <table class="table">
       <thead>
@@ -102,6 +103,7 @@
       </tbody>
 </table>
 {% endif %}
+</div> 
 <div class="center"> 
     <a href="{% url 'coordinator_create_group_with_students' %}" class="btn btn-primary" >Add Group</a>
 </div> 
