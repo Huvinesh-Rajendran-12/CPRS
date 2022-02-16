@@ -4,6 +4,8 @@
 <section class="content center">
       <div class="center container-fluid">
                  <h3> Project Details </h3>
+                <form action="" method="post">
+                {% csrf_token %}
                 <div class="card" style="width: 70rem;">
                     <table class="table">
                         <tbody>
@@ -16,17 +18,16 @@
                               <td>{{group.id}}</td>
                             </tr>
                             <tr>
-                                <form method="post">
                                 <th>Request Message</th>
                                 <td>{{form.message|as_crispy_field}}</td>
-                                </form>
                             </tr>
                         </tbody>
                     </table>
                 </div>
               <div class="center">
                   <button type="submit" class="btn btn-primary submit_btn  my-4">Submit</button>
-              </div>      
+              </div>
+            </form>
       </div>
 </section>
     <!-- /.content -->
