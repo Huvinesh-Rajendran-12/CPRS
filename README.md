@@ -3,6 +3,6 @@
 Superuser
 ----------
 username : CPRS_admin <br/> 
-password : cprsadmin1234 </br> 
+password : cO1aH4oW0uP6vM9e </br> 
 
 
