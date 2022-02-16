@@ -146,5 +146,7 @@ except:
     spacy.cli.download("en_core_web_md")
     LANGUAGE_MODELS["en"] = spacy.load("en_core_web_md")
 
+# Heroku
 import django_heroku
 django_heroku.settings(locals())
+CSRF_TRUSTED_ORIGINS = ["https://cprs-taylors.herokuapp.com"]
