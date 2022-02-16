@@ -61,8 +61,8 @@ def StudentProfile(request):
         {"student_profile": student_profile},
     )
 
-
-@method_decorator[[login_required,student_required],name='dispatch']
+decorators = [login_required,student_required]
+@method_decorator(decorators,name='dispatch')
 class StudentProfileView(CreateView):
     model = Student_Profile
     form_class = StudentProfileForm
