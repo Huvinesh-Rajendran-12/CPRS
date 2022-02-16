@@ -22,7 +22,7 @@ import os
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.decorators import method_decorator
 from .filters import TaskFilter
-
+from django.utils.decorators import method_decorator
 
 @login_required
 @student_required
@@ -62,6 +62,7 @@ def StudentProfile(request):
     )
 
 
+@method_decorator[[login_required,student_required],name='dispatch']
 class StudentProfileView(CreateView):
     model = Student_Profile
     form_class = StudentProfileForm

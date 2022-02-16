@@ -14,7 +14,7 @@ from .models import (
 from .forms import SupervisorProfileForm, StudentFeedbackForm
 from django.views.generic import CreateView
 from .filters import TaskFilter
-
+from django.utils.decorators import method_decorator 
 
 @login_required
 @supervisor_required
@@ -47,6 +47,7 @@ def supervisor_view_profile(request):
     return render(request, template_name, context)
 
 
+@method_decorator[[login_required,supervisor_required],name='dispatch']
 class SupervisorProfileEditView(CreateView):
     model = Supervisor_Profile
     form_class = SupervisorProfileForm
