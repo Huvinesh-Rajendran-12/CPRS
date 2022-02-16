@@ -30,7 +30,7 @@ class SupervisorFilter(django_filters.FilterSet):
 class GroupFilter(django_filters.FilterSet):
     class Meta:
         model = StudentGroup
-        exclude = ["client"]
+        exclude = ["can_view","has_requested"]
 
 
 class TaskFilter(django_filters.FilterSet):
