@@ -130,8 +130,9 @@ def client_view_groups(request):
     print(assigned_project_count)
     if assigned_project_count != 0:
         groups = StudentGroup.objects.filter(client=request.user.client)
+        group_filter = ClientGroupFilter(request.GET, queryset=groups)
         requests = Client_Request.objects.filter(client=request.user.client)
-        context = {"groups": groups, "requests": requests}
+        context = {"groups": groups, "requests": requests,"group_filter":group_filter}
         return render(request, "client/client_view_group_list.html", context)
     else:
         return HttpResponse("No groups")
