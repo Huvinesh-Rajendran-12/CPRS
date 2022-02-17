@@ -41,7 +41,7 @@ class IndustryClient(models.Model):
 
 class MLEClient(models.Model):
     client = models.OneToOneField(
-        User,
+        Client,
         primary_key=True,
         default=None,
         related_name="mle",
@@ -53,7 +53,7 @@ class MLEClient(models.Model):
 
 class UniversityClient(models.Model):
     client = models.OneToOneField(
-        User,
+        Client,
         primary_key=True,
         default=None,
         related_name="university",

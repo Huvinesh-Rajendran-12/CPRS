@@ -67,6 +67,33 @@ def client_edit_profile(request):
         {"form": profileform},
     )
 
+@login_required
+@client_required
+def client_enter_profile(request):
+    template_name = "client/client_edit_profile.html"
+    user = request.user
+    client = Client.objects.get(user=user)
+    if client.client_type == "Industry":
+        form = IndustryClientProfileForm
+    elif client.client_type == "MLE":
+        form = MLEClientProfileForm
+    elif client.client_type == "University":
+        form = UniversityClientProfileForm
+
+    if request.method == "GET":
+        profileform = form(request.GET or None,request=request)
+    elif request.method == "POST":
+        profileform = form(request.POST,request=request)
+        if profileform.is_valid():
+            profileform.save()
+            return redirect("client_view_profile")
+        else:
+            print("error")
+    return render(
+        request,
+        template_name,
+        {"form": profileform},
+    )
 
 # client requests to view group details
 @login_required

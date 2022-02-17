@@ -222,10 +222,13 @@ class EditIndustryClientProfileForm(ModelForm):
 
 
 class MLEClientProfileForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
     class Meta:
         model = MLEClient
         exclude = ["client"]
-
+    
     def save(self, commit=True):
         profile = super().save(commit=False)
         profile.client = self.request.user.client
@@ -239,10 +242,13 @@ class EditMLEClientProfileForm(ModelForm):
 
 
 class UniversityClientProfileForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
     class Meta:
-        model = UniversityClient
+        model = MLEClient
         exclude = ["client"]
-
+    
     def save(self, commit=True):
         profile = super().save(commit=False)
         profile.client = self.request.user.client
