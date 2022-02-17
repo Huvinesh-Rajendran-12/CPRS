@@ -19,7 +19,7 @@ from .forms import (
 from django.views.generic import CreateView
 from .decorators import client_required
 from django.contrib.auth.decorators import login_required
-from .filters import ClientProjectFilter
+from .filters import ClientProjectFilter, ClientGroupFilter
 
 @login_required
 @client_required
