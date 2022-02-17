@@ -83,6 +83,7 @@ def change_recommended_project(request, group_id, project_id):
     group.client = None
     group.project = None
     group.has_project = False
+    group.can_view = 0
     group.has_requested = False
     project.is_assigned = False
     group.save()
