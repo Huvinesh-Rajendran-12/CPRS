@@ -14,6 +14,10 @@ class ProjectFilter(django_filters.FilterSet):
         model = Project
         exclude = ["file"]
 
+class ClientProjectFilter(django_filters.FilterSet):
+    class Meta:
+        model = Project
+        exclude = ["client","file"]
 
 class ClientFilter(django_filters.FilterSet):
     class Meta:

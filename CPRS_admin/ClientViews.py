@@ -19,7 +19,7 @@ from .forms import (
 from django.views.generic import CreateView
 from .decorators import client_required
 from django.contrib.auth.decorators import login_required
-
+from .filters import ClientProjectFilter
 
 @login_required
 @client_required
@@ -153,7 +153,8 @@ def client_view_group_details(request, group_id):
 def client_view_projects(request):
     template_name = "client/view_projects.html"
     projects = Project.objects.filter(client=request.user.client)
-    context = {"projects": projects}
+    project_filter = ClientProjectFilter(request.GET, queryset=projects)
+    context = {"projects": projects,"project_filter":project_filter}
     return render(request, template_name, context)
 
 
