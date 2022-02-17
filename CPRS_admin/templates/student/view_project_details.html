@@ -22,12 +22,14 @@
                 </tr>
               <tr>
                   <th>File Attachment</th>
-                  {% if project.file %}
+                  {% if project.file == None %}
                   <td>
-                    <a href="{{project.file.url}}" download="{{project.file.url}}" class="btn btn-primary btn-sm btn-block">Download Attached Files</a>
+                      No file attached
                   </td>
                   {% else %}
-                  <td>No file attached</td>
+                  <td>
+                        <a href="{{project.file.url}}" download="{{project.file.url}}" class="btn btn-primary btn-sm btn-block">Download Attached Files</a>
+                  </td>
                   {% endif %}
                 </tr>
             </tbody>
