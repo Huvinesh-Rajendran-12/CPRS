@@ -39,7 +39,7 @@ class GroupFilter(django_filters.FilterSet):
 class ClientGroupFilter(django_filters.FilterSet):
     class Meta:
         model = StudentGroup
-        exclude = ["can_view","has_requested","client"]
+        exclude = ["can_view","has_requested","client","has_project"]
 
 class TaskFilter(django_filters.FilterSet):
     class Meta:
