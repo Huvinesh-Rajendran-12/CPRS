@@ -42,7 +42,11 @@
                       {% if group.can_view == 1 %}
                                             <a href="{% url 'client_view_group_details' group_id=group.id %}" class="btn btn-success" >View group details</a>
                        {% elif group.can_view == 0  %}
-                       <a href="{% url 'client_request_group_details' group_id=group.id %}" class="btn btn-primary" >Request</a>
+                            {% if group.has_requested %}
+                                     <a href="#" class="btn btn-secondary" >Requested</a>
+                            {% else %}
+                                     <a href="{% url 'client_request_group_details' group_id=group.id %}" class="btn btn-primary" >Request</a>
+                            {% endif %}
                        {% elif group.can_view == 2 %}
                                              <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Request Rejected</button>
                         {% endif %}                            
