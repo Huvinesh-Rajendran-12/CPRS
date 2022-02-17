@@ -8,25 +8,25 @@
     <hr>
     <div class="dropdown"> <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false"> <i alt="" width="32" height="32" class="fa fa-user-circle-o rounded-circle me-2"></i> <strong> {{user.username}} </strong> </a>
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-            {% if user.client.client_type == "Industry" %}
+            {% if user.client.client_type == 'Industry' %}
                 {% if user.client.industry %}
                 <li><a class="dropdown-item" href="{% url 'client_view_profile' %}">Profile</a></li>
                 {% else %}
-                <li><a class="dropdown-item" href="{% url 'client_edit_profile' %}">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'client_enter_profile' %}">Profile</a></li>
                 {% endif %}
                 <li>
             {% elif user.client.client_type == 'MLE' %}
-                {% if user.client.industry %}
+                {% if user.client.mle %}
                 <li><a class="dropdown-item" href="{% url 'client_view_profile' %}">Profile</a></li>
                 {% else %}
-                <li><a class="dropdown-item" href="{% url 'client_edit_profile' %}">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'client_enter_profile' %}">Profile</a></li>
                 {% endif %}
                 <li>
             {% elif user.client.client_type == 'University' %}
-                {% if user.client.industry %}
+                {% if user.client.university %}
                 <li><a class="dropdown-item" href="{% url 'client_view_profile' %}">Profile</a></li>
                 {% else %}
-                <li><a class="dropdown-item" href="{% url 'client_edit_profile' %}">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'client_enter_profile' %}">Profile</a></li>
                 {% endif %}
                 <li>
             {% endif %}

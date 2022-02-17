@@ -203,6 +203,7 @@ urlpatterns = [
     ),
     path("client/view_groups", client_view_groups, name="client_view_groups"),
     path("client/view_profile", client_view_profile, name="client_view_profile"),
+    path("client/enter_profile", client_enter_profile, name="client_enter_profile"),
     path("client/edit_profile", client_edit_profile, name="client_edit_profile"),
     path(
         "client/view_group_details/<str:group_id>",
