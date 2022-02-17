@@ -37,6 +37,12 @@ class StudentSignUpForm(UserCreationForm):
         help_text="Required. Inform a valid email address.",
     )
     student_no = forms.IntegerField(required=True, label="Student ID")
+    
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if "@sd.taylors.edu.my" not in data:
+            raise forms.ValidationError("Must be a Taylor's Email")
+        return data
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -112,6 +118,12 @@ class SupervisorSignUpForm(UserCreationForm):
         label="Email",
         help_text="Required. Inform a valid email address.",
     )
+    
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if "@sd.taylors.edu.my" not in data:
+            raise forms.ValidationError("Must be a Taylor's Email")
+        return data
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -152,10 +164,6 @@ class EditProjectForm(ModelForm):
         exclude = ["id", "client", "is_assigned"]
         widgets = {"file": ClearableFileInput(attrs={"multiple": True})}
 
-class StudentForm(ModelForm):
-    class Meta:
-        model = Student
-        exclude = []
 
 
 class TaskForm(ModelForm):
