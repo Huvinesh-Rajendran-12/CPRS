@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from .forms import ProjectForm
-from .forms import StudentForm, StudentGroupModelForm
 from django.views.generic import CreateView
 from django.shortcuts import redirect
 from django.contrib.auth import login, logout, authenticate
@@ -9,6 +8,7 @@ from .models import User, Project, Student_Profile, Student
 from .decorators import *
 from .forms import (
     StudentSignUpForm,
+    StudentGroupModelForm,
     ClientSignUpForm,
     SupervisorSignUpForm,
     ProjectForm,
