@@ -246,7 +246,7 @@ class UniversityClientProfileForm(ModelForm):
         self.request = kwargs.pop("request")
         super().__init__(*args, **kwargs)
     class Meta:
-        model = MLEClient
+        model = UniversityClient
         exclude = ["client"]
     
     def save(self, commit=True):
